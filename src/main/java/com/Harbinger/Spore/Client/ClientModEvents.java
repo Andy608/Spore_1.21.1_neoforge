@@ -1,0 +1,348 @@
+package com.Harbinger.Spore.Client;
+
+import com.Harbinger.Spore.Client.AnimationTrackers.PCIAnimationTracker;
+import com.Harbinger.Spore.Client.AnimationTrackers.SGAnimationTracker;
+import com.Harbinger.Spore.Client.AnimationTrackers.SGReloadAnimationTracker;
+import com.Harbinger.Spore.Client.ArmorParts.ComplexHandModelItem;
+import com.Harbinger.Spore.Client.Layers.CustomArmorLayer;
+import com.Harbinger.Spore.Client.Models.*;
+import com.Harbinger.Spore.Client.Models.NukeParts.BombFunnelModel;
+import com.Harbinger.Spore.Client.Models.NukeParts.FireDiskModel;
+import com.Harbinger.Spore.Client.Models.NukeParts.MushroomExplosionTop;
+import com.Harbinger.Spore.Client.Renderers.*;
+import com.Harbinger.Spore.Particles.*;
+import com.Harbinger.Spore.Screens.*;
+import com.Harbinger.Spore.Sentities.BasicInfected.InfectedHusk;
+import com.Harbinger.Spore.Sentities.BasicInfected.InfectedPlayer;
+import com.Harbinger.Spore.Sitems.Agents.AbstractSyringe;
+import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorData;
+import com.Harbinger.Spore.Sitems.BaseWeapons.SporeWeaponData;
+import com.Harbinger.Spore.Sitems.CustomModelArmorData;
+import com.Harbinger.Spore.Spore;
+import com.Harbinger.Spore.core.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+
+@Mod(value = Spore.MODID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = Spore.MODID, value = Dist.CLIENT)
+public class ClientModEvents {
+    @SubscribeEvent
+    public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(platedArmorModel.LAYER_LOCATION, platedArmorModel::createBodyLayer);
+        event.registerLayerDefinition(fleshArmorModel.LAYER_LOCATION, fleshArmorModel::createBodyLayer);
+        event.registerLayerDefinition(livingArmorModelBase.LAYER_LOCATION, livingArmorModelBase::createBodyLayer);
+        event.registerLayerDefinition(livingArmorMkModel.LAYER_LOCATION, livingArmorMkModel::createBodyLayer);
+        event.registerLayerDefinition(ElytrumModel.LAYER_LOCATION, ElytrumModel::createBodyLayer);
+        event.registerLayerDefinition(GasMaskModel.LAYER_LOCATION, GasMaskModel::createBodyLayer);
+        event.registerLayerDefinition(PCI_ModelL.LAYER_LOCATION, PCI_ModelL::createBodyLayer);
+        event.registerLayerDefinition(PCI_Model.LAYER_LOCATION, PCI_Model::createBodyLayer);
+        event.registerLayerDefinition(RavenousJawModel.LAYER_LOCATION, RavenousJawModel::createBodyLayer);
+        event.registerLayerDefinition(lacedThornsModel.LAYER_LOCATION, lacedThornsModel::createBodyLayer);
+        event.registerLayerDefinition(SyringeGunModel.LAYER_LOCATION, SyringeGunModel::createBodyLayer);
+        event.registerLayerDefinition(SyringeGunModelArm.LAYER_LOCATION, SyringeGunModelArm::createBodyLayer);
+
+        event.registerLayerDefinition(BulletModel.LAYER_LOCATION, BulletModel::createBodyLayer);
+        event.registerLayerDefinition(BileRound.LAYER_LOCATION, BileRound::createBodyLayer);
+        event.registerLayerDefinition(StingerModel.LAYER_LOCATION, StingerModel::createBodyLayer);
+        event.registerLayerDefinition(BombFunnelModel.LAYER_LOCATION, BombFunnelModel::createBodyLayer);
+        event.registerLayerDefinition(FireDiskModel.LAYER_LOCATION, FireDiskModel::createBodyLayer);
+        event.registerLayerDefinition(MushroomExplosionTop.LAYER_LOCATION, MushroomExplosionTop::createBodyLayer);
+        event.registerLayerDefinition(InfectedSpearModel.LAYER_LOCATION, InfectedSpearModel::createBodyLayer);
+        event.registerLayerDefinition(SickleModel.LAYER_LOCATION, SickleModel::createBodyLayer);
+        event.registerLayerDefinition(SyringeProjectileModel.LAYER_LOCATION, SickleModel::createBodyLayer);
+
+        event.registerLayerDefinition(brainMatterModel.LAYER_LOCATION, brainMatterModel::createBodyLayer);
+        event.registerLayerDefinition(BrainTentacleModel.LAYER_LOCATION, BrainTentacleModel::createBodyLayer);
+        event.registerLayerDefinition(OutpostWatcherModel.LAYER_LOCATION, OutpostWatcherModel::createBodyLayer);
+        event.registerLayerDefinition(IncubatorModel.LAYER_LOCATION, IncubatorModel::createBodyLayer);
+        event.registerLayerDefinition(ZoaholicModel.LAYER_LOCATION, ZoaholicModel::createBodyLayer);
+        event.registerLayerDefinition(OvergrownSpawnerModel.LAYER_LOCATION, OvergrownSpawnerModel::createBodyLayer);
+        event.registerLayerDefinition(ReconstructedMindModel.LAYER_LOCATION, ReconstructedMindModel::createBodyLayer);
+
+        event.registerLayerDefinition(SiegerModel.LAYER_LOCATION, SiegerModel::createBodyLayer);
+        event.registerLayerDefinition(GazenbrecherModel.LAYER_LOCATION, GazenbrecherModel::createBodyLayer);
+        event.registerLayerDefinition(HindieModel.LAYER_LOCATION, HindieModel::createBodyLayer);
+        event.registerLayerDefinition(HowitzerModel.LAYER_LOCATION, HowitzerModel::createBodyLayer);
+        event.registerLayerDefinition(HohlfresserSeg1Model.LAYER_LOCATION, HohlfresserSeg1Model::createBodyLayer);
+        event.registerLayerDefinition(HohlfresserSeg2Model.LAYER_LOCATION, HohlfresserSeg2Model::createBodyLayer);
+        event.registerLayerDefinition(HohlfresserSeg3Model.LAYER_LOCATION, HohlfresserSeg3Model::createBodyLayer);
+        event.registerLayerDefinition(hohlfresserTailModel.LAYER_LOCATION, hohlfresserTailModel::createBodyLayer);
+        event.registerLayerDefinition(hohlfresserHeadModel.LAYER_LOCATION, hohlfresserHeadModel::createBodyLayer);
+        event.registerLayerDefinition(SiegerArrowModel.LAYER_LOCATION, SiegerArrowModel::createBodyLayer);
+        event.registerLayerDefinition(SantaModel.LAYER_LOCATION, SantaModel::createBodyLayer);
+        event.registerLayerDefinition(RootsModel.LAYER_LOCATION, RootsModel::createBodyLayer);
+        event.registerLayerDefinition(HindenXmaslightsModel.LAYER_LOCATION, HindenXmaslightsModel::createBodyLayer);
+
+        event.registerLayerDefinition(InfectedModel.LAYER_LOCATION, InfectedModel::createBodyLayer);
+        event.registerLayerDefinition(GrieferModel.LAYER_LOCATION, GrieferModel::createBodyLayer);
+        event.registerLayerDefinition(KnightModel.LAYER_LOCATION, KnightModel::createBodyLayer);
+        event.registerLayerDefinition(BusserModel.LAYER_LOCATION, BusserModel::createBodyLayer);
+        event.registerLayerDefinition(ExplodingBusserModel.LAYER_LOCATION, ExplodingBusserModel::createBodyLayer);
+        event.registerLayerDefinition(RangedBusserModel.LAYER_LOCATION, RangedBusserModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedVillagerModel.LAYER_LOCATION, InfectedVillagerModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedZombieVillager.LAYER_LOCATION, InfectedZombieVillager::createBodyLayer);
+        event.registerLayerDefinition(LeaperModel.LAYER_LOCATION, LeaperModel::createBodyLayer);
+        event.registerLayerDefinition(SlasherModel.LAYER_LOCATION, SlasherModel::createBodyLayer);
+        event.registerLayerDefinition(GrabberSlasherModel.LAYER_LOCATION, GrabberSlasherModel::createBodyLayer);
+        event.registerLayerDefinition(SmasherSlasherModel.LAYER_LOCATION, SmasherSlasherModel::createBodyLayer);
+        event.registerLayerDefinition(SpitterModel.LAYER_LOCATION, SpitterModel::createBodyLayer);
+        event.registerLayerDefinition(DualSpitterModel.LAYER_LOCATION, DualSpitterModel::createBodyLayer);
+        event.registerLayerDefinition(SniperSpitterModel.LAYER_LOCATION, SniperSpitterModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedPillagerModel.LAYER_LOCATION, InfectedPillagerModel::createBodyLayer);
+        event.registerLayerDefinition(HowlerModel.LAYER_LOCATION, HowlerModel::createBodyLayer);
+        event.registerLayerDefinition(bansheeHowlerModel.LAYER_LOCATION, bansheeHowlerModel::createBodyLayer);
+        event.registerLayerDefinition(SculkHowlerModel.LAYER_LOCATION, SculkHowlerModel::createBodyLayer);
+        event.registerLayerDefinition(StalkerModel.LAYER_LOCATION, StalkerModel::createBodyLayer);
+        event.registerLayerDefinition(BruteModel.LAYER_LOCATION, BruteModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedWandererModel.LAYER_LOCATION, InfectedWandererModel::createBodyLayer);
+        event.registerLayerDefinition(SpecterModel.LAYER_LOCATION, SpecterModel::createBodyLayer);
+        event.registerLayerDefinition(InfestedContructModel.LAYER_LOCATION, InfestedContructModel::createBodyLayer);
+        event.registerLayerDefinition(BrokenIronGolemModel.LAYER_LOCATION, BrokenIronGolemModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedDrownModel.LAYER_LOCATION, InfectedDrownModel::createBodyLayer);
+        event.registerLayerDefinition(BloaterModel.LAYER_LOCATION, BloaterModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedHuskModel.LAYER_LOCATION, InfectedHuskModel::createBodyLayer);
+        event.registerLayerDefinition(ScavengerModel.LAYER_LOCATION, ScavengerModel::createBodyLayer);
+        event.registerLayerDefinition(ThornModel.LAYER_LOCATION, ThornModel::createBodyLayer);
+        event.registerLayerDefinition(JagdhundModel.LAYER_LOCATION, JagdhundModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedPlayerModel.LAYER_LOCATION, InfectedPlayerModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedTechnoModel.LAYER_LOCATION, InfectedTechnoModel::createBodyLayer);
+        event.registerLayerDefinition(ProtectorModel.LAYER_LOCATION, ProtectorModel::createBodyLayer);
+        event.registerLayerDefinition(NuckelaveArmorModel.LAYER_LOCATION, NuckelaveArmorModel::createBodyLayer);
+        event.registerLayerDefinition(NuckelaveModel.LAYER_LOCATION, NuckelaveModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedWitchModel.LAYER_LOCATION, InfectedWitchModel::createBodyLayer);
+        event.registerLayerDefinition(MephiticModel.LAYER_LOCATION, MephiticModel::createBodyLayer);
+        event.registerLayerDefinition(VolatileModel.LAYER_LOCATION, VolatileModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedEvokerModel.LAYER_LOCATION, InfectedEvokerModel::createBodyLayer);
+        event.registerLayerDefinition(InfEvoClawModel.LAYER_LOCATION, InfEvoClawModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedHazmatModel.LAYER_LOCATION, InfectedHazmatModel::createBodyLayer);
+        event.registerLayerDefinition(InfectedHazmatWithTank.LAYER_LOCATION, InfectedHazmatWithTank::createBodyLayer);
+        event.registerLayerDefinition(InfectedHazmatCoat.LAYER_LOCATION, InfectedHazmatCoat::createBodyLayer);
+        event.registerLayerDefinition(InfectedVindicatorModel.LAYER_LOCATION, InfectedVindicatorModel::createBodyLayer);
+        event.registerLayerDefinition(InebriaterModel.LAYER_LOCATION, InebriaterModel::createBodyLayer);
+
+    }
+    @SubscribeEvent
+    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        renderBlockEntities(event);
+        renderUtilities(event);
+        renderEntities(event);
+    }
+    public static void renderEntities(EntityRenderersEvent.RegisterRenderers event){
+        event.registerEntityRenderer(Sentities.SIEGER.get(), SiegerRenderer::new);
+        event.registerEntityRenderer(Sentities.GAZENBREACHER.get(), GazenRenderer::new);
+        event.registerEntityRenderer(Sentities.HINDENBURG.get(), HindieRenderer::new);
+
+        event.registerEntityRenderer(Sentities.INF_HUMAN.get(), InfectedHumanRenderer::new);
+        event.registerEntityRenderer(Sentities.GRIEFER.get(), GrieferRenderer::new);
+        event.registerEntityRenderer(Sentities.KNIGHT.get(), KnightRenderer::new);
+        event.registerEntityRenderer(Sentities.BUSSER.get(), BusserRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_VILLAGER.get(), InfectedVillagerRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_DISEASED_VILLAGER.get(), InfectedDiseasedVillagerRenderer::new);
+        event.registerEntityRenderer(Sentities.LEAPER.get(), LeaperRenderer::new);
+        event.registerEntityRenderer(Sentities.SLASHER.get(), SlasherRenderer::new);
+        event.registerEntityRenderer(Sentities.SPITTER.get(), SpitterRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_PILLAGER.get(), InfectedPillagerRenderer::new);
+        event.registerEntityRenderer(Sentities.HOWLER.get(), HowlerRenderer::new);
+        event.registerEntityRenderer(Sentities.STALKER.get(), StalkerRenderer::new);
+        event.registerEntityRenderer(Sentities.BRUTE.get(), BruteRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_WANDERER.get(), InfectedWandererRenderer::new);
+        event.registerEntityRenderer(Sentities.SPECTER.get(), SpecterRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_CONSTRUCT.get(), InfestedConstructRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_DROWNED.get(), InfectedDrownRenderer::new);
+        event.registerEntityRenderer(Sentities.BLOATER.get(), BloaterRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_HUSK.get(), InfectedHuskRenderer::new);
+        event.registerEntityRenderer(Sentities.SCAVENGER.get(), ScavengerRenderer::new);
+        event.registerEntityRenderer(Sentities.THORN.get(), ThornRenderer::new);
+        event.registerEntityRenderer(Sentities.JAGD.get(), JagdhundRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_PLAYER.get(), InfectedPlayerRenderer::new);
+        event.registerEntityRenderer(Sentities.PROTECTOR.get(), ProtectorRenderer::new);
+        event.registerEntityRenderer(Sentities.NUCLEA.get(), NucleaRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_WITCH.get(), InfectedWitchRenderer::new);
+        event.registerEntityRenderer(Sentities.MEPHETIC.get(), MephticRenderer::new);
+        event.registerEntityRenderer(Sentities.VOLATILE.get(), VolatileRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_EVOKER.get(), InfectedEvokerRenderer::new);
+        event.registerEntityRenderer(Sentities.CLAW.get(), ClawRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_HAZMAT.get(), InfectedHazmatRenderer::new);
+        event.registerEntityRenderer(Sentities.INF_VINDICATOR.get(), InfectedVindicatorRenderer::new);
+        event.registerEntityRenderer(Sentities.INEBRIATER.get(), InebriatorRenderer::new);
+    }
+    public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
+        event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());
+        event.registerBlockEntityRenderer(SblockEntities.BRAIN_REMNANTS.get(), new BrainRemnantsRenderer());
+        event.registerBlockEntityRenderer(SblockEntities.ZOAHOLIC.get(), new ZoaholicRenderer());
+        event.registerBlockEntityRenderer(SblockEntities.INCUBATOR.get(), new IncubatorRenderer());
+        event.registerBlockEntityRenderer(SblockEntities.OUTPOST_WATCHER.get(), new OutpostWatcherRenderer());
+        event.registerBlockEntityRenderer(SblockEntities.HIVE_SPAWN.get(), new ReconMindRenderer());
+    }
+
+    public static void renderUtilities(EntityRenderersEvent.RegisterRenderers event){
+        event.registerEntityRenderer(Sentities.ACID_BALL.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(Sentities.VOMIT_BALL.get(), VomitRenderer::new);
+        event.registerEntityRenderer(Sentities.SPIT.get(), BulletRender::new);
+        event.registerEntityRenderer(Sentities.BILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(Sentities.ACID.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_TOOL.get(), ThrownMeleeItemRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_TUMOR.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(Sentities.FLESH_BOMB.get(), FleshBombRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_BLOCK.get(), ThrownBlockRenderer::new);
+        event.registerEntityRenderer(Sentities.SCENT.get(), ScentEntityRenderer::new);
+        event.registerEntityRenderer(Sentities.TENDRIL.get(), TendrilRenderer::new);
+        event.registerEntityRenderer(Sentities.STINGER.get(), StingerRenderer::new);
+        event.registerEntityRenderer(Sentities.NUKE.get(), NuclearBombRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_KNIFE.get(), KnifeRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_SICKEL.get(), SickleRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_BOOMERANG.get(), ThrownBoomerangRenderer::new);
+        event.registerEntityRenderer(Sentities.CORPSE_PIECE.get(), CorpseRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_SYRINGE.get(), SyringeRenderer::new);
+    }
+
+
+    @SubscribeEvent
+    public static void addLayers(final EntityRenderersEvent.AddLayers event) {
+        event.getSkins().forEach(name -> {
+            if (event.getSkin(name) instanceof PlayerRenderer renderer) {
+                renderer.addLayer(new CustomArmorLayer<>(renderer));
+            }
+        });
+        if (event.getRenderer(EntityType.ARMOR_STAND) instanceof ArmorStandRenderer renderer){
+            renderer.addLayer(new CustomArmorLayer<>(renderer));
+        }
+        tryToAddArmorToType(event);
+    }
+    private static void tryToAddArmorToType(EntityRenderersEvent.AddLayers event){
+        for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE.stream().toList()){
+            if (type == null){continue;}
+            try {
+                if (event.getRenderer((EntityType<? extends LivingEntity>) type) instanceof HumanoidMobRenderer renderer){
+                    renderer.addLayer(new CustomArmorLayer<>(renderer));
+                }
+            } catch (Exception e) {
+                ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(type);
+                Spore.LOGGER.warn("Could not apply custom armor to entity type {}: {}", id, e.getMessage());
+            }
+
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerParticle(RegisterParticleProvidersEvent event) {
+        Minecraft.getInstance().particleEngine.register(Sparticles.SPORE_PARTICLE.get(),
+                SporeParticle.Provider::new);
+
+        Minecraft.getInstance().particleEngine.register(Sparticles.ACID_PARTICLE.get(),
+                AcidParticle.Provider::new);
+
+        Minecraft.getInstance().particleEngine.register(Sparticles.BLOOD_PARTICLE.get(),
+                BloodParticle.Provider::new);
+
+        Minecraft.getInstance().particleEngine.register(Sparticles.SPORE_SLASH.get(),
+                SlashParticle.Provider::new);
+
+        Minecraft.getInstance().particleEngine.register(Sparticles.SPORE_IMPACT.get(),
+                BashParticle.Provider::new);
+
+        Minecraft.getInstance().particleEngine.register(Sparticles.VOMIT.get(),
+                VomitParticle.Provider::new);
+        Minecraft.getInstance().particleEngine.register(Sparticles.VOMIT_BONE.get(),
+                VomitParticle.Provider::new);
+        Minecraft.getInstance().particleEngine.register(Sparticles.VOMIT_ORES.get(),
+                VomitParticle.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void clientSetup(final FMLClientSetupEvent event) {
+        SItemProperties.addCustomItemProperties();
+    }
+    @SubscribeEvent
+    public static void onRegisterItemExtensions(RegisterClientExtensionsEvent event) {
+        event.registerItem(SItemProperties.SyringeGunClient.INSTANCE, Sitems.SYRINGE_GUN.get());
+        event.registerFluidType(SItemProperties.BileClientExtension.INSTANCE, Sfluids.BILE_FLUID_TYPE);
+    }
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(SMenu.CONTAINER.get(), ContainerScreen::new);
+        event.register(SMenu.SURGERY_MENU.get(), SurgeryScreen::new);
+        event.register(SMenu.INJECTION_MENU.get(), InjectionScreen::new);
+        event.register(SMenu.INCUBATOR_MENU.get(), IncubatorScreen::new);
+        event.register(SMenu.ZOAHOLIC_MENU.get(), ZoaholicScreen::new);
+        event.register(SMenu.SURGERY_RECIPE_MENU.get(), SurgeryRecipeScreen::new);
+        event.register(SMenu.CDU_MENU.get(), CDUScreen::new);
+        event.register(SMenu.ASSIMILATION_MENU.get(), AssimilationScreen::new);
+        event.register(SMenu.CABINET_MENU.get(), CabinetScreen::new);
+        event.register(SMenu.GRAFTING_MENU.get(), GraftingScreen::new);
+        event.register(SMenu.GRAFTING_RECIPE_MENU.get(), GraftingRecipeScreen::new);
+        event.register(SMenu.INJECTION_RECIPE_MENU.get(), InjectionRecipeScreen::new);
+    }
+    @SubscribeEvent
+    public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
+        for (Item item : Sitems.TINTABLE_ITEMS){
+            if (item instanceof SporeWeaponData data){
+                event.register((itemStack, tintIndex) -> {
+                    if (tintIndex == 0) {
+                        return data.getVariant(itemStack).getColor();
+                    }
+                    return -1;
+                },item);
+
+            }
+            if (item instanceof SporeArmorData data){
+                event.register((itemStack, tintIndex) -> {
+                    if (tintIndex == 0) {
+                        return data.getVariant(itemStack).getColor();
+                    }
+                    return -1;
+                },item);
+
+            }
+            if (item instanceof AbstractSyringe data){
+                event.register((itemStack, tintIndex) -> {
+                    if (tintIndex == 0) {
+                        return data.getColor();
+                    }
+                    return -1;
+                },item);
+            }
+        }
+    }
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        PCIAnimationTracker.tickAll();
+        SGAnimationTracker.tickAll();
+        SGReloadAnimationTracker.tickAll();
+    }
+    @SubscribeEvent
+    public static void onRenderHand(RenderHandEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        if (player == null || mc.level == null) return;
+        ItemStack stack = player.getItemInHand(event.getHand());
+        for (ComplexHandModelItem handModelItem : ArmorModelList.ITEM_RENDERING_BITS){
+            if (stack.getItem() instanceof CustomModelArmorData armorData && event.getHand().equals(handModelItem.slot) && stack.getItem().equals(handModelItem.item)){
+                handModelItem.renderCustomHand(player,stack, event.getPartialTick(),event.getPackedLight() ,event.getMultiBufferSource(),event.getPoseStack(),armorData.getTextureLocation());
+            }
+        }
+    }
+    public static void openInjectionScreen(Player player) {
+        InjectionRecipeMenu menu = new InjectionRecipeMenu(1, player.getInventory());
+        Minecraft.getInstance().setScreen(new InjectionRecipeScreen(menu, player.getInventory(), Component.literal("")));
+    }
+}

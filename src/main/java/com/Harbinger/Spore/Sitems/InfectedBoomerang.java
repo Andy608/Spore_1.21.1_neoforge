@@ -1,0 +1,45 @@
+package com.Harbinger.Spore.Sitems;
+
+
+import com.Harbinger.Spore.Sentities.Projectile.ThrownBoomerang;
+import com.Harbinger.Spore.Sitems.BaseWeapons.SporeSwordBase;
+import com.Harbinger.Spore.core.SConfig;
+import com.Harbinger.Spore.core.Ssounds;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+public class InfectedBoomerang extends SporeSwordBase {
+    public InfectedBoomerang() {
+        super(SConfig.SERVER.boomerang_damage.get(), 1f, 3f, SConfig.SERVER.boomerang_durability.get());
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (player instanceof ServerPlayer && !level.isClientSide) {
+            stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+            ThrownBoomerang thrownSpear = new ThrownBoomerang(level, player, stack,getVariant(stack).getColor());
+            thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1F , 0.75F);
+            if (player.getAbilities().instabuild) {
+                thrownSpear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+            }
+            level.addFreshEntity(thrownSpear);
+            level.playSound(null, thrownSpear, Ssounds.INFECTED_WEAPON_THROW.get(), SoundSource.PLAYERS, 1.5F, 0.9F);
+            if (!player.getAbilities().instabuild) {
+                player.getInventory().removeItem(stack);
+            }
+            player.awardStat(Stats.ITEM_USED.get(this));
+            return InteractionResultHolder.success(player.getItemInHand(hand));
+        }
+        return super.use(level, player, hand);
+    }
+
+}

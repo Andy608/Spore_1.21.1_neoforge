@@ -1,0 +1,486 @@
+package com.Harbinger.Spore.Sentities.BaseEntities;
+
+import com.Harbinger.Spore.ExtremelySusThings.SporeSavedData;
+import com.Harbinger.Spore.ExtremelySusThings.Utilities;
+import com.Harbinger.Spore.Sentities.AI.LocHiv.BufferAI;
+import com.Harbinger.Spore.Sentities.AI.LocHiv.FollowOthersGoal;
+import com.Harbinger.Spore.Sentities.AI.LocHiv.SearchAreaGoal;
+import com.Harbinger.Spore.Sentities.ArmedInfected;
+import com.Harbinger.Spore.Sentities.EvolvingInfected;
+import com.Harbinger.Spore.core.*;
+import com.Harbinger.Spore.Sentities.AI.FloatDiveGoal;
+import com.Harbinger.Spore.Sentities.AI.HurtTargetGoal;
+import com.Harbinger.Spore.Sentities.AI.InfectedConsumeFromRemains;
+import com.Harbinger.Spore.Sentities.AI.InfectedPanicGoal;
+import com.Harbinger.Spore.Sentities.AI.LocHiv.LocalTargettingGoal;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.StainedGlassBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.util.function.Predicate;
+
+import static net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn;
+
+
+public class Infected extends UtilityEntity implements Enemy {
+    public static final EntityDataAccessor<Integer> HUNGER = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> KILLS = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> EVOLUTION_POINTS = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> EVOLUTION = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> LINKED = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> PERSISTENT = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<String> ORIGIN = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.STRING);
+    @Nullable private BlockPos searchPos;
+    @Nullable private LivingEntity partner;
+    public Infected(EntityType<? extends PathfinderMob> type, Level level) {
+        super(type, level);
+        this.xpReward = 5;
+    }
+    @Nullable
+    public BlockPos getSearchPos() {return searchPos;}
+
+    public void setSearchPos(@Nullable BlockPos searchPos) {this.searchPos = searchPos;}
+
+    public void travel(Vec3 p_32858_) {
+        if (this.isEffectiveAi() && this.isInFluidType()) {
+            this.moveRelative(0.1F, p_32858_);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.6D));
+            if (this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
+            }
+        } else {
+            super.travel(p_32858_);
+        }
+
+    }
+
+    public void setFollowPartner(@Nullable LivingEntity followPartner) {
+        this.partner = followPartner;
+    }
+    public LivingEntity getFollowPartner(){
+        return this.partner;
+    }
+
+    public int getMaxAirSupply() {
+        return 1200;
+    }
+    protected int increaseAirSupply(int p_28389_) {
+        return this.getMaxAirSupply();
+    }
+
+
+    public DamageSource getCustomDamage(LivingEntity entity) {
+        if (Math.random() < 0.5){
+            return SdamageTypes.infected_damage1(entity);
+        }else if (Math.random() < 0.5){
+            return SdamageTypes.infected_damage2(entity);
+        }else  if (Math.random() < 0.5) {
+            return SdamageTypes.infected_damage3(entity);
+        }
+        return this.damageSources().mobAttack(this);
+    }
+
+
+    public Predicate<LivingEntity> TARGET_SELECTOR = (entity) -> {
+       return Utilities.TARGET_SELECTOR.Test(entity);
+    };
+
+    protected void addTargettingGoals(){
+        this.goalSelector.addGoal(2, new HurtTargetGoal(this ,livingEntity -> {return TARGET_SELECTOR.test(livingEntity);}, Infected.class).setAlertOthers(Infected.class));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>
+                (this, LivingEntity.class,  true,livingEntity -> {return livingEntity instanceof Player || SConfig.SERVER.whitelist.get().contains(livingEntity.getEncodeId());}));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>
+                (this, LivingEntity.class,  true, livingEntity -> {return SConfig.SERVER.at_mob.get() && TARGET_SELECTOR.test(livingEntity);}));
+      }
+
+    protected void addRegularGoals(){
+        this.goalSelector.addGoal(3,new LocalTargettingGoal(this));
+        this.goalSelector.addGoal(4 , new BufferAI(this ));
+        this.goalSelector.addGoal(3, new OpenDoorGoal(this, true) {
+            @Override
+            public boolean canUse() {
+                return super.canUse() && getLinked() && SConfig.SERVER.higher_thinking.get();
+            }
+            @Override
+            public void start() {
+                this.mob.swing(InteractionHand.MAIN_HAND);
+                super.start();
+            }
+        });
+        this.goalSelector.addGoal(4, new SearchAreaGoal(this, 1.2));
+        this.goalSelector.addGoal(5 , new InfectedPanicGoal(this , 1.5));
+        this.goalSelector.addGoal(6,new FloatDiveGoal(this));
+        this.goalSelector.addGoal(7, new InfectedConsumeFromRemains(this));
+        this.goalSelector.addGoal(10,new FollowOthersGoal(this,Infected.class, entity ->{
+            return true;
+        }));
+        this.goalSelector.addGoal(10,new FollowOthersGoal(this, Calamity.class, entity ->{
+            return this instanceof EvolvingInfected;
+        }));
+    }
+
+    @Override
+    protected void registerGoals() {
+        addTargettingGoals();
+        addRegularGoals();
+    }
+
+
+    public boolean canStarve(){
+        return SConfig.SERVER.should_starve.get() && entityData.get(EVOLUTION_POINTS) <= 0;
+    }
+
+    public void aiStep() {
+        super.aiStep();
+        if (!level().isClientSide && tickCount % 20 == 0) {
+            applyColdWeaknessEffects();
+            handleStarvationProgress();
+            if ((horizontalCollision || additionalBreakingTriggers()) && canGrief()) {
+                breakNearbyBlocks();
+            }
+        }
+    }
+    public boolean additionalBreakingTriggers(){
+        return false;
+    }
+
+    public boolean blockBreakingParameter(BlockState blockstate,BlockPos blockpos){
+        return (blockstate.getBlock() instanceof StainedGlassBlock || blockstate.getBlock() instanceof LeavesBlock) && blockstate.getDestroySpeed(level() ,blockpos) >= 0 && blockstate.getDestroySpeed(level() ,blockpos) < 2;
+    }
+    private void handleStarvationProgress() {
+        if (!canStarve()) return;
+
+        int currentHunger = getHunger();
+        int hungerThreshold = SConfig.SERVER.hunger.get();
+        boolean freezingPenalty = isInPowderSnow || isFreazing();
+        int hungerIncrement = freezingPenalty ? 2 : 1;
+
+        if (currentHunger < hungerThreshold) {
+            setHunger(currentHunger + hungerIncrement);
+        } else if (!hasEffect(Seffects.STARVATION)) {
+            addEffect(new MobEffectInstance(Seffects.STARVATION, 100, 0));
+        }
+    }
+    private void applyColdWeaknessEffects() {
+        if (!SConfig.SERVER.weaktocold.get()) return;
+        if (!isInPowderSnow && !isFreazing()) return;
+
+        addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 1, false, false), this);
+        addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0, false, false), this);
+    }
+    private boolean canGrief() {
+        return EventHooks.canEntityGrief(level(), this);
+    }
+
+    private void breakNearbyBlocks() {
+        boolean brokeAny = false;
+        AABB aabb = getBoundingBox().inflate(0.2D).move(0, 0.5, 0);
+
+        for (BlockPos pos : BlockPos.betweenClosed(
+                Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ),
+                Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+
+            BlockState state = level().getBlockState(pos);
+
+            if (blockBreakingParameter(state, pos)) {
+                brokeAny |= interactBlock(pos, level());
+            }
+        }
+
+        if (!brokeAny && onGround()) {
+            jumpFromGround();
+        }
+    }
+    public boolean interactBlock(BlockPos blockPos, Level level) {
+        BlockState state = level.getBlockState(blockPos);
+        if (Utilities.biomass().contains(state)){
+            return level.setBlock(blockPos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3);
+        }
+        return level.destroyBlock(blockPos, false, this);
+    }
+
+
+    public boolean isStarving(){
+        return entityData.get(HUNGER) >= SConfig.SERVER.hunger.get() || this.hasEffect(Seffects.STARVATION);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double p_21542_) {
+        if (this.getEvoPoints() >= SConfig.SERVER.min_kills.get() && this instanceof EvolvingInfected){
+            return false;
+        }
+        return super.removeWhenFarAway(p_21542_);
+    }
+
+    public boolean isFreazing(){
+        int i = Mth.floor(this.getX());
+        int j = Mth.floor(this.getY());
+        int k = Mth.floor(this.getZ());
+        BlockPos blockpos = new BlockPos(i, j, k);
+        Biome biome = this.level().getBiome(blockpos).value();
+        return (SConfig.SERVER.weaktocold.get() && this.random.nextInt(20) == 0  && biome.getBaseTemperature() <= 0.2);
+    }
+
+    @Override
+    public void awardKillScore(Entity entity, int i, DamageSource damageSource) {
+        this.entityData.set(KILLS,entityData.get(KILLS) + 1);
+        this.entityData.set(EVOLUTION_POINTS,entityData.get(EVOLUTION_POINTS) + 1);
+        setHunger(0);
+        super.awardKillScore(entity, i, damageSource);
+    }
+    public void setHunger(Integer count){entityData.set(HUNGER,count);}
+    public int getHunger(){return entityData.get(HUNGER);}
+    public void setKills(Integer count){
+        entityData.set(KILLS,count);
+    }
+    public  int getKills(){return entityData.get(KILLS);}
+    public void setEvoPoints(Integer count){
+        entityData.set(EVOLUTION_POINTS,count);
+    }
+    public  int getEvoPoints(){return entityData.get(EVOLUTION_POINTS);}
+    public void setLinked(Boolean count){
+        entityData.set(LINKED,count);
+    }
+    public boolean getLinked(){return entityData.get(LINKED);}
+    public int getEvolutionCoolDown(){return this.entityData.get(EVOLUTION);}
+    public void setEvolution(int u){this.entityData.set(EVOLUTION,u);}
+    public void setPersistent(Boolean count){
+        entityData.set(PERSISTENT,count);
+    }
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("hunger",entityData.get(HUNGER));
+        tag.putInt("kills",entityData.get(KILLS));
+        tag.putInt("evo_points",entityData.get(EVOLUTION_POINTS));
+        tag.putInt("evolution",entityData.get(EVOLUTION));
+        tag.putBoolean("linked",entityData.get(LINKED));
+        tag.putBoolean("persistent",entityData.get(PERSISTENT));
+        tag.putString("origin",entityData.get(ORIGIN));
+    }
+
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        entityData.set(HUNGER, tag.getInt("hunger"));
+        entityData.set(KILLS, tag.getInt("kills"));
+        entityData.set(EVOLUTION_POINTS,tag.getInt("evo_points"));
+        entityData.set(EVOLUTION,tag.getInt("evolution"));
+        entityData.set(LINKED, tag.getBoolean("linked"));
+        entityData.set(PERSISTENT, tag.getBoolean("persistent"));
+        if (tag.contains("origin")) {
+            entityData.set(ORIGIN, tag.getString("origin"));
+        } else {
+            entityData.set(ORIGIN, origin());
+        }
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(HUNGER, 0);
+        builder.define(KILLS, 0);
+        builder.define(EVOLUTION_POINTS, 0);
+        builder.define(EVOLUTION, 0);
+        builder.define(LINKED, false);
+        builder.define(PERSISTENT, false);
+        builder.define(ORIGIN, origin());
+        int houdini = addHoudini();
+        if (houdini != 0){
+            builder.define(EntityDataSerializers.INT.createAccessor(houdini), 0);
+        }
+    }
+
+    public int addHoudini(){
+        return 0;
+    }
+
+    public String origin(){return "";}
+    public void setOrigin(String string){
+        entityData.set(ORIGIN,string);
+    }
+    public String getOrigin(){
+        return entityData.get(ORIGIN);
+    }
+
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (this.hasEffect(Seffects.STARVATION) && source == this.damageSources().generic() && this.level() instanceof ServerLevel serverLevel){
+            double x0 = this.getX() - (random.nextFloat() - 0.1) * 0.1D;
+            double y0 = this.getY() + (random.nextFloat() - 0.25) * 0.25D * 5;
+            double z0 = this.getZ() + (random.nextFloat() - 0.1) * 0.1D;
+            serverLevel.sendParticles(Sparticles.SPORE_PARTICLE.get(), x0, y0, z0, 4,0, 0, 0,1);
+        }
+        if (source.getDirectEntity() != null){
+            this.setSearchPos(new BlockPos((int)source.getDirectEntity().getX(),(int)source.getDirectEntity().getY(),(int)source.getDirectEntity().getZ()));
+        }
+        return super.hurt(source, amount);
+    }
+
+    public static boolean checkMonsterInfectedRules(EntityType<? extends Infected> p_219014_, ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source) {
+        if (levelAccessor.getDifficulty() != Difficulty.PEACEFUL){
+            return furtherSpawnParameters(p_219014_,levelAccessor,type,pos,source);
+        }
+        return false;
+    }
+    private static boolean furtherSpawnParameters(EntityType<? extends Infected> p_219014_,ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source){
+        MinecraftServer server = levelAccessor.getServer();
+        if (server != null){
+            if (server.getPlayerList().getPlayers().isEmpty()){
+                return false;
+            }
+        }
+        return isDarkEnoughToSpawn(levelAccessor, pos, source) && checkMobSpawnRules(p_219014_, levelAccessor, type, pos, source);
+    }
+
+
+    @Override
+    public boolean addEffect(MobEffectInstance effectInstance, @org.jetbrains.annotations.Nullable Entity entity) {
+        if (entityData.get(HUNGER) >= SConfig.SERVER.hunger.get() && (effectInstance.getEffect() == MobEffects.HEAL || effectInstance.getEffect() == MobEffects.REGENERATION)){
+           setHunger(0);
+        }
+        return super.addEffect(effectInstance, entity);
+    }
+
+
+    @Override
+    public void die(DamageSource source) {
+        placeRemains(source);
+        placeFrozenRemains();
+        if (entityData.get(PERSISTENT)){
+            for (int i = 0; i < random.nextInt(1,4);i++){
+                super.die(source);
+            }
+        }else{
+            super.die(source);
+        }
+    }
+    private void placeRemains(DamageSource source){
+        if (this.hasEffect(Seffects.STARVATION) && source == this.damageSources().generic()){
+            AABB aabb = this.getBoundingBox().inflate(1);
+            for(BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                BlockState blockState = level().getBlockState(blockpos);
+                BlockState above = level().getBlockState(blockpos.above());
+                if (!level().isClientSide() && blockState.isSolidRender(level(),blockpos) && above.isAir()){
+                    if (Math.random() < 0.9){
+                        level().setBlock(blockpos.above(),Math.random() < 0.5 ? Sblocks.GROWTHS_BIG.get().defaultBlockState() : Sblocks.GROWTHS_SMALL.get().defaultBlockState(), 3);
+                    }if (Math.random() < 0.3){
+                        level().setBlock(blockpos.above(), Sblocks.REMAINS.get().defaultBlockState(), 3);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    private void placeFrozenRemains(){
+        if ((isFreazing() || getTicksFrozen() > 0) && Math.random() < 0.3){
+            AABB aabb = this.getBoundingBox().inflate(1);
+            for(BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                BlockState blockState = level().getBlockState(blockpos);
+                BlockState above = level().getBlockState(blockpos.above());
+                if (!level().isClientSide() && blockState.isSolidRender(level(),blockpos) && above.isAir()){
+                    if (Math.random() < 0.3){
+                        level().setBlock(blockpos.above(), Sblocks.FROZEN_REMAINS.get().defaultBlockState(), 3);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable SpawnGroupData spawnGroupData) {
+        setDefaultLinkage(level);
+        spawnWithPoints();
+        if (!(this instanceof com.Harbinger.Spore.Sentities.BaseEntities.Experiment) && SConfig.SERVER.daytime_spawn.get() && spawnType == MobSpawnType.NATURAL){
+            teleportToSurface(level(),this);
+        }
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+    public void setDefaultLinkage(ServerLevelAccessor level){
+        if (level instanceof ServerLevel serverLevel){
+            SporeSavedData data = SporeSavedData.getDataLocation(serverLevel);
+            if (data != null && data.getAmountOfHiveminds() >= SConfig.SERVER.proto_spawn_world_mod.get()){
+                this.setLinked(true);
+                if (Math.random() < 0.3 && this instanceof EvolvingInfected evolvingInfected){
+                    if (evolvingInfected instanceof EvolvedInfected){
+                        this.setEvoPoints(this.getEvoPoints()+SConfig.SERVER.min_kills_hyper.get());
+                    }else{
+                        this.setEvoPoints(this.getEvoPoints()+SConfig.SERVER.min_kills.get());
+                   }this.setEvolution(SConfig.SERVER.evolution_age_human.get());}enchantEquipment(this);}}}
+    public void spawnWithPoints(){
+        if (!SConfig.SERVER.at_mob.get() && Math.random() < 0.3 && this instanceof EvolvingInfected){
+            this.setEvoPoints(SConfig.SERVER.min_kills.get());
+        }
+    }
+    public void teleportToSurface(Level level, Mob entity) {
+        if (level.canSeeSky(entity.blockPosition())){
+            return;
+        }
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(
+                Mth.floor(entity.getX()),
+                level.getMaxBuildHeight(),
+                Mth.floor(entity.getZ())
+        );
+
+        while (pos.getY() > level.getMinBuildHeight()) {
+            pos.move(Direction.DOWN);
+            BlockState state = level.getBlockState(pos);
+            BlockState stateAbove = level.getBlockState(pos.above());
+            if (state.isSolidRender(level, pos) && stateAbove.isAir()) {
+                entity.teleportTo(pos.getX() + 0.5D, pos.getY() + 1.01D, pos.getZ() + 0.5D);
+                return;
+            }
+        }
+    }
+    public void enchantEquipment(LivingEntity living){
+        if (living instanceof ArmedInfected armedInfected){
+            armedInfected.enchantItems(living);
+        }
+    }
+
+    @Override
+    public boolean hasLineOfSight(Entity entity) {
+        if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(Seffects.MARKER)){
+            return true;
+        }
+        return super.hasLineOfSight(entity);
+    }
+
+    public String getMutation(){
+        return null;
+    }
+}

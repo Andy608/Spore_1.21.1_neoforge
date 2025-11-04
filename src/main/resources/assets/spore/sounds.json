@@ -1,0 +1,681 @@
+{
+  "corrupted_record" :{
+    "subtitle": "sounds.spore.record",
+    "sounds": [
+      "spore:corrupted_record"
+    ]
+  },
+  "engine" :{
+    "subtitle": "sounds.spore.engine",
+    "sounds": [
+      "spore:engine"
+    ]
+  },
+  "saw_sound" :{
+    "subtitle": "sounds.spore.saw_sound",
+    "sounds": [
+      "spore:saw_sound"
+    ]
+  },
+  "nuke" :{
+    "subtitle": "sounds.spore.nuke",
+    "sounds": [
+      "spore:nuke"
+    ]
+  },
+"inf_damage" :{
+  "subtitle": "sounds.spore.damage",
+  "sounds": [
+    "spore:slash",
+    "spore:slash2"
+  ]
+},"calamity_death" :{
+  "subtitle": "sounds.spore.damage",
+  "sounds": [
+    "spore:calamity_death"
+  ]
+},
+  "evolve_hurt" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:evolved_damage_1",
+      "spore:evolved_damage_2"
+    ]
+  },
+  "hyper_damage" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:hyper_damage1",
+      "spore:hyper_damage2"
+    ]
+  },
+  "calamity_damage" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:calamity_damage1",
+      "spore:calamity_damage2"
+    ]
+  },
+  "inebriater_inject" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:inebriater_inject"
+    ]
+  },
+  "inf_growl" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:growl",
+      "spore:growl2",
+      "spore:growl3",
+      "spore:growl4",
+      "spore:growl5"
+    ]
+  },
+  "specter_ambient" :{
+  "subtitle": "sounds.spore.growl",
+  "sounds": [
+    "spore:specter_ambient"
+  ]
+},
+  "bioblob" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:bioblob"
+    ]
+  },
+  "worm_digging" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:worm_digging"
+    ]
+  },
+  "saugling_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:saugling_ambient1",
+      "spore:saugling_ambient2",
+      "spore:saugling_ambient3"
+    ]
+  },
+  "hohl_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:hohl_ambient",
+      "spore:hohl_ambient2"
+    ]
+  },
+  "plagued_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:plagued_ambient1",
+      "spore:plagued_ambient2",
+      "spore:plagued_ambient3"
+    ]
+  },
+  "lacerator_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:lacerator_ambient1",
+      "spore:lacerator_ambient2",
+      "spore:lacerator_ambient3"
+    ]
+  },
+  "saugling_chest_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:saugling_chest1",
+      "spore:saugling_chest2"
+    ]
+  },
+  "saugling_jumpscare" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:saugling_jumpscare"
+    ]
+  },
+  "hevoker_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:hevoker_ambient"
+    ]
+  },
+  "hindicator_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:hindicator_ambient"
+    ]
+  },
+  "adventurer_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:adventurer_ambient1",
+      "spore:adventurer_ambient2",
+      "spore:adventurer_ambient3"
+    ]
+  },
+  "trader_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:trader_ambient1",
+      "spore:trader_ambient2",
+      "spore:trader_ambient3"
+    ]
+  },
+  "organoid_damage" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:organoid_damage1",
+      "spore:organoid_damage2"
+    ]
+  },
+  "forgotten_patient" :{
+    "subtitle": "sounds.spore.forgotten_patient",
+    "sounds": [
+      "spore:forgotten_patient"
+    ]
+  },
+  "forsaken_future" :{
+    "subtitle": "sounds.spore.forsaken_future",
+    "sounds": [
+      "spore:forsaken_future"
+    ]
+  },
+  "surgery" :{
+    "subtitle": "sounds.spore.surgery",
+    "sounds": [
+      "spore:surgery"
+    ]
+  },
+  "construct_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:construct_ambient"
+    ]
+  },
+  "spore_burst" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:spore_burst"
+    ]
+  },
+  "witch_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:witch_ambient1",
+      "spore:witch_ambient2",
+      "spore:witch_ambient3"
+    ]
+  },
+  "drowned_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:drowned_ambient1",
+      "spore:drowned_ambient2",
+      "spore:drowned_ambient3"
+    ]
+  },
+  "husk_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:husk_ambient1",
+      "spore:husk_ambient2",
+      "spore:husk_ambient3"
+    ]
+  },
+  "vindicator_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:vindicator_ambient1",
+      "spore:vindicator_ambient2",
+      "spore:vindicator_ambient3",
+      "spore:vindicator_ambient4"
+    ]
+  },
+  "scamper_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:scamper_ambient1",
+      "spore:scamper_ambient2",
+      "spore:scamper_ambient3"
+    ]
+  },
+  "scavenger_screech" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:scavenger_screech"
+    ]
+  },
+  "braurei_ambient" :{
+    "subtitle": "sounds.spore.braurei_ambient",
+    "sounds": [
+      "spore:braurei_ambient"
+    ]
+  },
+  "inquisitor_ambient" :{
+    "subtitle": "sounds.spore.inquisitor_ambient",
+    "sounds": [
+      "spore:inquisitor_ambient"
+    ]
+  },
+  "brot_ambient" :{
+    "subtitle": "sounds.spore.brot_ambient",
+    "sounds": [
+      "spore:brot_ambient"
+    ]
+  },
+  "delusioner_ambient" :{
+    "subtitle": "sounds.spore.delusioner_ambient",
+    "sounds": [
+      "spore:delusioner_ambient",
+      "spore:delusioner_ambient1"
+    ]
+  },
+  "delusioner_casting" :{
+    "subtitle": "sounds.spore.delusioner_casting",
+    "sounds": [
+      "spore:delusioner_casting"
+    ]
+  },
+  "madness" :{
+    "subtitle": "sounds.spore.proto_ambient",
+    "sounds": [
+      "spore:madness_whisper1",
+      "spore:madness_whisper2",
+      "spore:madness_whisper3",
+      "spore:madness_whisper4"
+    ]
+  },
+  "rebirth" :{
+    "subtitle": "sounds.spore.proto_ambient",
+    "sounds": [
+      "spore:rebirth"
+    ]
+  },
+  "calamity_spawn" :{
+    "subtitle": "sounds.spore.proto_ambient",
+    "sounds": [
+      "spore:calamity_spawn"
+    ]
+  },
+  "calamity_incoming" :{
+    "subtitle": "sounds.spore.proto_ambient",
+    "sounds": [
+      "spore:calamity_incoming"
+    ]
+  },
+  "spore_area_ambient" :{
+    "subtitle": "sounds.spore.spore_area_ambient",
+    "sounds": [
+      "spore:spore_area_ambient",
+      "spore:spore_area_ambient2",
+      "spore:spore_area_ambient3",
+      "spore:spore_area_ambient4"
+    ]
+  },
+  "howler_growl" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:howler"
+    ]
+  },
+  "hyper_evolve" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:hyper_evolve"
+    ]
+  },
+  "ogre_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:ogre_ambient"
+    ]
+  },
+  "landing" :{
+    "subtitle": "sounds.spore.landing",
+    "sounds": [
+      "spore:landing"
+    ]
+  },
+  "howitzer_ambient" :{
+    "subtitle": "sounds.spore.howitzer_ambient",
+    "sounds": [
+      "spore:howitzer_ambient"
+    ]
+  },
+  "falling_bomb" :{
+    "subtitle": "sounds.spore.falling_bomb",
+    "sounds": [
+      "spore:falling_bomb"
+    ]
+  },
+  "wendigo_screech" :{
+    "subtitle": "sounds.spore.wendigo_screech",
+    "sounds": [
+      "spore:wendigo_screech"
+    ]
+  },
+  "wendigo_ambient" :{
+    "subtitle": "sounds.spore.wendigo_ambient",
+    "sounds": [
+      "spore:wendigo_ambient",
+      "spore:wendigo_ambient1"
+    ]
+  },
+  "inf_villager_damage" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:infected_villager_hurt"
+    ]
+  },
+  "inf_villager_growl" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:infected_villager_ambient"
+    ]
+  },
+  "scientist_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:scientist_ambient1",
+      "spore:scientist_ambient2",
+      "spore:scientist_ambient3"
+    ]
+  },
+  "inf_villager_death" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:infected_villager_death"
+    ]
+  },
+  "inf_evoker_damage" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:infected_evoker_hurt"
+    ]
+  },
+  "inf_evoker_growl" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:evoker_ambient1",
+      "spore:evoker_ambient2",
+      "spore:evoker_ambient3"
+    ]
+  },
+  "inf_evoker_death" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:infected_evoker_death"
+    ]
+  },
+  "villager_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:villager_ambient1",
+      "spore:villager_ambient2",
+      "spore:villager_ambient3"
+    ]
+  },
+  "pillager_ambient" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:pillager_ambient1",
+      "spore:pillager_ambient2",
+      "spore:pillager_ambient3",
+      "spore:pillager_ambient4"
+    ]
+  },
+  "braiomil_attack" :{
+    "subtitle": "sounds.spore.braiomil_attack",
+    "sounds": [
+      "spore:braiomil_attack"
+    ]
+  },
+  "fungal_burst" :{
+    "subtitle": "sounds.spore.fungal_burst",
+    "sounds": [
+      "spore:fungal_burst"
+    ]
+  },
+  "puff" :{
+    "subtitle": "sounds.spore.puff",
+    "sounds": [
+      "spore:puff"
+    ]
+  },
+  "spit" :{
+    "subtitle": "sounds.spore.spit",
+    "sounds": [
+      "spore:spit"
+    ]
+  },
+  "womb_ambient" :{
+    "subtitle": "sounds.spore.womb_ambient",
+    "sounds": [
+      "spore:womb_ambient"
+    ]
+  },
+  "sieger_ambient" :{
+    "subtitle": "sounds.spore.sieger_ambient",
+    "sounds": [
+      "spore:sieger_ambient",
+      "spore:sieger_ambient2"
+    ]
+  },
+  "umarmer_ambient" :{
+    "subtitle": "sounds.spore.umarmer_ambient",
+    "sounds": [
+      "spore:umarmer_ambient"
+    ]
+  },
+  "vigil_ambient" :{
+    "subtitle": "sounds.spore.vigil_ambient",
+    "sounds": [
+      "spore:vigil_ambient"
+    ]
+  },
+  "usurper_ambient" :{
+    "subtitle": "sounds.spore.vigil_ambient",
+    "sounds": [
+      "spore:usurper_ambient"
+    ]
+  },
+  "sieger_bite" :{
+    "subtitle": "sounds.spore.sieger_bite",
+    "sounds": [
+      "spore:sieger_bite"
+    ]
+  },
+  "proto_ambient" :{
+    "subtitle": "sounds.spore.proto_ambient",
+    "sounds": [
+      "spore:proto_ambient"
+    ]
+  },
+  "broken_screams" :{
+    "subtitle": "sounds.spore.proto_ambient",
+    "sounds": [
+      "spore:broken_screams"
+    ]
+  },
+  "hinden_ambient" :{
+    "subtitle": "sounds.spore.hinden_ambient",
+    "sounds": [
+      "spore:hinden_ambient"
+    ]
+  },
+  "hinden_nuke" :{
+    "subtitle": "sounds.spore.hinden_nuke",
+    "sounds": [
+      "spore:hinden_nuke"
+    ]
+  },
+  "limb_slash" :{
+    "subtitle": "sounds.spore.limb_slash",
+    "sounds": [
+      "spore:limb_slash"
+    ]
+  },
+  "heart_beat" :{
+    "subtitle": "sounds.spore.heart_beat",
+    "sounds": [
+      "spore:heart_beat"
+    ]
+  },
+  "gazen_ambient" :{
+    "subtitle": "sounds.spore.gazen_ambient",
+    "sounds": [
+      "spore:gazen_ambient",
+      "spore:gazen_ambient2"
+    ]
+  },
+  "sonar" :{
+    "subtitle": "sounds.spore.sonar",
+    "sounds": [
+      "spore:sonar"
+    ]
+  },
+  "gast_ambient" :{
+    "subtitle": "sounds.spore.gast_ambient",
+    "sounds": [
+      "spore:gast_ambient"
+    ]
+  },
+  "signal" :{
+    "subtitle": "sounds.spore.signal",
+    "sounds": [
+      "spore:signal"
+    ]
+  },"printing" :{
+  "subtitle": "sounds.spore.machine",
+  "sounds": [
+    "spore:printing"
+  ]
+},"infected_weapon_throw" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:infected_weapon_throw"
+  ]
+},"infected_weapon_hit_entity" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:infected_weapon_hit_entity"
+  ]
+},"infected_weapon_hit_block" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:infected_weapon_hit_block"
+  ]
+},"cdu_insert" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:cdu_insert"
+  ]
+},"cleaver_spin" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:cleaver_spin"
+  ]
+},"infected_pickaxe" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:infected_pickaxe"
+  ]
+},"reaver_reave" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:reaver_reave"
+  ]
+},"saber_leap" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:saber_leap"
+  ]
+},"scanner_item" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:scanner_item"
+  ]
+},"scanner_empty" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:scanner_empty"
+  ]
+},"scanner_mob" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:scanner_mob"
+  ]
+},"vigil_eye_use" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:vigil_eye_use"
+  ]
+},"cdu_ambient" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:cdu_ambient"
+  ]
+},"syringe_suck" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:syringe_suck"
+  ]
+},"syringe_inject" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:syringe_inject"
+  ]
+},"reagent" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:reagent"
+  ]
+},"infected_gear_break" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:infected_gear_break"
+  ]
+},"infected_gear_equip" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:infected_gear_equip"
+  ]
+},"pci_inject" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:pci_inject"
+  ]
+},"shield_bash" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:shield_bash"
+  ]
+},"syringe_reload" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:syringegun_reload"
+  ]
+},"syringe_spin" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:syringegun_spin"
+  ]
+},"syringe_shoot" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:syringegun_shot"
+  ]
+},"syringe_gun_inject" :{
+  "subtitle": "sounds.spore.weapon_use",
+  "sounds": [
+    "spore:syringegun_inject"
+  ]
+},"tumoroid_explosion" :{
+  "subtitle": "sounds.spore.tumor",
+  "sounds": [
+    "spore:tumoroid_nuke"
+  ]
+}
+
+}
