@@ -1,6 +1,7 @@
 package com.Harbinger.Spore.Sentities.Utility;
 
 
+import com.Harbinger.Spore.ExtremelySusThings.SporeSavedData;
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Sentities.AI.AOEMeleeAttackGoal;
 import com.Harbinger.Spore.Sentities.BaseEntities.Hyper;
@@ -83,10 +84,10 @@ public class InfestedConstruct extends UtilityEntity implements RangedAttackMob,
     }
     @Override
     public boolean removeWhenFarAway(double value) {
-        //if (this.level() instanceof ServerLevel serverLevel){
-          //  SporeSavedData data = SporeSavedData.getDataLocation(serverLevel);
-            //return data != null && data.getAmountOfHiveminds() >= SConfig.SERVER.proto_spawn_world_mod.get() && value > 256;
-        //}
+        if (this.level() instanceof ServerLevel serverLevel){
+            SporeSavedData data = SporeSavedData.getDataLocation(serverLevel);
+            return data != null && data.getAmountOfHiveminds() >= SConfig.SERVER.proto_spawn_world_mod.get() && value > 256;
+        }
         return false;
     }
 
@@ -490,7 +491,7 @@ public class InfestedConstruct extends UtilityEntity implements RangedAttackMob,
     }
 
     public void performDispenserShot(LivingEntity entity) {
-        Arrow abstractarrow = new Arrow(level(),this,ItemStack.EMPTY,ItemStack.EMPTY);
+        Arrow abstractarrow = new Arrow(level(),this,ItemStack.EMPTY,null);
         double d0 = entity.getX() - this.getX();
         double d1 = entity.getY(0.3333333333333333D) - abstractarrow.getY();
         double d2 = entity.getZ() - this.getZ();

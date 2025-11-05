@@ -152,7 +152,7 @@ public interface FoliageSpread {
     }
     default void placeWallFoliage(BlockState nord,BlockState south,BlockState west,BlockState east,boolean nordT,boolean southT,boolean westT,boolean eastT,Level level,BlockPos blockpos,BlockState blockstate){
         if (blockstate.isSolidRender(level , blockpos) && (nordT || southT || westT || eastT)){
-            List<Holder<Block>> blocks = ROOF_FOLIAGE(level);
+            List<Holder<Block>> blocks = WALL_FOLIAGE(level);
             if (blocks.isEmpty()){
                 return;
             }
@@ -208,7 +208,7 @@ public interface FoliageSpread {
             String[] string = str.split("\\|" );
             Block blockCon1 = Utilities.tryToCreateBlock(ResourceLocation.parse(string[0]));
             Block blockCon2 = Utilities.tryToCreateBlock(ResourceLocation.parse(string[1]));
-            if (blockCon1 != null && blockCon2 != null){
+            if (blockCon1 != Blocks.MYCELIUM && blockCon2 != null){
                 if (blockCon1 == blockstate.getBlock()){
                     level.setBlock(blockpos,blockCon2.defaultBlockState(),3);
                 }

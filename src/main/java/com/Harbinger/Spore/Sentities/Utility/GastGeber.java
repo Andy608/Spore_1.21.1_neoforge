@@ -43,7 +43,7 @@ public class GastGeber extends EvolvedInfected implements FoliageSpread {
     public static final EntityDataAccessor<Integer> AGGRESSION = SynchedEntityData.defineId(GastGeber.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> SPREAD_INTERVAL = SynchedEntityData.defineId(GastGeber.class, EntityDataSerializers.INT);
     private final static int maxCounter = SConfig.SERVER.gastgeber_spread_cooldown.get();
-    public final  int maxRootTime = SConfig.SERVER.gastgeber_root_time.get();
+    public final int maxRootTime = SConfig.SERVER.gastgeber_root_time.get();
     public GastGeber(EntityType<? extends Infected> type, Level level) {
         super(type, level);
     }
