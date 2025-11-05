@@ -74,7 +74,8 @@ public class Mound extends Organoid implements FoliageSpread {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        return super.getDimensions(pose).scale(Math.max(1.0f, this.getAge()));
+        EntityDimensions baseDimensions = super.getDefaultDimensions(pose);
+        return baseDimensions.scale(Math.max(1.0f, this.getAge()));
     }
 
     @Override
@@ -251,13 +252,19 @@ public class Mound extends Organoid implements FoliageSpread {
     }
 
     private void alertNearbyProtos(DamageSource source) {
-        AABB searchBox = this.getBoundingBox().inflate(SConfig.SERVER.proto_range.get());
-        List<Proto> protos = this.level().getEntitiesOfClass(Proto.class, searchBox, EntitySelector.NO_CREATIVE_OR_SPECTATOR);
-
-        for (Proto proto : protos) {
-            int y = source.getDirectEntity() != null ? (int) source.getDirectEntity().getY() : (int) this.getY();
-            proto.setSignal(new Signal(true, this.getOnPos()));
-            break; // Only alert one proto
+        if (level() instanceof ServerLevel serverLevel){
+            List<Proto> protos = SporeSavedData.getHiveminds(serverLevel);
+            if (protos.isEmpty()){
+                return;
+            }
+            for (Proto proto : protos){
+                if (proto.distanceTo(this) <= SConfig.SERVER.proto_range.get()){
+                    int y = source.getDirectEntity() != null ? (int) source.getDirectEntity().getY() : (int) this.getY();
+                    BlockPos relativePos = new BlockPos(this.getOnPos().getX(),y,this.getOnPos().getZ());
+                    proto.setSignal(new Signal(true, relativePos));
+                    break;
+                }
+            }
         }
     }
 

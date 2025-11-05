@@ -161,6 +161,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ScamperModel.LAYER_LOCATION, ScamperModel::createBodyLayer);
         event.registerLayerDefinition(ScamperVillagerModel.LAYER_LOCATION, ScamperVillagerModel::createBodyLayer);
         event.registerLayerDefinition(DrownedScamperModel.LAYER_LOCATION, DrownedScamperModel::createBodyLayer);
+        event.registerLayerDefinition(MoundModel.LAYER_LOCATION, MoundModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -228,6 +229,8 @@ public class ClientModEvents {
 
         event.registerEntityRenderer(Sentities.SCAMPER.get(), ScamperHumanRenderer::new);
         event.registerEntityRenderer(Sentities.GASTGABER.get(), GastGaverRenderer::new);
+
+        event.registerEntityRenderer(Sentities.MOUND.get(), MoundRenderer::new);
     }
     public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());

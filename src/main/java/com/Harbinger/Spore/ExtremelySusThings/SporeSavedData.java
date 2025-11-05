@@ -9,7 +9,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -55,21 +54,20 @@ public class SporeSavedData extends SavedData {
         SporeSavedData data = level.getDataStorage().computeIfAbsent(
                 new Factory<>(SporeSavedData::new, SporeSavedData::load),
                 NAME);
-        if (!data.hiveminds.isEmpty() && data.hiveminds.contains(proto)) {
+        if (!data.hiveminds.isEmpty()) {
             data.hiveminds.remove(proto);
         }
         data.setDirty();
     }
-
-    public int getAmountOfHiveminds() {
-        return hiveminds.size();
-    }
-
-    public static void StartupData(ServerLevel level) {
+    public static List<Proto> getHiveminds(ServerLevel level){
         SporeSavedData data = level.getDataStorage().computeIfAbsent(
                 new Factory<>(SporeSavedData::new, SporeSavedData::load),
                 NAME);
-        data.setDirty();
+        return data.hiveminds;
+    }
+
+    public int getAmountOfHiveminds() {
+        return hiveminds.size();
     }
 
     public static SporeSavedData getDataLocation(ServerLevel level) {
