@@ -157,6 +157,10 @@ public class ClientModEvents {
         event.registerLayerDefinition(RightArmModel.LAYER_LOCATION, RightArmModel::createBodyLayer);
         event.registerLayerDefinition(LeftArmModel.LAYER_LOCATION, LeftArmModel::createBodyLayer);
         event.registerLayerDefinition(ArenaTendrilModel.LAYER_LOCATION, ArenaTendrilModel::createBodyLayer);
+        event.registerLayerDefinition(GastgeberModel.LAYER_LOCATION, GastgeberModel::createBodyLayer);
+        event.registerLayerDefinition(ScamperModel.LAYER_LOCATION, ScamperModel::createBodyLayer);
+        event.registerLayerDefinition(ScamperVillagerModel.LAYER_LOCATION, ScamperVillagerModel::createBodyLayer);
+        event.registerLayerDefinition(DrownedScamperModel.LAYER_LOCATION, DrownedScamperModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -208,10 +212,12 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.INF_HAZMAT.get(), InfectedHazmatRenderer::new);
         event.registerEntityRenderer(Sentities.INF_VINDICATOR.get(), InfectedVindicatorRenderer::new);
         event.registerEntityRenderer(Sentities.INEBRIATER.get(), InebriatorRenderer::new);
+
         event.registerEntityRenderer(Sentities.PLAGUED.get(), PlaguedRenderer::new);
         event.registerEntityRenderer(Sentities.BIOBLOOB.get(), BiobloobRenderer::new);
         event.registerEntityRenderer(Sentities.SAUGLING.get(), SauglingRenderer::new);
         event.registerEntityRenderer(Sentities.LACERATOR.get(), LaceratorRenderer::new);
+
         event.registerEntityRenderer(Sentities.INQUISITOR.get(), InquisitorRenderer::new);
         event.registerEntityRenderer(Sentities.OGRE.get(), OgreRenderer::new);
         event.registerEntityRenderer(Sentities.BROTKATZE.get(), BrotkatzeRenderer::new);
@@ -219,6 +225,9 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.HEVOKER.get(), HevokerRenderer::new);
         event.registerEntityRenderer(Sentities.HVINDICATOR.get(), HyperVindicatorRenderer::new);
         event.registerEntityRenderer(Sentities.HEVOKER_ARM.get(), HyperClawRenderer::new);
+
+        event.registerEntityRenderer(Sentities.SCAMPER.get(), ScamperHumanRenderer::new);
+        event.registerEntityRenderer(Sentities.GASTGABER.get(), GastGaverRenderer::new);
     }
     public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());

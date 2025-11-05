@@ -47,6 +47,12 @@ public class GastGeber extends EvolvedInfected implements FoliageSpread {
     public GastGeber(EntityType<? extends Infected> type, Level level) {
         super(type, level);
     }
+
+    @Override
+    public int addHoudini() {
+        return 23;
+    }
+
     @Override
     public boolean removeWhenFarAway(double p_21542_) {
         return false;
