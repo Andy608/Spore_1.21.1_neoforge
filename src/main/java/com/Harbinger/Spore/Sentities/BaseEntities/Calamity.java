@@ -49,11 +49,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.*;
+
+import static com.Harbinger.Spore.ExtremelySusThings.Utilities.biomass;
 
 public class Calamity extends UtilityEntity implements Enemy, ArmorPersentageBypass {
     public static final EntityDataAccessor<Integer> KILLS = SynchedEntityData.defineId(Calamity.class, EntityDataSerializers.INT);
@@ -333,15 +336,15 @@ public class Calamity extends UtilityEntity implements Enemy, ArmorPersentageByp
         boolean flag = false;
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level().getBlockState(blockpos);
-            //if (biomass().contains(blockstate)){
-             //   flag = this.level().setBlock(blockpos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3) || flag;
-               // breakCounter = 0;
-            //}else{
-              //  if (blockstate.getDestroySpeed(level(), blockpos) < getDestroySpeed() && blockstate.getDestroySpeed(level(), blockpos) >= 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-                //    flag = this.level().destroyBlock(blockpos, false, this) || flag;
-                  //  breakCounter = 0;
-                //}
-            //}
+            if (biomass().contains(blockstate)){
+                flag = this.level().setBlock(blockpos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3) || flag;
+                breakCounter = 0;
+            }else{
+                if (blockstate.getDestroySpeed(level(), blockpos) < getDestroySpeed() && blockstate.getDestroySpeed(level(), blockpos) >= 0 && EventHooks.canEntityGrief(this.level(), this)) {
+                    flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                    breakCounter = 0;
+                }
+            }
         }
     }
     public void ActivateAdaptation(){}

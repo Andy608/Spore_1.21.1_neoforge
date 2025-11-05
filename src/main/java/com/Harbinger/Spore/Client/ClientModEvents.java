@@ -162,6 +162,9 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.SIEGER.get(), SiegerRenderer::new);
         event.registerEntityRenderer(Sentities.GAZENBREACHER.get(), GazenRenderer::new);
         event.registerEntityRenderer(Sentities.HINDENBURG.get(), HindieRenderer::new);
+        event.registerEntityRenderer(Sentities.HOWITZER.get(), HowitzerRenderer::new);
+        event.registerEntityRenderer(Sentities.HOHLFRESSER.get(), HohlRenderer::new);
+        event.registerEntityRenderer(Sentities.HOHLFRESSER_SEG.get(), HohlSegRenderer::new);
 
         event.registerEntityRenderer(Sentities.INF_HUMAN.get(), InfectedHumanRenderer::new);
         event.registerEntityRenderer(Sentities.GRIEFER.get(), GrieferRenderer::new);

@@ -382,7 +382,8 @@ public class HohlMultipart extends LivingEntity implements TrueCalamity {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        return super.getDimensions(pose).scale(this.getSize());
+        EntityDimensions baseDimensions = super.getDefaultDimensions(pose);
+        return baseDimensions.scale(this.getSize());
     }
 
     private void setVariant(SegmentVariants variant) {
