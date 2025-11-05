@@ -91,6 +91,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(SantaModel.LAYER_LOCATION, SantaModel::createBodyLayer);
         event.registerLayerDefinition(RootsModel.LAYER_LOCATION, RootsModel::createBodyLayer);
         event.registerLayerDefinition(HindenXmaslightsModel.LAYER_LOCATION, HindenXmaslightsModel::createBodyLayer);
+        event.registerLayerDefinition(TumoralNukeModel.LAYER_LOCATION, TumoralNukeModel::createBodyLayer);
 
         event.registerLayerDefinition(InfectedModel.LAYER_LOCATION, InfectedModel::createBodyLayer);
         event.registerLayerDefinition(GrieferModel.LAYER_LOCATION, GrieferModel::createBodyLayer);
@@ -151,6 +152,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(HevokerModelDead.LAYER_LOCATION, HevokerModelDead::createBodyLayer);
         event.registerLayerDefinition(hVindicatorModel.LAYER_LOCATION, hVindicatorModel::createBodyLayer);
         event.registerLayerDefinition(DetasheHyperClaw.LAYER_LOCATION, DetasheHyperClaw::createBodyLayer);
+        event.registerLayerDefinition(LickerModel.LAYER_LOCATION, LickerModel::createBodyLayer);
+        event.registerLayerDefinition(SiegerTailModel.LAYER_LOCATION, SiegerTailModel::createBodyLayer);
+        event.registerLayerDefinition(RightArmModel.LAYER_LOCATION, RightArmModel::createBodyLayer);
+        event.registerLayerDefinition(LeftArmModel.LAYER_LOCATION, LeftArmModel::createBodyLayer);
+        event.registerLayerDefinition(ArenaTendrilModel.LAYER_LOCATION, ArenaTendrilModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -165,6 +171,9 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.HOWITZER.get(), HowitzerRenderer::new);
         event.registerEntityRenderer(Sentities.HOHLFRESSER.get(), HohlRenderer::new);
         event.registerEntityRenderer(Sentities.HOHLFRESSER_SEG.get(), HohlSegRenderer::new);
+        event.registerEntityRenderer(Sentities.SIEGER_TAIL.get(), SiegerTailRenderer::new);
+        event.registerEntityRenderer(Sentities.LICKER.get(), LickerRenderer::new);
+        event.registerEntityRenderer(Sentities.HOWIT_ARM.get(), HowdiArmRenderer::new);
 
         event.registerEntityRenderer(Sentities.INF_HUMAN.get(), InfectedHumanRenderer::new);
         event.registerEntityRenderer(Sentities.GRIEFER.get(), GrieferRenderer::new);
@@ -239,6 +248,8 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.THROWN_BOOMERANG.get(), ThrownBoomerangRenderer::new);
         event.registerEntityRenderer(Sentities.CORPSE_PIECE.get(), CorpseRenderer::new);
         event.registerEntityRenderer(Sentities.THROWN_SYRINGE.get(), SyringeRenderer::new);
+        event.registerEntityRenderer(Sentities.ARENA_TENDRIL.get(), RaidTendrilRenderer::new);
+        event.registerEntityRenderer(Sentities.TUMOROID_NUKE.get(), TumoroidNukeRenderer::new);
     }
 
 
