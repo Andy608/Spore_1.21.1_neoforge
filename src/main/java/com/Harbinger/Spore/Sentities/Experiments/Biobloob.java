@@ -102,7 +102,8 @@ public class Biobloob extends Experiment implements RangedAttackMob {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        return super.getDefaultDimensions(pose).scale(getScale() == 1 ? 1 : getScale() * 0.8f);
+        EntityDimensions baseDimensions = super.getDefaultDimensions(pose);
+        return baseDimensions.scale(getScale() == 1 ? 1 : getScale() * 0.8f);
     }
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {

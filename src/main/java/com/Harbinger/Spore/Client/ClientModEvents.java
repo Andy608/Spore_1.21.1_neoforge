@@ -138,7 +138,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(InfectedHazmatCoat.LAYER_LOCATION, InfectedHazmatCoat::createBodyLayer);
         event.registerLayerDefinition(InfectedVindicatorModel.LAYER_LOCATION, InfectedVindicatorModel::createBodyLayer);
         event.registerLayerDefinition(InebriaterModel.LAYER_LOCATION, InebriaterModel::createBodyLayer);
-
+        event.registerLayerDefinition(BiobloobModel.LAYER_LOCATION, BiobloobModel::createBodyLayer);
+        event.registerLayerDefinition(SauglingModel.LAYER_LOCATION, SauglingModel::createBodyLayer);
+        event.registerLayerDefinition(LaceratorModel.LAYER_LOCATION, LaceratorModel::createBodyLayer);
+        event.registerLayerDefinition(PlaguedModel.LAYER_LOCATION, PlaguedModel::createBodyLayer);
+        event.registerLayerDefinition(ExperimentDormantLayerModel.LAYER_LOCATION, ExperimentDormantLayerModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -184,6 +188,10 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.INF_HAZMAT.get(), InfectedHazmatRenderer::new);
         event.registerEntityRenderer(Sentities.INF_VINDICATOR.get(), InfectedVindicatorRenderer::new);
         event.registerEntityRenderer(Sentities.INEBRIATER.get(), InebriatorRenderer::new);
+        event.registerEntityRenderer(Sentities.PLAGUED.get(), PlaguedRenderer::new);
+        event.registerEntityRenderer(Sentities.BIOBLOOB.get(), BiobloobRenderer::new);
+        event.registerEntityRenderer(Sentities.SAUGLING.get(), SauglingRenderer::new);
+        event.registerEntityRenderer(Sentities.LACERATOR.get(), LaceratorRenderer::new);
     }
     public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());

@@ -21,7 +21,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -31,6 +30,7 @@ public class Plagued extends Experiment {
     public Plagued(EntityType<? extends Infected> type, Level level) {
         super(type, level);
     }
+
 
     @Override
     public boolean doHurtTarget(Entity entity) {
