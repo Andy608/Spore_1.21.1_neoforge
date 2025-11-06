@@ -216,7 +216,7 @@ public class Delusionare extends Organoid {
                 level().addFreshEntity(illusion);
             }
         }
-        if (value == Spells.CAST_ARROWS.getId()){
+        if (value == Spells.CAST_ARROWS.getId() && this.hasLineOfSight(entity)){
             for (int i = 0;i<this.random.nextInt(3,7);i++){
                 int randomX = this.random.nextInt(-4,4);
                 int randomZ =this.random.nextInt(-4,4);

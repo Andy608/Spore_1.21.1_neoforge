@@ -230,13 +230,14 @@ public class Womb extends Organoid implements MenuProvider {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
+        EntityDimensions baseDimensions = super.getDefaultDimensions(pose);
         int age = 1;
         if (this.getBiomass() > (SConfig.SERVER.reconstructor_biomass.get()/4) && this.getBiomass() < (SConfig.SERVER.reconstructor_biomass.get()/2)){
             age = 2;
         }else if (this.getBiomass() > (SConfig.SERVER.reconstructor_biomass.get()/2)){
             age = 3;
         }
-        return super.getDefaultDimensions(pose).scale(age);
+        return baseDimensions.scale(age);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

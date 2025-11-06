@@ -95,6 +95,8 @@ public class ClientModEvents {
 
         event.registerLayerDefinition(InfectedModel.LAYER_LOCATION, InfectedModel::createBodyLayer);
         event.registerLayerDefinition(GrieferModel.LAYER_LOCATION, GrieferModel::createBodyLayer);
+        event.registerLayerDefinition(BraionmilModel.LAYER_LOCATION, BraionmilModel::createBodyLayer);
+        event.registerLayerDefinition(BraionmilBabe.LAYER_LOCATION, BraionmilBabe::createBodyLayer);
         event.registerLayerDefinition(KnightModel.LAYER_LOCATION, KnightModel::createBodyLayer);
         event.registerLayerDefinition(BusserModel.LAYER_LOCATION, BusserModel::createBodyLayer);
         event.registerLayerDefinition(ExplodingBusserModel.LAYER_LOCATION, ExplodingBusserModel::createBodyLayer);
@@ -162,6 +164,13 @@ public class ClientModEvents {
         event.registerLayerDefinition(ScamperVillagerModel.LAYER_LOCATION, ScamperVillagerModel::createBodyLayer);
         event.registerLayerDefinition(DrownedScamperModel.LAYER_LOCATION, DrownedScamperModel::createBodyLayer);
         event.registerLayerDefinition(MoundModel.LAYER_LOCATION, MoundModel::createBodyLayer);
+        event.registerLayerDefinition(UmarmerModel.LAYER_LOCATION, UmarmerModel::createBodyLayer);
+        event.registerLayerDefinition(UsurperModel.LAYER_LOCATION, UsurperModel::createBodyLayer);
+        event.registerLayerDefinition(DelusionerModel.LAYER_LOCATION, DelusionerModel::createBodyLayer);
+        event.registerLayerDefinition(VigilModel.LAYER_LOCATION, VigilModel::createBodyLayer);
+        event.registerLayerDefinition(VigilSignModel.LAYER_LOCATION, VigilSignModel::createBodyLayer);
+        event.registerLayerDefinition(BraureiModel.LAYER_LOCATION, BraureiModel::createBodyLayer);
+        event.registerLayerDefinition(verwahrungModel.LAYER_LOCATION, verwahrungModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -184,6 +193,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.GRIEFER.get(), GrieferRenderer::new);
         event.registerEntityRenderer(Sentities.KNIGHT.get(), KnightRenderer::new);
         event.registerEntityRenderer(Sentities.BUSSER.get(), BusserRenderer::new);
+        event.registerEntityRenderer(Sentities.BRAIOMIL.get(), BraioRenderer::new);
         event.registerEntityRenderer(Sentities.INF_VILLAGER.get(), InfectedVillagerRenderer::new);
         event.registerEntityRenderer(Sentities.INF_DISEASED_VILLAGER.get(), InfectedDiseasedVillagerRenderer::new);
         event.registerEntityRenderer(Sentities.LEAPER.get(), LeaperRenderer::new);
@@ -231,6 +241,12 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.GASTGABER.get(), GastGaverRenderer::new);
 
         event.registerEntityRenderer(Sentities.MOUND.get(), MoundRenderer::new);
+        event.registerEntityRenderer(Sentities.UMARMED.get(), UmarmedRenderer::new);
+        event.registerEntityRenderer(Sentities.USURPER.get(), UsurperRenderer::new);
+        event.registerEntityRenderer(Sentities.DELUSIONARE.get(), DelusionareRenderer::new);
+        event.registerEntityRenderer(Sentities.VIGIL.get(), VigilRenderer::new);
+        event.registerEntityRenderer(Sentities.BRAUREI.get(), BraureiRenderer::new);
+        event.registerEntityRenderer(Sentities.VERVA.get(), VervaRenderer::new);
     }
     public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());
@@ -262,6 +278,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.THROWN_SYRINGE.get(), SyringeRenderer::new);
         event.registerEntityRenderer(Sentities.ARENA_TENDRIL.get(), RaidTendrilRenderer::new);
         event.registerEntityRenderer(Sentities.TUMOROID_NUKE.get(), TumoroidNukeRenderer::new);
+        event.registerEntityRenderer(Sentities.ILLUSION.get(), IllusionRenderer::new);
     }
 
 

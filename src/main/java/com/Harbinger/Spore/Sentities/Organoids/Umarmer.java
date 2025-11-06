@@ -663,7 +663,8 @@ public class Umarmer extends Organoid implements VariantKeeper {
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
         if (this.isPinned()){
-            return super.getDimensions(pose).scale(2.75F,0.35F);
+            EntityDimensions baseDimensions = super.getDefaultDimensions(pose);
+            return baseDimensions.scale(2.75F,0.35F);
         }
         return super.getDefaultDimensions(pose);
     }
