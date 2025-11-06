@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class InfectedBoomerang extends SporeSwordBase {
     public InfectedBoomerang() {
@@ -22,24 +23,33 @@ public class InfectedBoomerang extends SporeSwordBase {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (player instanceof ServerPlayer && !level.isClientSide) {
-            stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-            ThrownBoomerang thrownSpear = new ThrownBoomerang(level, player, stack,getVariant(stack).getColor());
-            thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1F , 0.75F);
+
+        if (!level.isClientSide) {
+            ItemStack thrownCopy = stack.copy();
+
+            ThrownBoomerang boomerang = new ThrownBoomerang(level, player, thrownCopy, getVariant(stack).getColor());
+            boomerang.setPos(player.getEyePosition());
+            boomerang.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.0F, 0.75F);
+
             if (player.getAbilities().instabuild) {
-                thrownSpear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                boomerang.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
-            level.addFreshEntity(thrownSpear);
-            level.playSound(null, thrownSpear, Ssounds.INFECTED_WEAPON_THROW.get(), SoundSource.PLAYERS, 1.5F, 0.9F);
+
+            level.addFreshEntity(boomerang);
+            level.playSound(null, player, Ssounds.INFECTED_WEAPON_THROW.get(), SoundSource.PLAYERS, 1.5F, 0.9F);
+
+            stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
             if (!player.getAbilities().instabuild) {
-                player.getInventory().removeItem(stack);
+                stack.shrink(1);
             }
+
             player.awardStat(Stats.ITEM_USED.get(this));
-            return InteractionResultHolder.success(player.getItemInHand(hand));
         }
-        return super.use(level, player, hand);
+
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
+
 
 }

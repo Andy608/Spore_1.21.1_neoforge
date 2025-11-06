@@ -114,7 +114,7 @@ public class ThrownSpear extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return this.spearItem.copy();
+        return new ItemStack(Sitems.INFECTED_SPEAR.get());
     }
 
     public boolean isFoil() {

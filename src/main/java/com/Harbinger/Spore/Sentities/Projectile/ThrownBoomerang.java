@@ -1,10 +1,8 @@
 package com.Harbinger.Spore.Sentities.Projectile;
 
-import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Fluids.BileLiquid;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeWeaponData;
 import com.Harbinger.Spore.core.*;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -93,13 +91,14 @@ public class ThrownBoomerang extends AbstractArrow {
 
     @Override
     protected ItemStack getPickupItem() {
-        return this.boomerang.copy();
+        return boomerang.copy();
     }
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return this.boomerang.copy();
+        return new ItemStack(Sitems.BOOMERANG.get());
     }
+
 
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);

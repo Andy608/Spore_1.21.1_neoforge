@@ -46,7 +46,7 @@ public class SyringeProjectile extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return itemStack;
+        return new ItemStack(Sitems.SYRINGE.get());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.Harbinger.Spore.Sitems;
 
 import com.Harbinger.Spore.Client.AnimationTrackers.SGAnimationTracker;
 import com.Harbinger.Spore.Client.AnimationTrackers.SGReloadAnimationTracker;
-import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Sentities.Projectile.SyringeProjectile;
 import com.Harbinger.Spore.Sitems.Agents.ArmorSyringe;
 import com.Harbinger.Spore.Sitems.Agents.WeaponSyringe;

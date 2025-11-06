@@ -31,8 +31,7 @@ public class Syringe extends BaseItem2 {
 
     public Optional<RecipeHolder<InjectionRecipe>> getRecipe(Level level, Entity entity){
         EntityContainer container = new EntityContainer(entity);
-        Optional<RecipeHolder<InjectionRecipe>> recipe = level.getRecipeManager().getRecipeFor(Srecipes.INJECTION_TYPE.get(), container, level);
-        return recipe;
+        return level.getRecipeManager().getRecipeFor(Srecipes.INJECTION_TYPE.get(), container, level);
     }
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -44,24 +43,27 @@ public class Syringe extends BaseItem2 {
         ItemStack stack = player.getItemInHand(hand);
         return InteractionResultHolder.success(stack);
     }
+
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity living, InteractionHand hand) {
         Level level = player.level();
-        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer){
-            Optional<RecipeHolder<InjectionRecipe>> match = this.getRecipe(level,living);
-            if (match.isPresent()){
-                ItemStack stack = match.get().value().getResultItem(null);
-                if (stack != ItemStack.EMPTY){
-                    player.playNotifySound(Ssounds.SYRINGE_SUCK.get(), SoundSource.AMBIENT,1F,1F);
-                    living.hurt(level.damageSources().playerAttack(player),1f);
-                    serverPlayer.addItem(stack.copy());
-                    itemStack.shrink(1);
-                    return InteractionResult.SUCCESS;
+        Optional<RecipeHolder<InjectionRecipe>> match = this.getRecipe(level, living);
+        if (match.isPresent()) {
+            ItemStack result = match.get().value().getResultItem(level.registryAccess());
+            if (!result.isEmpty()) {
+                player.playNotifySound(Ssounds.SYRINGE_SUCK.get(), SoundSource.AMBIENT, 1F, 1F);
+                living.hurt(level.damageSources().playerAttack(player), 1f);
+
+                if (!player.getInventory().add(result.copy())) {
+                    player.drop(result.copy(), false);
                 }
+                itemStack.shrink(1);
+                return InteractionResult.sidedSuccess(player.level().isClientSide);
             }
         }
-        return super.interactLivingEntity(itemStack, player, living, hand);
+        return InteractionResult.PASS;
     }
+
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {

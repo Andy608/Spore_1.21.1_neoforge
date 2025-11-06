@@ -28,7 +28,7 @@ public class KnifeRenderer extends EntityRenderer<ThrownKnife> {
     }
 
     public void render(ThrownKnife knife, float p_116112_, float p_116113_, PoseStack stack, MultiBufferSource p_116115_, int p_116116_) {
-        int color = knife.getColor();
+        int color = knife.getColor() == 0 ? -1 : knife.getColor();
         stack.pushPose();
         stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_116113_, knife.yRotO, knife.getYRot()) - 90.0F));
         stack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(p_116113_, knife.xRotO, knife.getXRot()) + 90.0F));

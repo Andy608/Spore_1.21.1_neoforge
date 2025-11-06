@@ -25,7 +25,7 @@ public class ThrownBoomerangRenderer extends EntityRenderer<ThrownBoomerang> {
     public void render(ThrownBoomerang entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         float ageInTicks = entity.tickCount + partialTicks;
-        int color = entity.getColor();
+        int color = entity.getColor() == 0 ? -1 : entity.getColor();
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;

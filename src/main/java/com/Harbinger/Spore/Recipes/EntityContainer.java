@@ -13,6 +13,6 @@ public record EntityContainer(Entity entity) implements RecipeInput {
 
     @Override
     public int size() {
-        return 0;
+        return 1;
     }
 }

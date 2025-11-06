@@ -57,10 +57,6 @@ public class Busser extends EvolvedInfected implements Carrier, FlyingInfected, 
         return false;
     }
 
-    @Override
-    public int addHoudini() {
-        return 25;
-    }
 
     @Override
     public List<? extends String> getDropList() {
@@ -222,8 +218,8 @@ public class Busser extends EvolvedInfected implements Carrier, FlyingInfected, 
     @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_SWELL_DIR, -1);
         builder.define(DATA_ID_TYPE_VARIANT, 0);
+        builder.define(DATA_SWELL_DIR, -1);
     }
 
     public void addAdditionalSaveData(CompoundTag tag) {

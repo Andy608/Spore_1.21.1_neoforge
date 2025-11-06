@@ -14,6 +14,7 @@ import com.Harbinger.Spore.Particles.*;
 import com.Harbinger.Spore.Screens.*;
 import com.Harbinger.Spore.Sentities.BasicInfected.InfectedHusk;
 import com.Harbinger.Spore.Sentities.BasicInfected.InfectedPlayer;
+import com.Harbinger.Spore.Sentities.Projectile.ThrownSpear;
 import com.Harbinger.Spore.Sitems.Agents.AbstractSyringe;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorData;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeWeaponData;
@@ -174,6 +175,9 @@ public class ClientModEvents {
         event.registerLayerDefinition(ProtoHivemindModel.LAYER_LOCATION, ProtoHivemindModel::createBodyLayer);
         event.registerLayerDefinition(ProtoRedesign.LAYER_LOCATION, ProtoRedesign::createBodyLayer);
         event.registerLayerDefinition(ProtoChritsmasHat.LAYER_LOCATION, ProtoChritsmasHat::createBodyLayer);
+        event.registerLayerDefinition(WombModel.LAYER_LOCATION, WombModel::createBodyLayer);
+        event.registerLayerDefinition(WombModelStageII.LAYER_LOCATION, WombModelStageII::createBodyLayer);
+        event.registerLayerDefinition(WombModelStageIII.LAYER_LOCATION, WombModelStageIII::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -251,6 +255,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.BRAUREI.get(), BraureiRenderer::new);
         event.registerEntityRenderer(Sentities.VERVA.get(), VervaRenderer::new);
         event.registerEntityRenderer(Sentities.PROTO.get(), ProtoRenderer::new);
+        event.registerEntityRenderer(Sentities.RECONSTRUCTOR.get(), BiomassReconfiguratorRenderer::new);
     }
     public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());
@@ -277,6 +282,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.NUKE.get(), NuclearBombRenderer::new);
         event.registerEntityRenderer(Sentities.THROWN_KNIFE.get(), KnifeRenderer::new);
         event.registerEntityRenderer(Sentities.THROWN_SICKEL.get(), SickleRenderer::new);
+        event.registerEntityRenderer(Sentities.THROWN_SPEAR.get(), SpearRenderer::new);
         event.registerEntityRenderer(Sentities.THROWN_BOOMERANG.get(), ThrownBoomerangRenderer::new);
         event.registerEntityRenderer(Sentities.CORPSE_PIECE.get(), CorpseRenderer::new);
         event.registerEntityRenderer(Sentities.THROWN_SYRINGE.get(), SyringeRenderer::new);
