@@ -437,9 +437,7 @@ public class Mound extends Organoid implements FoliageSpread {
     @Override
     public void registerGoals() {
         this.goalSelector.addGoal(2, new HurtTargetGoal(this,
-                enemy -> !(SConfig.SERVER.blacklist.get().contains(enemy.getEncodeId()) ||
-                        enemy instanceof UtilityEntity ||
-                        enemy instanceof Infected),
+                enemy -> !(SConfig.SERVER.blacklist.get().contains(enemy.getEncodeId()) || enemy instanceof UtilityEntity),
                 Infected.class).setAlertOthers(Infected.class));
     }
 

@@ -34,6 +34,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -105,5 +106,9 @@ public class HandlerEvents {
     @SubscribeEvent
     public static void TickEvents(EntityTickEvent.Pre event){
         LivingTickEvent.TickEvents(event);
+    }
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event){
+        Infection.onEntityDeath(event);
     }
 }
