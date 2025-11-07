@@ -2,7 +2,7 @@ package com.Harbinger.Spore.Sentities.Organoids;
 
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Recipes.EntityContainer;
-import com.Harbinger.Spore.Recipes.WombRecipe;
+import com.Harbinger.Spore.Recipes.SporeForcedRecipes.WombAssimilationRecipe;
 import com.Harbinger.Spore.Screens.AssimilationMenu;
 import com.Harbinger.Spore.Sentities.BaseEntities.*;
 import com.Harbinger.Spore.core.SConfig;
@@ -12,6 +12,7 @@ import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -177,13 +178,9 @@ public class Womb extends Organoid implements MenuProvider {
          }
         }
     }
-    public Optional<RecipeHolder<WombRecipe>> getCurrentRecipe(Entity entity) {
-        EntityContainer container = new EntityContainer(entity);
-        return this.level().getRecipeManager().getRecipeFor(Srecipes.WOMB_TYPE.get(), container, level());
-    }
 
-    public void addMutation(WombRecipe recipe){
-        this.attributeIDs.add(recipe.getAttribute());
+    public void addMutation(WombAssimilationRecipe.Recipe recipe){
+        this.attributeIDs.add(recipe.attribute());
     }
     private void AssimilateNearbyInfected(){
         if (!this.level().isClientSide) {
@@ -191,8 +188,10 @@ public class Womb extends Organoid implements MenuProvider {
             for (Entity en : entities) {
                 if (en instanceof Infected infected) {
                     this.setBiomass(this.getBiomass() + calculateAssimilation(infected) + infected.getKills());
-                    Optional<RecipeHolder<WombRecipe>> recipe = getCurrentRecipe(infected);
-                    recipe.ifPresent(wombRecipeRecipeHolder -> addMutation(wombRecipeRecipeHolder.value()));
+                    WombAssimilationRecipe.Recipe recipe = WombAssimilationRecipe.getUsableRecipe(level(),infected);
+                    if (recipe != null){
+                        addMutation(recipe);
+                    }
                     infected.discard();
                     if (this.level() instanceof ServerLevel serverLevel) {
                         double x0 = this.getX() - (random.nextFloat() - 0.1) * 0.1D;
@@ -322,9 +321,10 @@ public class Womb extends Organoid implements MenuProvider {
 
             for (String attrId : attributeIDs) {
                 ResourceLocation attrLocation = ResourceLocation.parse(attrId);
-                Attribute attribute = Utilities.tryToCreateAttribute(attrLocation);
-                if (attribute != null) {
-                    AttributeInstance instance = calamity.getAttribute(Holder.direct(attribute));
+                Optional<Attribute> optional = BuiltInRegistries.ATTRIBUTE.getOptional(attrLocation);
+                if (optional.isPresent()) {
+                    Holder<Attribute> attributeHolder = BuiltInRegistries.ATTRIBUTE.wrapAsHolder(optional.get());
+                    AttributeInstance instance = calamity.getAttribute(attributeHolder);
                     if (instance != null){
                         double e = instance.getValue();
                         instance.setBaseValue(e+1);

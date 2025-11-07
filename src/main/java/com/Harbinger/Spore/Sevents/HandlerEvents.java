@@ -32,6 +32,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -93,5 +94,10 @@ public class HandlerEvents {
     @SubscribeEvent
     private static void registerAttributes(EntityAttributeCreationEvent event){
         MobAttributes.registerAttributes(event);
+    }
+
+    @SubscribeEvent
+    public static void Command(RegisterCommandsEvent event){
+        Commands.Command(event);
     }
 }

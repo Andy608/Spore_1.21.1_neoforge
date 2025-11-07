@@ -4,7 +4,6 @@ package com.Harbinger.Spore.core;
 import com.Harbinger.Spore.Recipes.GraftingRecipe;
 import com.Harbinger.Spore.Recipes.InjectionRecipe;
 import com.Harbinger.Spore.Recipes.SurgeryRecipe;
-import com.Harbinger.Spore.Recipes.WombRecipe;
 import com.Harbinger.Spore.Spore;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -55,15 +54,6 @@ public class Srecipes {
                 }
             });
 
-    public static final Supplier<RecipeSerializer<WombRecipe>> WOMB_SERIALIZER =
-            SERIALIZERS.register("assimilation", () -> WombRecipe.WombRecipeSerializer.INSTANCE);
-    public static final DeferredHolder<RecipeType<?>, RecipeType<WombRecipe>> WOMB_TYPE =
-            TYPES.register("assimilation", () -> new RecipeType<>() {
-                @Override
-                public String toString() {
-                    return "assimilation";
-                }
-            });
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);

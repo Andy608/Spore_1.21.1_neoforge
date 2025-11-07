@@ -1,7 +1,7 @@
 package com.Harbinger.Spore.Screens;
 
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
-import com.Harbinger.Spore.Recipes.WombRecipe;
+import com.Harbinger.Spore.Recipes.SporeForcedRecipes.WombAssimilationRecipe;
 import com.Harbinger.Spore.Sentities.VariantKeeper;
 import com.Harbinger.Spore.Spore;
 import com.Harbinger.Spore.core.Srecipes;
@@ -26,8 +26,8 @@ import java.util.List;
 
 public class AssimilationScreen extends AbstractContainerScreen<AssimilationMenu> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/gui/assimilation_gui.png");
-    private final List<RecipeHolder<WombRecipe>> recipes;
-    private List<WombRecipe.Pair> mobPairs;
+    private final List<WombAssimilationRecipe.Recipe> recipes;
+    private List<WombAssimilationRecipe.Pair> mobPairs;
     private int tickCounter = 0;
     private int currentItemIndex = 0;
     private Button leftButton;
@@ -38,11 +38,7 @@ public class AssimilationScreen extends AbstractContainerScreen<AssimilationMenu
         super(pMenu, pPlayerInventory, pTitle);
         this.imageWidth = 176;
         this.imageHeight = 166;
-        if (level == null){
-            this.recipes = new ArrayList<>();
-        }else {
-            this.recipes = level.getRecipeManager().getAllRecipesFor(Srecipes.WOMB_TYPE.get());
-        }
+        this.recipes = WombAssimilationRecipe.getWombAssimilationRecipes;
     }
     private void changeRecipe(int direction) {
         if (!recipes.isEmpty()) {
@@ -87,12 +83,12 @@ public class AssimilationScreen extends AbstractContainerScreen<AssimilationMenu
         int x = this.leftPos+34;
         int y = this.topPos+70;
         renderTooltip(guiGraphics, mouseX, mouseY);
-        WombRecipe recipe = recipes.get(currentItemIndex).value();
-        this.mobPairs = recipe.entityPairs();
+        WombAssimilationRecipe.Recipe recipe = recipes.get(currentItemIndex);
+        this.mobPairs = recipe.ids();
         if (level != null){
-            WombRecipe.Pair pairs = mobPairs.get(currentEntityIndex);
-            int variant = pairs.type();
-            ResourceLocation location = ResourceLocation.parse(pairs.entityId());
+            WombAssimilationRecipe.Pair pairs = mobPairs.get(currentEntityIndex);
+            int variant = pairs.variant();
+            ResourceLocation location = ResourceLocation.parse(pairs.id());
             Entity entity = Utilities.tryToCreateEntity(location).create(level);
             if (entity instanceof LivingEntity living){
                 if (living instanceof VariantKeeper keeper){
@@ -103,8 +99,8 @@ public class AssimilationScreen extends AbstractContainerScreen<AssimilationMenu
                 }
             }
         }
-        renderIcon(guiGraphics,recipe.getIcon());
-        renderName(guiGraphics,recipe.getAttribute());
+        renderIcon(guiGraphics,recipe.icon());
+        renderName(guiGraphics,recipe.attribute());
     }
     private void renderIcon(GuiGraphics guiGraphics,ResourceLocation iconLocation){
         RenderSystem.setShaderTexture(0, iconLocation);
