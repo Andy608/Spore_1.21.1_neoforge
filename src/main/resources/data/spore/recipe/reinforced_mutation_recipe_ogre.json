@@ -1,9 +1,0 @@
-{
-  "type": "spore:injection",
-  "entity": "spore:ogre",
-  "entity_type": 0,
-  "output": {
-    "id": "spore:reinforced_syringe",
-    "count": 1
-  }
-}

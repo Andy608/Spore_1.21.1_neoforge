@@ -1,9 +1,0 @@
-{
-  "type": "spore:injection",
-  "entity": "spore:thorn",
-  "entity_type": 1,
-  "output": {
-    "id": "spore:toxic_syringe",
-    "count": 1
-  }
-}

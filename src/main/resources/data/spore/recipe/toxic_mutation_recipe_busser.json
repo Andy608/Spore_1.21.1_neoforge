@@ -1,9 +1,0 @@
-{
-  "type": "spore:injection",
-  "entity": "spore:busser",
-  "entity_type": 3,
-  "output": {
-    "id": "spore:toxic_syringe",
-    "count": 1
-  }
-}

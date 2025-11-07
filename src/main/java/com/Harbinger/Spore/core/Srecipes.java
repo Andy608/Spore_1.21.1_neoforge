@@ -2,7 +2,6 @@ package com.Harbinger.Spore.core;
 
 
 import com.Harbinger.Spore.Recipes.GraftingRecipe;
-import com.Harbinger.Spore.Recipes.InjectionRecipe;
 import com.Harbinger.Spore.Recipes.SurgeryRecipe;
 import com.Harbinger.Spore.Spore;
 import net.minecraft.core.registries.Registries;
@@ -40,17 +39,6 @@ public class Srecipes {
                 @Override
                 public String toString() {
                     return "grafting";
-                }
-            });
-
-
-    public static final Supplier<RecipeSerializer<InjectionRecipe>> INJECTION_SERIALIZER =
-            SERIALIZERS.register("injection", () -> InjectionRecipe.InjectionRecipeSerializer.INSTANCE);
-    public static final DeferredHolder<RecipeType<?>, RecipeType<InjectionRecipe>> INJECTION_TYPE =
-            TYPES.register("injection", () -> new RecipeType<>() {
-                @Override
-                public String toString() {
-                    return "injection";
                 }
             });
 

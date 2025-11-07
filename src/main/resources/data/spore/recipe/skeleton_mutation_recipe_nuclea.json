@@ -1,9 +1,0 @@
-{
-  "type": "spore:injection",
-  "entity": "spore:nuclea",
-  "entity_type": 0,
-  "output": {
-    "id": "spore:skeletal_syringe",
-    "count": 1
-  }
-}

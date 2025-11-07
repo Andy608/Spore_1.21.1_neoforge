@@ -1,7 +1,8 @@
 package com.Harbinger.Spore.Screens;
 
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
-import com.Harbinger.Spore.Recipes.InjectionRecipe;
+import com.Harbinger.Spore.Recipes.SporeForcedRecipes.InjectionSuctionRecipe;
+import com.Harbinger.Spore.Recipes.SporeForcedRecipes.WombAssimilationRecipe;
 import com.Harbinger.Spore.Sentities.VariantKeeper;
 import com.Harbinger.Spore.Sitems.Agents.ArmorSyringe;
 import com.Harbinger.Spore.Sitems.Agents.WeaponSyringe;
@@ -28,7 +29,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -37,7 +37,8 @@ import java.util.List;
 
 public class InjectionRecipeScreen extends AbstractContainerScreen<InjectionRecipeMenu> implements TutorialMenuMethods{
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/gui/injection_recipe_gui.png");
-    private final List<RecipeHolder<InjectionRecipe>> recipes;
+    private final List<InjectionSuctionRecipe.Recipe> recipes;
+    private List<InjectionSuctionRecipe.Pair> mobPairs;
     private int tickCounter = 0;
     private int currentItemIndex = 0;
     private Button leftButton;
@@ -48,6 +49,7 @@ public class InjectionRecipeScreen extends AbstractContainerScreen<InjectionReci
     private int getCurrentArmorIndex = 0;
     private int getCurrentItemIndex = 0;
     private int getCurrentReagentIndex = 0;
+    private int currentEntityIndex = 0;
     private final List<Item> weaponItems;
     private final List<Item> armorItems;
     private final List<Item> allItems;
@@ -61,17 +63,14 @@ public class InjectionRecipeScreen extends AbstractContainerScreen<InjectionReci
         this.reagents = Utilities.getItemsFromTag(Spore.MODID, "reagents");
         this.imageWidth = 176;
         this.imageHeight = 166;
-        if (level == null){
-            this.recipes = new ArrayList<>();
-        }else {
-            this.recipes = level.getRecipeManager().getAllRecipesFor(Srecipes.INJECTION_TYPE.get());
-        }
+        this.recipes = InjectionSuctionRecipe.getInjectionList;
     }
     private void changeRecipe(int direction) {
         if (!recipes.isEmpty()) {
             currentItemIndex = (currentItemIndex + direction) % recipes.size();
             getCurrentWeaponIndex = 0;
             getCurrentArmorIndex = 0;
+            currentEntityIndex = 0;
             if (currentItemIndex < 0) {
                 currentItemIndex += recipes.size();
             }
@@ -131,8 +130,8 @@ public class InjectionRecipeScreen extends AbstractContainerScreen<InjectionReci
         int y = this.topPos+70;
 
         renderTooltip(guiGraphics, mouseX, mouseY);
-        InjectionRecipe recipe = recipes.get(currentItemIndex).value();
-        ItemStack stack = recipe.getResultItem(null);
+        InjectionSuctionRecipe.Recipe recipe = recipes.get(currentItemIndex);
+        ItemStack stack = new ItemStack(recipe.output());
         renderFakeItem(font,guiGraphics,new ItemStack(Sitems.SYRINGE.get()), leftPos +97, topPos +17);
         renderFakeItem(font,guiGraphics,stack.copy(), leftPos +97, topPos +53);
         renderName(guiGraphics,stack.getHoverName(),90,15);
@@ -159,9 +158,11 @@ public class InjectionRecipeScreen extends AbstractContainerScreen<InjectionReci
         renderFakeItem(font,guiGraphics,enchantedItem.copy(), leftPos +79, topPos +125);
         Enchantment enchantment = this.Enchantment(reagent.copy());
         renderName(guiGraphics, Enchantment.getFullname(Holder.direct(enchantment),1),90,155);
+        this.mobPairs = recipe.ids();
         if (level != null){
-            int variant = recipe.getEntityType();
-            ResourceLocation location = ResourceLocation.parse(recipe.getEntityId());
+            InjectionSuctionRecipe.Pair pairs = mobPairs.get(currentEntityIndex);
+            int variant = pairs.variant();
+            ResourceLocation location = ResourceLocation.parse(pairs.id());
             Entity entity = Utilities.tryToCreateEntity(location).create(level);
             if (entity instanceof LivingEntity living){
                 if (living instanceof VariantKeeper keeper){
@@ -254,6 +255,7 @@ public class InjectionRecipeScreen extends AbstractContainerScreen<InjectionReci
                 getCurrentWeaponIndex = (getCurrentWeaponIndex + 1) % weaponItems.size();
                 getCurrentArmorIndex = (getCurrentArmorIndex + 1) % armorItems.size();
                 getCurrentItemIndex = (getCurrentItemIndex + 1) % allItems.size();
+                currentEntityIndex = (currentEntityIndex + 1) % mobPairs.size();
             }
         }
     }

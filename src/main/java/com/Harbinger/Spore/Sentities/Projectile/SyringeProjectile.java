@@ -1,8 +1,7 @@
 package com.Harbinger.Spore.Sentities.Projectile;
 
 
-import com.Harbinger.Spore.Recipes.EntityContainer;
-import com.Harbinger.Spore.Recipes.InjectionRecipe;
+import com.Harbinger.Spore.Recipes.SporeForcedRecipes.InjectionSuctionRecipe;
 import com.Harbinger.Spore.Sitems.Agents.AbstractSyringe;
 import com.Harbinger.Spore.core.Sentities;
 import com.Harbinger.Spore.core.Sitems;
@@ -73,21 +72,14 @@ public class SyringeProjectile extends AbstractArrow {
             tag.put(SYRINGE_COMPONENT, this.itemStack.save(this.registryAccess()));
         }
     }
-    public Optional<RecipeHolder<InjectionRecipe>> getRecipe(Level level, Entity entity){
-        EntityContainer container = new EntityContainer(entity);
-        return level.getRecipeManager().getRecipeFor(Srecipes.INJECTION_TYPE.get(), container, level);
-    }
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof LivingEntity living && !level().isClientSide && canHitEntity(living)){
             if (itemStack.getItem().equals(Sitems.SYRINGE.get())){
-                Optional<RecipeHolder<InjectionRecipe>> match = this.getRecipe(level(),living);
-                if (match.isPresent() && Math.random() < 0.5){
-                    ItemStack stack = match.get().value().getResultItem(null);
-                    if (stack == null){
-                        return;
-                    }
+                InjectionSuctionRecipe.Recipe match = InjectionSuctionRecipe.getUsableRecipe(level(),living);
+                if (match != null && Math.random() < 0.5){
+                    ItemStack stack = new ItemStack(match.output());
                     ItemEntity itemEntity = new ItemEntity(level(),entity.getX(),entity.getY(),entity.getZ(),stack);
                     level().addFreshEntity(itemEntity);
                 }
