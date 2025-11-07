@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class Corrosion extends MobEffect {
+public class Corrosion extends MobEffect implements SporeEffectsHandler{
     public Corrosion() {
         super(MobEffectCategory.HARMFUL, -13369549);
     }
@@ -21,6 +21,7 @@ public class Corrosion extends MobEffect {
         return false;
     }
 
+    @Override
     public boolean isDurationEffectTick(int duration, int intensity) {
         if (this == Seffects.CORROSION.value()) {
             int i = 60 >> intensity;

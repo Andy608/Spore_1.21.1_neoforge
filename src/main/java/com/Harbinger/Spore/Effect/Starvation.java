@@ -7,11 +7,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class Starvation extends MobEffect {
+public class Starvation extends MobEffect implements SporeEffectsHandler{
     public Starvation() {
         super(MobEffectCategory.HARMFUL, 34613);
     }
-    //To read infected
     public boolean applyEffectTick(LivingEntity entity, int intense) {
         if (entity instanceof Infected){
             if (this == Seffects.STARVATION.value()) {

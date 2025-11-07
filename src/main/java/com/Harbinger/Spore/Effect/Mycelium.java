@@ -8,11 +8,10 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public class Mycelium extends MobEffect {
+public class Mycelium extends MobEffect implements SporeEffectsHandler{
     public Mycelium() {
         super(MobEffectCategory.HARMFUL, 9643043);
     }
-    //To read the target selector
     public boolean applyEffectTick(LivingEntity entity, int intense) {
         if (!SConfig.SERVER.mycelium.get().contains(entity.getEncodeId())){
             if (this ==  Seffects.MYCELIUM.value()) {

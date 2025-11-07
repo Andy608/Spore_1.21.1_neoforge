@@ -6,7 +6,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public class Symbiosis extends MobEffect {
+public class Symbiosis extends MobEffect implements SporeEffectsHandler{
     public Symbiosis() {
         super(MobEffectCategory.BENEFICIAL, 8412043);
     }
