@@ -1,6 +1,5 @@
 package com.Harbinger.Spore.Effect;
 
-import com.Harbinger.Spore.core.Seffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,23 +10,19 @@ public class Symbiosis extends MobEffect implements SporeEffectsHandler{
         super(MobEffectCategory.BENEFICIAL, 8412043);
     }
 
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
-        if (!entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
-                    player.causeFoodExhaustion(0.1F);
-                    return true;
+    public boolean isDurationEffectTick(int duration, int intensity) {
+        int i = 40 >> intensity;
+        if (i > 0) {
+            return duration % i == 0;
+        } else {
+            return true;
         }
-        return false;
     }
 
-    public boolean isDurationEffectTick(int duration, int intensity) {
-        if (this == Seffects.SYMBIOSIS.value()) {
-            int i = 40 >> intensity;
-            if (i > 0) {
-                return duration % i == 0;
-            } else {
-                return true;
-            }
+    @Override
+    public void triggerEffects(LivingEntity living, int intensity) {
+        if (living instanceof Player player) {
+            player.causeFoodExhaustion(0.1F);
         }
-        return false;
     }
 }

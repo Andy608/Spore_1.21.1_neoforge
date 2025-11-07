@@ -1,6 +1,5 @@
 package com.Harbinger.Spore.Effect;
 
-import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -22,9 +21,13 @@ public class Uneasy extends MobEffect implements SporeEffectsHandler{
     }
 
     public boolean isDurationEffectTick(int duration, int intensity) {
-        if (this == Seffects.UNEASY.value()) {
-            return duration % 80 == 0;
+        return duration % 80 == 0;
+    }
+
+    @Override
+    public void triggerEffects(LivingEntity entity, int intensity) {
+        if (entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
+            player.playSound(Ssounds.HEART_BEAT.get());
         }
-        return false;
     }
 }

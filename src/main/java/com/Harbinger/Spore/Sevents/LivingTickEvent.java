@@ -28,7 +28,7 @@ public class LivingTickEvent {
             MobEffect effect = instance.getEffect().value();
             if (effect instanceof SporeEffectsHandler handler){
                 if (handler.isDurationEffectTick(instance.getDuration(),amp)){
-                    effect.applyEffectTick(living,amp);
+                    handler.triggerEffects(living,amp);
                 }
             }
         }

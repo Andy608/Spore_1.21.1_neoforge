@@ -20,23 +20,6 @@ public class Madness extends MobEffect implements SporeEffectsHandler{
         super(MobEffectCategory.HARMFUL, 419435);
     }
 
-    public boolean applyEffectTick(LivingEntity entity, int intense) {
-       if (Math.random() < (SConfig.SERVER.chance_hallucination_spawn.get() * 0.01) && entity.level() instanceof ServerLevel serverLevel){
-           if (intense > 1 && intense < 4){
-                SummonIllusion(entity,serverLevel,false,entity.getId());
-            }
-               if (intense >= 4){
-               SummonIllusion(entity,serverLevel,true,entity.getId());
-            }
-        }
-        if (Math.random() < 0.1){
-            this.playClientSounds(entity);
-        }
-        if (Math.random() < 0.1 && intense > 0 && entity instanceof ServerPlayer player){
-            this.feelingWatched(player);
-        }
-        return true;
-    }
 
     public void feelingWatched(ServerPlayer player){
         player.displayClientMessage(Component.translatable("vigil.message"),true);
@@ -61,9 +44,24 @@ public class Madness extends MobEffect implements SporeEffectsHandler{
 
 
     public boolean isDurationEffectTick(int duration, int intensity) {
-        if (this == Seffects.MADNESS.value()) {
-            return duration % 80 == 0;
+        return duration % 80 == 0;
+    }
+
+    @Override
+    public void triggerEffects(LivingEntity entity, int intense) {
+        if (Math.random() < (SConfig.SERVER.chance_hallucination_spawn.get() * 0.01) && entity.level() instanceof ServerLevel serverLevel){
+            if (intense > 1 && intense < 4){
+                SummonIllusion(entity,serverLevel,false,entity.getId());
+            }
+            if (intense >= 4){
+                SummonIllusion(entity,serverLevel,true,entity.getId());
+            }
         }
-        return false;
+        if (Math.random() < 0.1){
+            this.playClientSounds(entity);
+        }
+        if (Math.random() < 0.1 && intense > 0 && entity instanceof ServerPlayer player){
+            this.feelingWatched(player);
+        }
     }
 }
