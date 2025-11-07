@@ -34,17 +34,19 @@ public class Corrosion extends MobEffect implements SporeEffectsHandler{
             }
         }
         if (living instanceof Player player && player.level() instanceof ServerLevel serverLevel) {
-            for (int slotIndex : Inventory.ALL_ARMOR_SLOTS) {
-                ItemStack armorStack = player.getInventory().getArmor(slotIndex);
-                if (!armorStack.isEmpty()) {
-                    armorStack.hurtAndBreak(
-                            intensity + 1,
-                            serverLevel,
-                            player,
-                            item -> {
-                                player.onEquippedItemBroken(armorStack.getItem(),EquipmentSlot.values()[slotIndex]);
-                            }
-                    );
+            for (EquipmentSlot slot : EquipmentSlot.values()){
+                if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR){
+                    ItemStack armorStack = player.getItemBySlot(slot);
+                    if (!armorStack.isEmpty()) {
+                        armorStack.hurtAndBreak(
+                                intensity + 1,
+                                serverLevel,
+                                player,
+                                item -> {
+                                    player.onEquippedItemBroken(armorStack.getItem(),slot);
+                                }
+                        );
+                    }
                 }
             }
         }
