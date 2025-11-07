@@ -34,7 +34,9 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
@@ -99,5 +101,9 @@ public class HandlerEvents {
     @SubscribeEvent
     public static void Command(RegisterCommandsEvent event){
         Commands.Command(event);
+    }
+    @SubscribeEvent
+    public static void TickEvents(EntityTickEvent.Pre event){
+        LivingTickEvent.TickEvents(event);
     }
 }

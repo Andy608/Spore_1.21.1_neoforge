@@ -25,7 +25,11 @@ public class Starvation extends MobEffect implements SporeEffectsHandler{
     public void triggerEffects(LivingEntity entity, int intensity) {
         if (entity instanceof Infected){
             if (this == Seffects.STARVATION.value()) {
+                double originalMotionX = entity.getDeltaMovement().x;
+                double originalMotionY = entity.getDeltaMovement().y;
+                double originalMotionZ = entity.getDeltaMovement().z;
                 entity.hurt(entity.damageSources().generic(), 1.0F);
+                entity.setDeltaMovement(originalMotionX, originalMotionY, originalMotionZ);
             }
         }
     }

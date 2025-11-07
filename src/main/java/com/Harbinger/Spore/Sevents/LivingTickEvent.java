@@ -14,15 +14,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LivingTickEvent {
     private static final TagKey<Block> tag = BlockTags.create(ResourceLocation.parse("spore:fungal_blocks"));
-    public static void TickEvents(LivingEvent event){
-        LivingEntity living = event.getEntity();
+    public static void TickEvents(EntityTickEvent.Pre event){
+        if (!(event.getEntity() instanceof LivingEntity living)){
+            return;
+        }
         for (MobEffectInstance instance : living.getActiveEffects()){
             int amp = instance.getAmplifier();
             MobEffect effect = instance.getEffect().value();
