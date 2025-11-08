@@ -63,6 +63,7 @@ public class HandlerEvents {
     }
     @SubscribeEvent
     public static void TickEvents(PlayerTickEvent.Post event){
+        LivingTickEvent.TickEffects(event);
         Player player = event.getEntity();
             Level level = player.level();
             for (EquipmentSlot slot : EquipmentSlot.values()) {

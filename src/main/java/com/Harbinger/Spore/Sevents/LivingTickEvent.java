@@ -1,20 +1,28 @@
 package com.Harbinger.Spore.Sevents;
 
 import com.Harbinger.Spore.Effect.SporeEffectsHandler;
+import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorData;
+import com.Harbinger.Spore.Sitems.BaseWeapons.SporeToolsBaseItem;
 import com.Harbinger.Spore.core.Seffects;
+import com.Harbinger.Spore.core.Senchantments;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,5 +63,46 @@ public class LivingTickEvent {
                 }
             }
         }
+    }
+    public static void TickEffects(PlayerTickEvent.Post event){
+        Player living = event.getEntity();
+        MobEffectInstance CorrosionInstance = living.getEffect(Seffects.CORROSION);
+        MobEffectInstance SymbiosisInstance = living.getEffect(Seffects.SYMBIOSIS);
+        if (CorrosionInstance != null){
+            if (living.tickCount % 60 == 0){
+                if (living.level() instanceof ServerLevel serverLevel) {
+                    for (EquipmentSlot slot : EquipmentSlot.values()){
+                        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR){
+                            ItemStack armorStack = living.getItemBySlot(slot);
+                            if (!armorStack.isEmpty()) {
+                                armorStack.hurtAndBreak(
+                                        CorrosionInstance.getAmplifier() + 1
+                                        ,serverLevel,living, item ->{living.onEquippedItemBroken(item,slot);}
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (SymbiosisInstance != null) {
+            if (living.tickCount % 200 == 0) {
+                int size = living.getInventory().getContainerSize();
+                for (int i = 0; i <= size; i++) {
+                    ItemStack itemStack = living.getInventory().getItem(i);
+                    if (Senchantments.hasEnchant(living.level(), itemStack, Senchantments.SYMBIOTIC_RECONSTITUTION) && itemStack.isDamaged()) {
+                        if (itemStack.getItem() instanceof SporeToolsBaseItem base) {
+                            base.healTool(itemStack, SymbiosisInstance.getAmplifier() * 2);
+                        } else if (itemStack.getItem() instanceof SporeArmorData base) {
+                            base.healTool(itemStack, SymbiosisInstance.getAmplifier() * 2);
+                        } else {
+                            int l = itemStack.getDamageValue() - SymbiosisInstance.getAmplifier() * 2;
+                            itemStack.setDamageValue(l);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
