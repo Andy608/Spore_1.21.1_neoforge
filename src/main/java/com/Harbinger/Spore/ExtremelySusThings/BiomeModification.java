@@ -13,56 +13,66 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 
-public class BiomeModification implements net.neoforged.neoforge.common.world.BiomeModifier {
-    public static final DeferredHolder<MapCodec<? extends BiomeModifier>, MapCodec<? extends BiomeModifier>> SERIALIZER =
-            DeferredHolder.create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS,
-                    ResourceLocation.fromNamespaceAndPath(Spore.MODID, "inf_spawns"));
+public class BiomeModification implements BiomeModifier {
 
-    public BiomeModification() {}
+    public static final MapCodec<BiomeModification> CODEC = MapCodec.unit(BiomeModification::new);
 
+    public static MapCodec<BiomeModification> makeCodec() {
+        return CODEC;
+    }
+
+    public BiomeModification() {
+    }
+
+    @Override
+    public MapCodec<? extends BiomeModifier> codec() {
+        return CODEC; // ✅ Correct & safe
+    }
+
+    // ✅ Add mob spawns based on config
     private void addSpawns(ModifiableBiomeInfo.BiomeInfo.Builder builder, int modifier) {
         List<? extends String> spawnEntries = SConfig.SERVER.spawns.get();
 
         for (String entry : spawnEntries) {
             String[] parts = entry.split("\\|");
             if (parts.length != 4) {
-                Spore.LOGGER.warn("Invalid spawn config entry: {}", entry);
+                Spore.LOGGER.warn("Invalid spawn entry: {}", entry);
                 continue;
             }
 
-            ResourceLocation entityId = ResourceLocation.parse(parts[0]);
-            EntityType<?> entityType = Utilities.tryToCreateEntity(entityId);
+            ResourceLocation id = ResourceLocation.parse(parts[0]);
+            EntityType<?> type = Utilities.tryToCreateEntity(id);
 
-            if (entityType == null) {
+            if (type == null) {
                 Spore.LOGGER.warn("Unknown entity type: {}", parts[0]);
                 continue;
             }
 
             try {
-                int weight = Integer.parseUnsignedInt(parts[1]) + modifier;
-                int minCount = Integer.parseUnsignedInt(parts[2]);
-                int maxCount = Integer.parseUnsignedInt(parts[3]);
+                int weight = Integer.parseInt(parts[1]) + modifier;
+                int min = Integer.parseInt(parts[2]);
+                int max = Integer.parseInt(parts[3]);
 
                 builder.getMobSpawnSettings()
-                        .getSpawner(entityType.getCategory())
-                        .add(new MobSpawnSettings.SpawnerData(entityType, weight, minCount, maxCount));
+                        .getSpawner(type.getCategory())
+                        .add(new MobSpawnSettings.SpawnerData(type, weight, min, max));
 
             } catch (NumberFormatException e) {
-                Spore.LOGGER.error("Invalid spawn config number format in: {}", entry, e);
+                Spore.LOGGER.error("Invalid number in spawn config: {}", entry, e);
             }
         }
     }
 
+    // ✅ Checks blacklist tags and direct biome IDs
     private boolean isBiomeBlacklisted(Holder<Biome> biome) {
         for (String blacklisted : SConfig.SERVER.dimension_blacklist.get()) {
-            ResourceLocation blacklistedLocation = ResourceLocation.parse(blacklisted);
-            TagKey<Biome> blacklistTag = TagKey.create(Registries.BIOME, blacklistedLocation);
-            if (biome.is(blacklistTag) || biome.is(blacklistedLocation)) {
+            ResourceLocation loc = ResourceLocation.parse(blacklisted);
+            TagKey<Biome> tag = TagKey.create(Registries.BIOME, loc);
+
+            if (biome.is(tag) || biome.is(loc)) {
                 return true;
             }
         }
@@ -70,31 +80,21 @@ public class BiomeModification implements net.neoforged.neoforge.common.world.Bi
     }
 
     @Override
-    public void modify(Holder<Biome> holder, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+    public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (phase != Phase.ADD) return;
 
-        if (isBiomeBlacklisted(holder)) return;
+        if (isBiomeBlacklisted(biome)) return;
 
-        int biomeModifier = holder.is(Tags.Biomes.IS_MUSHROOM) ? 20 : 0;
+        int biomeModifier = biome.is(Tags.Biomes.IS_MUSHROOM) ? 20 : 0;
 
         for (String allowedBiome : SConfig.SERVER.dimension_parameters.get()) {
-            ResourceLocation biomeLocation =  ResourceLocation.parse(allowedBiome);
-            TagKey<Biome> biomeTag = TagKey.create(Registries.BIOME, biomeLocation);
+            ResourceLocation loc = ResourceLocation.parse(allowedBiome);
+            TagKey<Biome> tag = TagKey.create(Registries.BIOME, loc);
 
-            if (holder.is(biomeTag) || holder.is(biomeLocation)) {
+            if (biome.is(tag) || biome.is(loc)) {
                 addSpawns(builder, biomeModifier);
                 break;
             }
         }
-    }
-
-    @Override
-    public MapCodec<? extends BiomeModifier> codec() {
-        return SERIALIZER.get();
-    }
-
-
-    public static MapCodec<BiomeModification> makeCodec() {
-        return MapCodec.unit(BiomeModification::new);
     }
 }
