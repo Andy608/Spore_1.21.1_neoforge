@@ -7,13 +7,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -24,11 +24,14 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 import java.util.function.Predicate;
+
+import static net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn;
 
 public class UtilityEntity extends PathfinderMob {
     protected UtilityEntity(EntityType<? extends PathfinderMob> type, Level level) {
@@ -76,7 +79,21 @@ public class UtilityEntity extends PathfinderMob {
         return this.damageSources().mobAttack(entity);
     }
 
-
+    public static boolean checkMonsterInfectedRules(EntityType<? extends Infected> p_219014_, ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source) {
+        if (levelAccessor.getDifficulty() != Difficulty.PEACEFUL){
+            return furtherSpawnParameters(p_219014_,levelAccessor,type,pos,source);
+        }
+        return false;
+    }
+    private static boolean furtherSpawnParameters(EntityType<? extends Infected> p_219014_,ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source){
+        MinecraftServer server = levelAccessor.getServer();
+        if (server != null){
+            if (server.getPlayerList().getPlayers().isEmpty()){
+                return false;
+            }
+        }
+        return isDarkEnoughToSpawn(levelAccessor, pos, source) && checkMobSpawnRules(p_219014_, levelAccessor, type, pos, source);
+    }
     public Predicate<LivingEntity> TARGET_SELECTOR = (entity) -> {
         return Utilities.TARGET_SELECTOR.Test(entity);
     };

@@ -349,22 +349,6 @@ public class Infected extends UtilityEntity implements Enemy {
         return super.hurt(source, amount);
     }
 
-    public static boolean checkMonsterInfectedRules(EntityType<? extends Infected> p_219014_, ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source) {
-        if (levelAccessor.getDifficulty() != Difficulty.PEACEFUL){
-            return furtherSpawnParameters(p_219014_,levelAccessor,type,pos,source);
-        }
-        return false;
-    }
-    private static boolean furtherSpawnParameters(EntityType<? extends Infected> p_219014_,ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source){
-        MinecraftServer server = levelAccessor.getServer();
-        if (server != null){
-            if (server.getPlayerList().getPlayers().isEmpty()){
-                return false;
-            }
-        }
-        return isDarkEnoughToSpawn(levelAccessor, pos, source) && checkMobSpawnRules(p_219014_, levelAccessor, type, pos, source);
-    }
-
 
     @Override
     public boolean addEffect(MobEffectInstance effectInstance, @org.jetbrains.annotations.Nullable Entity entity) {
