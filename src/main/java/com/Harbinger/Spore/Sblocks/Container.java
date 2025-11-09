@@ -67,17 +67,18 @@ public class Container extends BaseEntityBlock {
         }
     }
 
-    public InteractionResult use(BlockState p_49069_, Level p_49070_, BlockPos p_49071_, Player player, InteractionHand p_49073_, BlockHitResult p_49074_) {
-        if (p_49070_.isClientSide) {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            BlockEntity blockentity = p_49070_.getBlockEntity(p_49071_);
-            if (blockentity instanceof ContainerBlockEntity) {
-                player.openMenu((ContainerBlockEntity)blockentity);
+            BlockEntity blockentity = level.getBlockEntity(pos);
+            if (blockentity instanceof ContainerBlockEntity containerBlockEntity) {
+                player.openMenu(containerBlockEntity);
                 NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
             }
-            return InteractionResult.CONSUME;
         }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Nullable

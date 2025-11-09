@@ -2,6 +2,7 @@ package com.Harbinger.Spore.Sblocks;
 
 
 import com.Harbinger.Spore.SBlockEntities.CabinetBlockEntity;
+import com.Harbinger.Spore.SBlockEntities.SurgeryTableBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -62,17 +63,18 @@ public class Cabinet extends BaseEntityBlock {
             default -> box(0, 0, 0, 16, 16, 8);
         };
     }
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockentity = level.getBlockEntity(pos);
-            if (blockentity instanceof CabinetBlockEntity containerBlockEntity) {
-                player.openMenu(containerBlockEntity);
+            if (blockentity instanceof CabinetBlockEntity cabinetBlockEntity) {
+                player.openMenu(cabinetBlockEntity);
                 NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
             }
-            return InteractionResult.CONSUME;
         }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
