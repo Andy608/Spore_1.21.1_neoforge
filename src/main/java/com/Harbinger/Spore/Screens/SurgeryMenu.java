@@ -4,6 +4,7 @@ import com.Harbinger.Spore.SBlockEntities.SurgeryTableBlockEntity;
 import com.Harbinger.Spore.core.SMenu;
 import com.Harbinger.Spore.core.Sblocks;
 import com.Harbinger.Spore.core.Sitems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,8 +20,9 @@ import org.jetbrains.annotations.NotNull;
 public class SurgeryMenu extends AbstractContainerMenu {
     public final SurgeryTableBlockEntity blockEntity;
     private final Level level;
-    public SurgeryMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(25));}
+    public SurgeryMenu(int id, Inventory playerInventory, FriendlyByteBuf buf) {
+        this(id, playerInventory, playerInventory.player.level().getBlockEntity((buf != null) ? buf.readBlockPos() : BlockPos.ZERO), new SimpleContainerData(25));
+    }
 
     public SurgeryMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(SMenu.SURGERY_MENU.get(), pContainerId);

@@ -1,19 +1,15 @@
 package com.Harbinger.Spore.core;
 
-import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Sitems.*;
 import com.Harbinger.Spore.Sitems.Agents.*;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorMutations;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeToolsMutations;
 import com.Harbinger.Spore.Spore;
-import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
