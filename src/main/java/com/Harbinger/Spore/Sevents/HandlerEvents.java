@@ -5,9 +5,11 @@ import com.Harbinger.Spore.ExtremelySusThings.ChunkLoaderHelper;
 import com.Harbinger.Spore.ExtremelySusThings.SporeSavedData;
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Sentities.BaseEntities.*;
+import com.Harbinger.Spore.Sentities.BasicInfected.InfectedDrowned;
 import com.Harbinger.Spore.Sentities.EvolvedInfected.Protector;
 import com.Harbinger.Spore.Sentities.Organoids.Proto;
 import com.Harbinger.Spore.Sentities.Utility.ScentEntity;
+import com.Harbinger.Spore.Sitems.BaseWeapons.LootModifierWeapon;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeBaseArmor;
 import com.Harbinger.Spore.Spore;
 import com.Harbinger.Spore.core.*;
@@ -29,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Snowball;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -44,6 +47,7 @@ import net.neoforged.neoforge.event.entity.*;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent;
+import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -55,7 +59,6 @@ import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Spore.MODID)
 public class HandlerEvents {
-
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
         DespawnSystem.tickMobCleaner(event.getServer());
@@ -250,7 +253,60 @@ public class HandlerEvents {
             }
         }
     }
+    private static List<EntityType<?>> blacklist(){
+        List<EntityType<?>> values = new ArrayList<>();
+        values.add(Sentities.PLAGUED.get());
+        values.add(Sentities.LACERATOR.get());
+        values.add(Sentities.BIOBLOOB.get());
+        values.add(Sentities.SAUGLING.get());
+        return values;
+    }
+    @SubscribeEvent
+    public static void SpawnPlacement(RegisterSpawnPlacementsEvent event){
+        for (DeferredHolder<?,?> type : Sentities.SPORE_ENTITIES.getEntries()){
+            EntityType<?> entityType = (EntityType<?>) type.get();
+            if (blacklist().contains(entityType)){continue;}
+            try {
+                event.register((EntityType<UtilityEntity>) entityType, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,UtilityEntity::checkMonsterInfectedRules, RegisterSpawnPlacementsEvent.Operation.AND);
+            } catch (Exception e) {
+                String id = entityType.getDescriptionId();
+                Spore.LOGGER.warn("Could not apply custom placement {}: {}", id, e.getMessage());
+            }
+        }
+    }
+    @SubscribeEvent
+    public static void FishingAnInfectedDrowned(ItemFishedEvent event){
+        if (event != null){
+            if (Math.random() < 0.05 && event.getHookEntity().isOpenWaterFishing()){
+                InfectedDrowned infectedDrowned = new InfectedDrowned(Sentities.INF_DROWNED.get(),event.getEntity().level());
+                infectedDrowned.moveTo(event.getHookEntity().getX(),event.getHookEntity().getY(),event.getHookEntity().getZ());
+                infectedDrowned.setKills(1);
+                infectedDrowned.setTarget(event.getEntity());
+                event.getEntity().level().addFreshEntity(infectedDrowned);
+            }
+        }
+    }
 
+    @SubscribeEvent
+    public static void ExplosiveBite(LivingEntityUseItemEvent.Finish event){
+        if (event != null && !event.getEntity().level().isClientSide){
+            Item item = event.getItem().getItem();
+            if (item == Sitems.ROASTED_TUMOR.get() && Math.random() < 0.2){
+                LivingEntity entity = event.getEntity();
+                entity.level().explode(null,entity.getX(),entity.getY(),entity.getZ(),0.5f, Level.ExplosionInteraction.NONE);
+            }
+            if (item == Sitems.MILKY_SACK.get()){
+                LivingEntity entity = event.getEntity();
+                List<MobEffectInstance> effectsToRemove = new ArrayList<>();
+                entity.getActiveEffects().forEach(mobEffectInstance -> {
+                    if (!mobEffectInstance.getEffect().value().isBeneficial()) {
+                        effectsToRemove.add(mobEffectInstance);
+                    }
+                });
+                effectsToRemove.forEach(mobEffectInstance -> entity.removeEffect(mobEffectInstance.getEffect()));
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void ProtectFromEffect(MobEffectEvent.Applicable event)

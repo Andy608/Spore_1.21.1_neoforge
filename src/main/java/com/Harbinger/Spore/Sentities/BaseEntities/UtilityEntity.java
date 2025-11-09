@@ -79,13 +79,13 @@ public class UtilityEntity extends PathfinderMob {
         return this.damageSources().mobAttack(entity);
     }
 
-    public static boolean checkMonsterInfectedRules(EntityType<? extends Infected> p_219014_, ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source) {
+    public static boolean checkMonsterInfectedRules(EntityType<? extends UtilityEntity> p_219014_, ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source) {
         if (levelAccessor.getDifficulty() != Difficulty.PEACEFUL){
             return furtherSpawnParameters(p_219014_,levelAccessor,type,pos,source);
         }
         return false;
     }
-    private static boolean furtherSpawnParameters(EntityType<? extends Infected> p_219014_,ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source){
+    private static boolean furtherSpawnParameters(EntityType<? extends UtilityEntity> p_219014_,ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source){
         MinecraftServer server = levelAccessor.getServer();
         if (server != null){
             if (server.getPlayerList().getPlayers().isEmpty()){
