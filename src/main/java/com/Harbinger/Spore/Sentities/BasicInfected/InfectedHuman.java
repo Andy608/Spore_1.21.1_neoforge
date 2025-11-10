@@ -3,6 +3,7 @@ package com.Harbinger.Spore.Sentities.BasicInfected;
 import com.Harbinger.Spore.Sentities.AI.CustomMeleeAttackGoal;
 import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.EvolvingInfected;
+import com.Harbinger.Spore.Sentities.Variants.ScamperVariants;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
@@ -22,8 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public class InfectedHuman extends Infected implements EvolvingInfected {
-
-
     public InfectedHuman(EntityType<? extends Infected> type, Level level) {
         super(type, level);
     }
@@ -65,7 +64,7 @@ public class InfectedHuman extends Infected implements EvolvingInfected {
     @Override
     public void baseTick() {
         super.baseTick();
-        //tickEvolution(this,SConfig.SERVER.human_ev.get(), ScamperVariants.DEFAULT);
+        tickEvolution(this,SConfig.SERVER.human_ev.get(), ScamperVariants.DEFAULT);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -88,8 +87,8 @@ public class InfectedHuman extends Infected implements EvolvingInfected {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
 
-   // @Override
-    //public String origin() {
-       // return "minecraft:zombie";
-   // }
+    @Override
+    public String origin() {
+        return "minecraft:zombie";
+    }
 }
