@@ -63,35 +63,37 @@ public class LivingTickEvent {
             }
         }
     }
-    record ItemAndSlot(ItemStack stack,EquipmentSlot slot){}
     public static void TickEffects(PlayerTickEvent.Post event){
         Player living = event.getEntity();
         MobEffectInstance CorrosionInstance = living.getEffect(Seffects.CORROSION);
         MobEffectInstance SymbiosisInstance = living.getEffect(Seffects.SYMBIOSIS);
 
-        if (CorrosionInstance != null){
-            if (living.tickCount % 60 == 0){
-                if (living.level() instanceof ServerLevel serverLevel) {
-                    List<ItemAndSlot> itemsToCorrode = new ArrayList<>();
-                    for (EquipmentSlot slot : EquipmentSlot.values()){
-                        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR){
-                            ItemStack armorStack = living.getItemBySlot(slot);
-                            if (!armorStack.isEmpty()) {
-                                itemsToCorrode.add(new ItemAndSlot(armorStack,slot));
-                            }
+        if (CorrosionInstance != null && living.tickCount % 60 == 0){
+            if (living.level() instanceof ServerLevel serverLevel) {
+                List<EquipmentSlot> slotsToCorrode = new ArrayList<>();
+                for (EquipmentSlot slot : EquipmentSlot.values()){
+                    if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR){
+                        ItemStack armorStack = living.getItemBySlot(slot);
+                        if (!armorStack.isEmpty()) {
+                            slotsToCorrode.add(slot);
                         }
                     }
-                    if (!itemsToCorrode.isEmpty()){
-                        for (ItemAndSlot slotter : itemsToCorrode){
-                            slotter.stack().hurtAndBreak(
-                                    CorrosionInstance.getAmplifier() + 1
-                                    ,serverLevel,living, item ->{living.onEquippedItemBroken(item,slotter.slot());}
-                            );
-                        }
+                }
+
+                for (EquipmentSlot slot : slotsToCorrode) {
+                    ItemStack armorStack = living.getItemBySlot(slot);
+                    if (!armorStack.isEmpty()) {
+                        armorStack.hurtAndBreak(
+                                CorrosionInstance.getAmplifier() + 1,
+                                serverLevel,
+                                living,
+                                item -> { living.onEquippedItemBroken(item, slot); }
+                        );
                     }
                 }
             }
         }
+
 
         if (SymbiosisInstance != null) {
             if (living.tickCount % 200 == 0) {
