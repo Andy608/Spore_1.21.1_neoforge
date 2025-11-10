@@ -92,8 +92,11 @@ public class InfectedWitchModel<T extends InfectedWitch> extends EntityModel<T> 
 		if (entity.swinging){
 			this.RightArm.xRot = -90F;
 			this.LeftArm.xRot = -90F;
+		}else {
+			this.RightArm.xRot = 0F;
+			this.LeftArm.xRot = 0F;
 		}
-		else if (!(limbSwingAmount > -0.15F && limbSwingAmount < 0.15F)) {
+		if (!(limbSwingAmount > -0.15F && limbSwingAmount < 0.15F)) {
 			this.RightArm.xRot = Mth.cos(limbSwing * 0.8F) * 0.8F * limbSwingAmount;
 			this.LeftArm.xRot = Mth.cos(limbSwing * 0.8F) * -0.8F * limbSwingAmount;
 			this.RightArm.zRot = 0;

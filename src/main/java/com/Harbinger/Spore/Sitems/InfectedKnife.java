@@ -15,8 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 public class InfectedKnife extends SporeSwordBase implements LootModifierWeapon {
@@ -33,7 +31,8 @@ public class InfectedKnife extends SporeSwordBase implements LootModifierWeapon 
         return UseAnim.SPEAR;
     }
 
-    public int getUseDuration(ItemStack stack) {
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
@@ -49,11 +48,12 @@ public class InfectedKnife extends SporeSwordBase implements LootModifierWeapon 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int T) {
         if (entity instanceof Player player) {
-            int i = this.getUseDuration(stack) - T;
+            int i = this.getUseDuration(stack,entity) - T;
             if (i >= 10 && !level.isClientSide) {
                 stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
                 ThrownKnife thrownSpear = new ThrownKnife(level, player, stack,getVariant(stack).getColor());
+                thrownSpear.setPos(player.getEyePosition());
                 thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2F , 0.75F);
                 if (player.getAbilities().instabuild) {
                     thrownSpear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;

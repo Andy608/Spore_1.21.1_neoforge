@@ -26,7 +26,8 @@ public class VigilEye extends BaseItem{
     }
 
 
-    public int getUseDuration(ItemStack p_40680_) {
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 

@@ -61,7 +61,9 @@ public class InfectedSickle extends SporeSwordBase {
         return UseAnim.SPEAR;
     }
 
-    public int getUseDuration(ItemStack stack) {
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
@@ -77,7 +79,7 @@ public class InfectedSickle extends SporeSwordBase {
             setThrownSickle(itemstack, false);
 
             if (!projectiles.isEmpty()) {
-                ThrownSickle sickle = projectiles.get(0);
+                ThrownSickle sickle = projectiles.getFirst();
                 if (sickle.getHookState() == ThrownSickle.SickelState.HOOKED_IN_ENTITY && sickle.getHookedEntity() != null) {
                     Entity hooked = sickle.getHookedEntity();
 
@@ -110,10 +112,11 @@ public class InfectedSickle extends SporeSwordBase {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int T) {
         if (entity instanceof Player player && !getThrownSickle(stack)) {
-            int i = this.getUseDuration(stack) - T;
+            int i = this.getUseDuration(stack,entity) - T;
             if (i >= 10 && !level.isClientSide) {
                 stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 ThrownSickle thrownSpear = new ThrownSickle(level, player, stack,getVariant(stack).getColor());
+                thrownSpear.setPos(player.getEyePosition());
                 thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2F , 0.75F);
                 level.addFreshEntity(thrownSpear);
                 this.setThrownSickle(stack,true);

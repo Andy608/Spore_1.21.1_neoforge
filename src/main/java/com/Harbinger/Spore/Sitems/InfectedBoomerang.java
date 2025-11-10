@@ -5,7 +5,6 @@ import com.Harbinger.Spore.Sentities.Projectile.ThrownBoomerang;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeSwordBase;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Ssounds;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;

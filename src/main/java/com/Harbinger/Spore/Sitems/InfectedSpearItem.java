@@ -32,13 +32,16 @@ public class InfectedSpearItem extends SporeSwordBase implements ProjectileItem 
         return UseAnim.SPEAR;
     }
 
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
+        if (!tooHurt(itemstack)){
+            return InteractionResultHolder.fail(itemstack);
+        }
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(itemstack);
     }
@@ -48,12 +51,12 @@ public class InfectedSpearItem extends SporeSwordBase implements ProjectileItem 
         if (!(entity instanceof Player player)) return;
         EquipmentSlot hand = player.getMainHandItem().equals(stack) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-        int charge = this.getUseDuration(stack) - timeLeft;
+        int charge = this.getUseDuration(stack,entity) - timeLeft;
         if (charge < 10) return;
         if (!level.isClientSide) {
             ThrownSpear spear = new ThrownSpear(level, stack, player, this.getVariant(stack).getColor());
+            spear.setPos(player.getEyePosition());
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
-
             if (player.getAbilities().instabuild) {
                 spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }

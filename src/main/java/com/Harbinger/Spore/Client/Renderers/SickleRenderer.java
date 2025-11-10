@@ -45,11 +45,9 @@ public class SickleRenderer extends EntityRenderer<ThrownSickle> {
         VertexConsumer sickleConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(getTextureLocation(sickle)), false, sickle.isFoil());
         model.renderToBuffer(poseStack, sickleConsumer, light, OverlayTexture.NO_OVERLAY, color);
         poseStack.popPose();
-
-        // Tether: from sickle to player
         Entity owner = sickle.getOwner();
         if (owner != null) {
-            renderConnection(sickle,owner,poseStack,bufferSource,partialTicks,r,g,b);
+            renderConnection(sickle,owner,poseStack,bufferSource,partialTicks,color);
         }
 
         super.render(sickle, entityYaw, partialTicks, poseStack, bufferSource, light);
@@ -63,7 +61,7 @@ public class SickleRenderer extends EntityRenderer<ThrownSickle> {
     }
 
     private void renderConnection(ThrownSickle parent , Entity to, PoseStack stack,
-                                      MultiBufferSource buffer, float partialTick,float r,float g,float b) {
+                                      MultiBufferSource buffer, float partialTick,int color) {
         Vec3 start = parent.getPosition(partialTick).add(parent.getDeltaMovement().normalize().scale(-0.3));
         Vec3 vec3 = (new Vec3(0.2, 1.35, 0.6)).yRot(-to.getYRot() * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
         Vec3 end = to.getPosition(partialTick).add(vec3.x,vec3.y,vec3.z);
@@ -93,7 +91,7 @@ public class SickleRenderer extends EntityRenderer<ThrownSickle> {
                     endWidth, endHeight,      // End dimensions
                     length,                   // Distance between segments
                     OverlayTexture.NO_OVERLAY, 15728880,
-                    r, g, b, 1);              // RGBA color
+                    color);              // RGBA color
         }
         stack.popPose();
     }
@@ -103,7 +101,7 @@ public class SickleRenderer extends EntityRenderer<ThrownSickle> {
                                        float endWidth, float endHeight,
                                        float length,
                                        int overlay, int lightmap,
-                                       float red, float green, float blue, float alpha) {
+                                       int color) {
         // Half dimensions for start and end
         float hwStart = startWidth / 2f;
         float hhStart = startHeight / 2f;
@@ -111,19 +109,19 @@ public class SickleRenderer extends EntityRenderer<ThrownSickle> {
         float hhEnd = endHeight / 2f;
         // Left side
         vertexConsumer.addVertex(matrix, -hwStart, -hhStart, 0)
-                .setColor(red, green, blue, alpha).setUv1(0, 0)
+                .setColor(color).setUv(0, 0)
                 .setOverlay(overlay).setLight(lightmap)
                 .setNormal(normal, -1, 0, 0);
         vertexConsumer.addVertex(matrix, -hwStart, hhStart, 0)
-                .setColor(red, green, blue, alpha).setUv1(1, 0)
+                .setColor(color).setUv(1, 0)
                 .setOverlay(overlay).setLight(lightmap)
                 .setNormal(normal, -1, 0, 0);
         vertexConsumer.addVertex(matrix, -hwEnd, hhEnd, length)
-                .setColor(red, green, blue, alpha).setUv1(1, 1)
+                .setColor(color).setUv(1, 1)
                 .setOverlay(overlay).setLight(lightmap)
                 .setNormal(normal, -1, 0, 0);
         vertexConsumer.addVertex(matrix, -hwEnd, -hhEnd, length)
-                .setColor(red, green, blue, alpha).setUv1(0, 1)
+                .setColor(color).setUv(0, 1)
                 .setOverlay(overlay).setLight(lightmap)
                 .setNormal(normal, -1, 0, 0);
     }

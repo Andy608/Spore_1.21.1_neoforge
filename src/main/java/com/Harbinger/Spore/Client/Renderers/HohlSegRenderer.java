@@ -26,7 +26,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 import java.util.Map;
