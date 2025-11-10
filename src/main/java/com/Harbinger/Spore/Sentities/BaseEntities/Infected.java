@@ -84,6 +84,14 @@ public class Infected extends UtilityEntity implements Enemy {
 
     }
 
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if (entity instanceof LivingEntity living){
+            living.addEffect(new MobEffectInstance(Seffects.MYCELIUM,  600, 0), this);
+        }
+        return super.doHurtTarget(entity);
+    }
+
     public void setFollowPartner(@Nullable LivingEntity followPartner) {
         this.partner = followPartner;
     }
