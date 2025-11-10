@@ -72,7 +72,7 @@ public class HandlerEvents {
         }
     }
     @SubscribeEvent
-    public static void TickEvents(PlayerTickEvent.Post event){
+    public static void TickEvents(PlayerTickEvent.Pre event){
         LivingTickEvent.TickEffects(event);
         Player player = event.getEntity();
             Level level = player.level();
@@ -95,8 +95,8 @@ public class HandlerEvents {
                     player.addEffect(new MobEffectInstance(madnessHolder, 12000, amplifier - 1));
                 }
             }
-
     }
+
     @SubscribeEvent
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
