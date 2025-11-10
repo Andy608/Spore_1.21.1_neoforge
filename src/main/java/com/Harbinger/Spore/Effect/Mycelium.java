@@ -1,5 +1,6 @@
 package com.Harbinger.Spore.Effect;
 
+import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.SdamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -22,7 +23,7 @@ public class Mycelium extends MobEffect implements SporeEffectsHandler{
     }
 
     public void triggerEffects(LivingEntity entity, int intensity) {
-        if (!SConfig.SERVER.mycelium.get().contains(entity.getEncodeId())){
+        if (!SConfig.SERVER.mycelium.get().contains(entity.getEncodeId()) && Utilities.TARGET_SELECTOR.Test(entity)){
             if (!entity.level().isClientSide && entity instanceof Player player && player.getFoodData().getFoodLevel() > 0 && intensity < 1){
                 player.causeFoodExhaustion(1.0F);
             }else {
