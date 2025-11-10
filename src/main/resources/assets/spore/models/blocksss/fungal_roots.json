@@ -1,6 +1,0 @@
-{
-  "parent": "spore:block/foliage",
-  "textures": {
-    "cross": "spore:block/fungal_roots"
-  }
-}

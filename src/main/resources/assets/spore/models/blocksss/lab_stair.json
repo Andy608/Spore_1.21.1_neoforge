@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "spore:block/laboratory_block",
-    "top": "spore:block/laboratory_block",
-    "side": "spore:block/laboratory_block"
-  }
-}

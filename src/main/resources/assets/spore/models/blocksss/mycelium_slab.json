@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "spore:block/mycelium_block",
-    "top": "spore:block/mycelium_block",
-    "side": "spore:block/mycelium_block"
-  }
-}
