@@ -39,7 +39,7 @@ public class Sentities {
     }
 
     public static final MobCategory INFECTED = MobCategory.MONSTER;//MobCategory.create("infected","infected",SConfig.SERVER.mob_cap.get(),false,false,128);
-    public static final MobCategory ORGANOID = MobCategory.MONSTER;//MobCategory.create("organoid","organoid",20,false,false,64);
+    public static final MobCategory ORGANOID = MobCategory.MISC;//MobCategory.create("organoid","organoid",20,false,false,64);
 
     public static final Supplier<EntityType<InfectedHuman>> INF_HUMAN = SPORE_ENTITIES.register("inf_human",
             () -> EntityType.Builder.of(InfectedHuman::new, INFECTED).sized(0.6f, 1.9f)
