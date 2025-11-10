@@ -30,12 +30,12 @@ public class GraftingMenu extends AbstractContainerMenu {
 
     // only 4 slots used in this menu
     private static final int TE_INVENTORY_SLOT_COUNT = 4;
-
+    public static final ContainerData data = new SimpleContainerData(25);
     public GraftingMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(25));
+        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public GraftingMenu(int containerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public GraftingMenu(int containerId, Inventory inv, BlockEntity entity) {
         super(SMenu.GRAFTING_MENU.get(), containerId);
         this.blockEntity = (SurgeryTableBlockEntity) entity;
         this.level = inv.player.level();

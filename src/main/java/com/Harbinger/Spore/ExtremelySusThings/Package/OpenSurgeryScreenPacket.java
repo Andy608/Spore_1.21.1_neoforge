@@ -3,6 +3,7 @@ import com.Harbinger.Spore.Screens.SurgeryMenu;
 import com.Harbinger.Spore.Spore;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -52,7 +53,13 @@ public record OpenSurgeryScreenPacket(BlockPos pos, int id) implements CustomPac
 
                     @Override
                     public AbstractContainerMenu createMenu(int id, Inventory inv, Player ply) {
-                        return new SurgeryMenu(id, inv, table, table.data);
+                        return new SurgeryMenu(id, inv, table);
+                    }
+
+                    @Override
+                    public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+                        MenuProvider.super.writeClientSideData(menu, buffer);
+                        buffer.writeBlockPos(table.getBlockPos());
                     }
                 });
             }

@@ -14,6 +14,9 @@ import com.Harbinger.Spore.core.Srecipes;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -48,10 +51,8 @@ public class SurgeryTableBlockEntity extends BlockEntity implements MenuProvider
     public static final int GRATING_INGREDIENT = 22;
     public static final int GRATING_ITEM_TWO = 23;
     public static final int GRATING_OUTPUT = 24;
-    public final ContainerData data;
     public SurgeryTableBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(SblockEntities.SURGERY_TABLE_ENTITY.get(), p_155229_, p_155230_);
-        this.data = new SimpleContainerData(25);
     }
 
     @Override
@@ -61,9 +62,12 @@ public class SurgeryTableBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int pContainerId, Inventory inventory, Player player) {
-        return new SurgeryMenu(pContainerId, inventory, this, this.data);
+        return new SurgeryMenu(pContainerId, inventory, this);
     }
-
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
     public ItemStackHandler getItemHandler() {
         return itemHandler;
     }

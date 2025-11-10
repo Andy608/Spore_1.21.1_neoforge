@@ -40,7 +40,7 @@ public class Sblocks {
     public static final DeferredBlock<Block> CDU = BLOCKS.register("cdu", () -> new CDUBlock(CDUBlock.defaultProperties));
     public static final DeferredBlock<Block> ZOAHOLIC = BLOCKS.register("zoaholic", () -> new ZoaholicBlock(ZoaholicBlock.defaultProperties));
     public static final DeferredBlock<Block> INCUBATOR = BLOCKS.register("incubator", () -> new IncubatorBlock(IncubatorBlock.defaultProperties));
-    public static final DeferredBlock<Block> SURGERY_TABLE = BLOCKS.register("surgery_table", SurgeryTableBlock::new);
+    public static final DeferredBlock<Block> SURGERY_TABLE = BLOCKS.register("surgery_table", () -> new SurgeryTableBlock(SurgeryTableBlock.defaultProperties));
     public static final DeferredBlock<Block> CABINET = BLOCKS.register("cabinet",() -> new Cabinet(Cabinet.getDefaultProperties));
 
     public static final DeferredBlock<Block> REINFORCED_DOOR = BLOCKS.register("reinforced_door",() -> new DoorBlock(LAB_TYPE,BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(20f, 1200.0F).noOcclusion().sound(SoundType.METAL)));

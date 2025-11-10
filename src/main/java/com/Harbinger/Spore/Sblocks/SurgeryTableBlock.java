@@ -2,13 +2,21 @@ package com.Harbinger.Spore.Sblocks;
 
 import com.Harbinger.Spore.SBlockEntities.ContainerBlockEntity;
 import com.Harbinger.Spore.SBlockEntities.SurgeryTableBlockEntity;
+import com.Harbinger.Spore.Screens.SurgeryMenu;
 import com.Harbinger.Spore.core.SblockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -34,10 +42,13 @@ public class SurgeryTableBlock extends BaseEntityBlock implements SimpleWaterlog
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final VoxelShape SHAPE = Block.box(0.1, 0, 0.1, 15.9, 16, 15.9);
-    public SurgeryTableBlock() {
-        super(Properties.of().sound(SoundType.STONE).strength(6f, 20f));
+    public static final MapCodec<SurgeryTableBlock> CODEC = simpleCodec(SurgeryTableBlock::new);
+    public static final Properties defaultProperties = Properties.of().sound(SoundType.STONE).strength(6f, 20f);
+    public SurgeryTableBlock(Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.FALSE));
     }
+
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -51,7 +62,7 @@ public class SurgeryTableBlock extends BaseEntityBlock implements SimpleWaterlog
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return null;
+        return CODEC;
     }
 
     @Override
@@ -117,11 +128,26 @@ public class SurgeryTableBlock extends BaseEntityBlock implements SimpleWaterlog
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockentity = level.getBlockEntity(pos);
-            if (blockentity instanceof SurgeryTableBlockEntity surgeryTableBlock) {
-                player.openMenu(surgeryTableBlock);
-                NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
-            }
+            if (blockentity instanceof SurgeryTableBlockEntity surgeryTableBlock && player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.openMenu(new MenuProvider() {
+                @Override
+                public Component getDisplayName() {
+                    return Component.translatable("container.spore.surgery_table");
+                }
+
+                @Override
+                public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+                    return new SurgeryMenu(containerId, playerInventory, surgeryTableBlock);
+                }
+
+                @Override
+                public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+                    MenuProvider.super.writeClientSideData(menu, buffer);
+                    buffer.writeBlockPos(pos);
+                }
+            });
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
+  }
 }

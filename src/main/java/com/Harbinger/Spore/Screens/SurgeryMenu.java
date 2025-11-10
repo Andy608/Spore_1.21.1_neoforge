@@ -20,11 +20,12 @@ import org.jetbrains.annotations.NotNull;
 public class SurgeryMenu extends AbstractContainerMenu {
     public final SurgeryTableBlockEntity blockEntity;
     private final Level level;
+    public static final ContainerData data = new SimpleContainerData(25);
     public SurgeryMenu(int id, Inventory playerInventory, FriendlyByteBuf buf) {
-        this(id, playerInventory, playerInventory.player.level().getBlockEntity((buf != null) ? buf.readBlockPos() : BlockPos.ZERO), new SimpleContainerData(25));
+        this(id, playerInventory, playerInventory.player.level().getBlockEntity(buf.readBlockPos()));
     }
 
-    public SurgeryMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public SurgeryMenu(int pContainerId, Inventory inv, BlockEntity entity) {
         super(SMenu.SURGERY_MENU.get(), pContainerId);
         checkContainerSize(inv, 25);
         blockEntity = ((SurgeryTableBlockEntity) entity);
