@@ -83,7 +83,7 @@ public class BiologicalReagent extends BaseItem {
         super.appendHoverText(stack, context, list, tooltipFlag);
         list.add(Component.translatable(type.getId()).withStyle(ChatFormatting.GOLD));
         list.add(Component.translatable("item.reagent.line1"));
-        list.add(Component.translatable(getAppliedEnchantment().location().toLanguageKey()));
+        list.add(Component.translatable("enchantment."+getAppliedEnchantment().location().toLanguageKey()));
         list.add(Component.translatable("item.reagent.line2").withStyle(ChatFormatting.BLACK));
         list.add(Component.translatable("universal_shift_rightclick").withStyle(ChatFormatting.YELLOW));
     }

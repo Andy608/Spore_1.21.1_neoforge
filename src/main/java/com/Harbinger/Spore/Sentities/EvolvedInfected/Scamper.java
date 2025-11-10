@@ -184,7 +184,7 @@ public class Scamper extends EvolvedInfected implements WaterInfected, VariantKe
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, SConfig.SERVER.scamper_hp.get() * SConfig.SERVER.global_health.get())
-                .add(Attributes.MOVEMENT_SPEED, 0.2)
+                .add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.ATTACK_DAMAGE, SConfig.SERVER.scamper_damage.get() * SConfig.SERVER.global_damage.get())
                 .add(Attributes.ARMOR, SConfig.SERVER.scamper_armor.get() * SConfig.SERVER.global_armor.get())
                 .add(Attributes.FOLLOW_RANGE, 8)
