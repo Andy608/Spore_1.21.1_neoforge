@@ -16,7 +16,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -64,45 +63,60 @@ public class LivingTickEvent {
             }
         }
     }
+    record ItemAndSlot(ItemStack stack,EquipmentSlot slot){}
     public static void TickEffects(PlayerTickEvent.Post event){
         Player living = event.getEntity();
         MobEffectInstance CorrosionInstance = living.getEffect(Seffects.CORROSION);
         MobEffectInstance SymbiosisInstance = living.getEffect(Seffects.SYMBIOSIS);
+
         if (CorrosionInstance != null){
             if (living.tickCount % 60 == 0){
                 if (living.level() instanceof ServerLevel serverLevel) {
+                    List<ItemAndSlot> itemsToCorrode = new ArrayList<>();
                     for (EquipmentSlot slot : EquipmentSlot.values()){
                         if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR){
                             ItemStack armorStack = living.getItemBySlot(slot);
                             if (!armorStack.isEmpty()) {
-                                armorStack.hurtAndBreak(
-                                        CorrosionInstance.getAmplifier() + 1
-                                        ,serverLevel,living, item ->{living.onEquippedItemBroken(item,slot);}
-                                );
+                                itemsToCorrode.add(new ItemAndSlot(armorStack,slot));
                             }
                         }
                     }
-                }
-            }
-        }
-        if (SymbiosisInstance != null) {
-            if (living.tickCount % 200 == 0) {
-                int size = living.getInventory().getContainerSize();
-                for (int i = 0; i <= size; i++) {
-                    ItemStack itemStack = living.getInventory().getItem(i);
-                    if (Senchantments.hasEnchant(living.level(), itemStack, Senchantments.SYMBIOTIC_RECONSTITUTION) && itemStack.isDamaged()) {
-                        if (itemStack.getItem() instanceof SporeToolsBaseItem base) {
-                            base.healTool(itemStack, SymbiosisInstance.getAmplifier() * 2);
-                        } else if (itemStack.getItem() instanceof SporeArmorData base) {
-                            base.healTool(itemStack, SymbiosisInstance.getAmplifier() * 2);
-                        } else {
-                            int l = itemStack.getDamageValue() - SymbiosisInstance.getAmplifier() * 2;
-                            itemStack.setDamageValue(l);
+                    if (!itemsToCorrode.isEmpty()){
+                        for (ItemAndSlot slotter : itemsToCorrode){
+                            slotter.stack().hurtAndBreak(
+                                    CorrosionInstance.getAmplifier() + 1
+                                    ,serverLevel,living, item ->{living.onEquippedItemBroken(item,slotter.slot());}
+                            );
                         }
                     }
                 }
             }
         }
 
+        if (SymbiosisInstance != null) {
+            if (living.tickCount % 200 == 0) {
+                List<ItemStack> itemsToHeal = new ArrayList<>();
+                int size = living.getInventory().getContainerSize();
+                for (int i = 0; i < size; i++) {
+                    ItemStack itemStack = living.getInventory().getItem(i);
+                    if (!itemStack.isEmpty() &&
+                            Senchantments.hasEnchant(living.level(), itemStack, Senchantments.SYMBIOTIC_RECONSTITUTION) &&
+                            itemStack.isDamaged()) {
+                        itemsToHeal.add(itemStack);
+                    }
+                }
+
+                for (ItemStack itemStack : itemsToHeal) {
+                    if (itemStack.getItem() instanceof SporeToolsBaseItem base) {
+                        base.healTool(itemStack, SymbiosisInstance.getAmplifier() * 2);
+                    } else if (itemStack.getItem() instanceof SporeArmorData base) {
+                        base.healTool(itemStack, SymbiosisInstance.getAmplifier() * 2);
+                    } else {
+                        int l = Math.max(0, itemStack.getDamageValue() - SymbiosisInstance.getAmplifier() * 2);
+                        itemStack.setDamageValue(l);
+                    }
+                }
+            }
+        }
     }
 }
