@@ -33,13 +33,13 @@ import java.util.List;
 public class DamageHandeling {
     public static void DefenseBypass(LivingDamageEvent.Pre event) {
         Entity living = event.getSource().getEntity();
-        if (living instanceof Player player && event.getEntity().getItemBySlot(EquipmentSlot.CHEST).equals(ItemStack.EMPTY)){
+        LivingEntity target = event.getEntity();
+        if (living instanceof Player player && target.getItemBySlot(EquipmentSlot.CHEST).equals(ItemStack.EMPTY)){
             ItemStack weapon = player.getMainHandItem();
             if (weapon.getItem() instanceof PCI pci && pci.getCharge(weapon)>0 && !player.getCooldowns().isOnCooldown(pci)){
                 int damageMod = SConfig.SERVER.pci_damage_multiplier.get();
                 int charge = pci.getCharge(weapon);
-                LivingEntity target = event.getEntity();
-                boolean freeze = event.getEntity().getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES);
+                boolean freeze = target.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES);
                 float targetHealth = freeze ? target.getHealth()/damageMod : target.getHealth();
                 int freezeDamage = charge >= targetHealth ? (int) targetHealth : charge;
                 event.setNewDamage(freeze ?freezeDamage * damageMod : freezeDamage);
@@ -86,7 +86,7 @@ public class DamageHandeling {
                 livingEntity.addEffect(new MobEffectInstance(Seffects.MADNESS,jumpLevel ? duration: duration-12000,jumpLevel ? level : level+1));
             }
         }
-        if (event.getEntity() instanceof Player player) {
+        if (target instanceof Player player) {
             float totalDamageModification = 0.0F;
 
             for (ItemStack stack : player.getArmorSlots()) {
@@ -96,7 +96,7 @@ public class DamageHandeling {
             }
             event.setNewDamage(event.getOriginalDamage() + totalDamageModification);
         }
-        if (event.getSource().getEntity() instanceof ServerPlayer serverPlayer){
+        if (living instanceof ServerPlayer serverPlayer){
             int i = 0;
             for (ItemStack stack : serverPlayer.getInventory().armor){
                 if (stack.getItem() instanceof SporeBaseArmor baseArmor && baseArmor.getVariant(stack) == SporeArmorMutations.CHARRED){
@@ -107,7 +107,7 @@ public class DamageHandeling {
                 event.getEntity().setRemainingFireTicks(i * 20);
             }
         }
-        if (event.getSource().getEntity() instanceof Mob attacker){
+        if (living instanceof Mob attacker){
             CompoundTag data = attacker.getPersistentData();
             if (data.contains("hivemind")) {
                 int summonerUUID = data.getInt("hivemind");
@@ -121,7 +121,7 @@ public class DamageHandeling {
                 }
             }
         }
-        if (event.getEntity() instanceof Mob creature){
+        if (target instanceof Mob creature){
             CompoundTag data = creature.getPersistentData();
             if (data.contains("hivemind")) {
                 int summonerUUID = data.getInt("hivemind");

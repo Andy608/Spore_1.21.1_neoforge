@@ -4,6 +4,7 @@ import com.Harbinger.Spore.Client.ClientUtils;
 import com.Harbinger.Spore.Sitems.BaseWeapons.DeathRewardingWeapon;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeSwordBase;
 import com.Harbinger.Spore.core.SConfig;
+import com.Harbinger.Spore.core.Sparticles;
 import com.Harbinger.Spore.core.Ssounds;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.particles.ParticleTypes;
@@ -145,7 +146,7 @@ public class InfectedCleaver extends SporeSwordBase implements DeathRewardingWea
                     double x = player.getX() + radius * Math.cos(angle);
                     double z = player.getZ() + radius * Math.sin(angle);
                     // To be fixed when I add the particles
-                    ((ServerLevel) entity.level()).sendParticles(ParticleTypes.BUBBLE, x, player.getY() + 1, z, 1, 0, 0, 0, 0);
+                    ((ServerLevel) entity.level()).sendParticles(Sparticles.SPORE_SLASH.get(), x, player.getY() + 1, z, 1, 0, 0, 0, 0);
                 }
 
                 AABB area = player.getBoundingBox().inflate(3.5,1,3.5);
