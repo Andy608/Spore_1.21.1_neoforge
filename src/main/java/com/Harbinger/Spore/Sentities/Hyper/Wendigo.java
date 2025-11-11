@@ -294,9 +294,10 @@ public class Wendigo extends Hyper {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
+        EntityDimensions dimensions = super.getDefaultDimensions(pose);
         if (this.isStalking()){
-            return super.getDimensions(pose).scale(2.2F,0.35F);
+            return dimensions.scale(2.2F,0.35F);
         }
-        return super.getDefaultDimensions(pose);
+        return dimensions;
     }
 }

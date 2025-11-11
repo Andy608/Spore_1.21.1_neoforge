@@ -9,6 +9,7 @@ import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.BaseEntities.UtilityEntity;
 import com.Harbinger.Spore.Sentities.Projectile.ThrownBlockProjectile;
 import com.Harbinger.Spore.core.SConfig;
+import com.Harbinger.Spore.core.Sblocks;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
@@ -50,6 +51,8 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static com.Harbinger.Spore.ExtremelySusThings.Utilities.biomass;
 
 public class InfestedConstruct extends UtilityEntity implements RangedAttackMob, Enemy {
     public static final EntityDataAccessor<Boolean> ACTIVE = SynchedEntityData.defineId(InfestedConstruct.class, EntityDataSerializers.BOOLEAN);
@@ -340,9 +343,9 @@ public class InfestedConstruct extends UtilityEntity implements RangedAttackMob,
 
     public boolean interactBlock(BlockPos blockPos, Level level) {
         BlockState state = level.getBlockState(blockPos);
-        //if (biomass().contains(state)){
-          //  return level.setBlock(blockPos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3);
-        //}
+        if (biomass().contains(state)){
+            return level.setBlock(blockPos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3);
+        }
         return level.destroyBlock(blockPos, false, this);
     }
 
@@ -387,10 +390,11 @@ public class InfestedConstruct extends UtilityEntity implements RangedAttackMob,
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
+        EntityDimensions dimensions = super.getDimensions(pose);
         if (isActive()){
-            return super.getDimensions(pose);
+            return dimensions;
         }else{
-            return super.getDimensions(pose).scale(1f,0.4f);
+            return dimensions.scale(1f,0.4f);
         }
     }
 
