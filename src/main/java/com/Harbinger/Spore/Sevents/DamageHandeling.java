@@ -15,6 +15,7 @@ import com.Harbinger.Spore.Sitems.PCI;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Seffects;
 
+import com.Harbinger.Spore.core.Senchantments;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
@@ -22,6 +23,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -135,25 +137,57 @@ public class DamageHandeling {
             }
         }
 
-        /* --------------------------------------------------------
-         *  CHARRED ARMOR FIRE TICKS (SAFE)
-         * -------------------------------------------------------- */
         if (attacker instanceof ServerPlayer sp) {
             int fire = 0;
-
+            int thornLevel = 0;
             for (ItemStack stack : sp.getInventory().armor) {
                 if (stack.getItem() instanceof SporeBaseArmor base &&
                         base.getVariant(stack) == SporeArmorMutations.CHARRED) {
 
                     fire += 2;
                 }
+                if (stack.getItem() instanceof ArmorItem) {
+
+                    thornLevel += thornLevel;
+                }
             }
 
             if (fire > 0) {
                 target.setRemainingFireTicks(fire * 20);
             }
-        }
 
+        }
+        if (attacker instanceof LivingEntity living){
+            int thornLevel = 0;
+            int duration = 40 + thornLevel * 40;
+            for (EquipmentSlot slot : EquipmentSlot.values()){
+                ItemStack stack = target.getItemBySlot(slot);
+                if (!stack.isEmpty() && Senchantments.hasEnchant(target.level(),stack,Senchantments.SERRATED_THORNS)){
+                    thornLevel += thornLevel;
+                }
+            }
+            if (thornLevel > 0) {
+                living.hurt(attacker.damageSources().thorns(target), 3.5f * thornLevel);
+                if (Math.random() < 0.5f) {
+                    living.addEffect(new MobEffectInstance(
+                            MobEffects.POISON,
+                            duration,
+                            0,
+                            false,
+                            true
+                    ));
+                } else {
+                    living.addEffect(new MobEffectInstance(
+                            Seffects.CORROSION,
+                            duration,
+                            0,
+                            false,
+                            true
+                    ));
+                }
+
+            }
+        }
         /* --------------------------------------------------------
          *  HIVEMIND LOGIC
          * -------------------------------------------------------- */
