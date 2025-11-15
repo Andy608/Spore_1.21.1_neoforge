@@ -6,12 +6,9 @@ import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Sentities;
 import com.Harbinger.Spore.core.Sitems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -25,8 +22,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.Random;
 
 public class AcidBall extends AbstractArrow implements ItemSupplier {
-
-
     public AcidBall(Level level) {
         super(Sentities.ACID_BALL.get(),level);
     }

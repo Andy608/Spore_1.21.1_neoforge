@@ -14,125 +14,183 @@ import com.Harbinger.Spore.Sitems.BaseWeapons.SporeBaseArmor;
 import com.Harbinger.Spore.Sitems.PCI;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Seffects;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 import java.util.List;
 
 public class DamageHandeling {
+    private static float clampMin(float current, float min) {
+        return Math.max(current, min);
+    }
     public static void DefenseBypass(LivingDamageEvent.Pre event) {
-        Entity living = event.getSource().getEntity();
+
+        Entity attacker = event.getSource().getEntity();
         LivingEntity target = event.getEntity();
-        if (living instanceof Player player && target.getItemBySlot(EquipmentSlot.CHEST).equals(ItemStack.EMPTY)){
+
+        float dmg = event.getNewDamage();  // always modify THIS value
+        float modified = dmg;
+
+        /* --------------------------------------------------------
+         *  PCI DAMAGE HANDLING (SAFE SCALAR VERSION)
+         * -------------------------------------------------------- */
+        if (attacker instanceof Player player && target.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
             ItemStack weapon = player.getMainHandItem();
-            if (weapon.getItem() instanceof PCI pci && pci.getCharge(weapon)>0 && !player.getCooldowns().isOnCooldown(pci)){
-                int damageMod = SConfig.SERVER.pci_damage_multiplier.get();
+
+            if (weapon.getItem() instanceof PCI pci &&
+                    pci.getCharge(weapon) > 0 &&
+                    !player.getCooldowns().isOnCooldown(pci)) {
+                float targetHealth = target.getHealth();
                 int charge = pci.getCharge(weapon);
-                boolean freeze = target.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES);
-                float targetHealth = freeze ? target.getHealth()/damageMod : target.getHealth();
+                int dmgMod = SConfig.SERVER.pci_damage_multiplier.get();
                 int freezeDamage = charge >= targetHealth ? (int) targetHealth : charge;
-                event.setNewDamage(freeze ?freezeDamage * damageMod : freezeDamage);
-                pci.setCharge(weapon, charge - freezeDamage);
+                boolean freeze = target.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES);
+                modified = clampMin(modified, (float) (freeze ? freezeDamage * dmgMod : freezeDamage));
                 target.setTicksFrozen(600);
-                player.getCooldowns().addCooldown(pci, (int) Math.ceil(targetHealth / 5f) * 20);
+
+                // Reduce PCI charge (safe)
+                pci.setCharge(weapon, charge - 1);
+
+                // Give cooldown
+                player.getCooldowns().addCooldown(pci, 20);
+
                 pci.playSound(player);
             }
         }
-        if(event.getEntity() instanceof Infected victim && !(victim instanceof Protector)) {
-            LivingEntity attacker = living instanceof LivingEntity e ? e : null;
-            List<Protector> protectorList = SporeSavedData.protectorList();
-            if (!protectorList.isEmpty() && attacker != null){
-                for (Protector protector1 : protectorList){
-                    double d0 = protector1.distanceTo(attacker);
-                    if (protector1.isAlive() && d0 < 64f && !attacker.isSpectator() && Utilities.TARGET_SELECTOR.Test(attacker)){
-                        protector1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,100,0));
-                        protector1.setTarget(attacker);
+
+        /* --------------------------------------------------------
+         *  PROTECTOR LOGIC
+         * -------------------------------------------------------- */
+        if (target instanceof Infected victim && !(victim instanceof Protector)) {
+
+            LivingEntity lAttacker = attacker instanceof LivingEntity le ? le : null;
+
+            if (lAttacker != null) {
+                List<Protector> protectorList = SporeSavedData.protectorList();
+                for (Protector protector : protectorList) {
+                    if (protector.isAlive() &&
+                            protector.distanceTo(lAttacker) < 64 &&
+                            !lAttacker.isSpectator() &&
+                            Utilities.TARGET_SELECTOR.Test(lAttacker)) {
+
+                        protector.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 0));
+                        protector.setTarget(lAttacker);
                     }
                 }
             }
         }
-        if (living instanceof ArmorPersentageBypass bypass){
-            float original_damage = event.getOriginalDamage();
-            float recalculatedDamage = bypass.amountOfDamage(original_damage);
-            if (recalculatedDamage >= 0 && original_damage < recalculatedDamage){
-                event.setNewDamage(recalculatedDamage);
-            }
-        }
-        if (living instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().getItem() instanceof DamagePiercingModifier piercingModifier){
-            float original_damage = event.getOriginalDamage();
-            float recalculatedDamage = piercingModifier.getMinimalDamage(original_damage);
-            if (recalculatedDamage >= 0 && original_damage < recalculatedDamage){
-                event.setNewDamage(recalculatedDamage);
-            }
-        }
-        if (living instanceof UtilityEntity && !(living instanceof Illusion)){
-            LivingEntity livingEntity = event.getEntity();
-            MobEffectInstance mobEffectInstance = livingEntity.getEffect(Seffects.MADNESS);
-            if (mobEffectInstance != null){
-                int level = mobEffectInstance.getAmplifier();
-                int duration = mobEffectInstance.getDuration() +1200;
-                boolean jumpLevel = duration < 12000;
-                livingEntity.addEffect(new MobEffectInstance(Seffects.MADNESS,jumpLevel ? duration: duration-12000,jumpLevel ? level : level+1));
-            }
-        }
-        if (target instanceof Player player) {
-            float totalDamageModification = 0.0F;
 
+        /* --------------------------------------------------------
+         *  ARMOR PERCENTAGE BYPASS (NOW A MULTIPLIER)
+         * -------------------------------------------------------- */
+        if (attacker instanceof ArmorPersentageBypass bypass) {
+            float minimum = bypass.amountOfDamage(dmg); // you return a minimum
+            modified = clampMin(modified, minimum);
+        }
+
+        /* --------------------------------------------------------
+         *  DAMAGE PIERCING WEAPONS (MULTIPLIER ONLY)
+         * -------------------------------------------------------- */
+        if (attacker instanceof LivingEntity living &&
+                living.getMainHandItem().getItem() instanceof DamagePiercingModifier pierce) {
+
+            float minimum = pierce.getMinimalDamage(dmg);
+            modified = clampMin(modified, minimum);
+        }
+
+        /* --------------------------------------------------------
+         *  MADNESS EFFECT INCREASE (safe)
+         * -------------------------------------------------------- */
+        if (attacker instanceof UtilityEntity && !(attacker instanceof Illusion)) {
+            MobEffectInstance inst = target.getEffect(Seffects.MADNESS);
+
+            if (inst != null) {
+                int level = inst.getAmplifier();
+                int dur = inst.getDuration() + 1200;
+                boolean jump = dur < 12000;
+
+                target.addEffect(new MobEffectInstance(
+                        Seffects.MADNESS,
+                        jump ? dur : dur - 12000,
+                        jump ? level : level + 1
+                ));
+            }
+        }
+
+        /* --------------------------------------------------------
+         *  ARMOR DAMAGE BONUS (ADDITIVE, NOT REPLACEMENT)
+         * -------------------------------------------------------- */
+        if (target instanceof Player player) {
             for (ItemStack stack : player.getArmorSlots()) {
                 if (stack.getItem() instanceof SporeBaseArmor armor) {
-                    totalDamageModification += armor.calculateAdditionalDamage(event.getSource(), stack, event.getOriginalDamage());
+                    modified += armor.calculateAdditionalDamage(
+                            event.getSource(), stack, dmg
+                    );
                 }
             }
-            event.setNewDamage(event.getOriginalDamage() + totalDamageModification);
         }
-        if (living instanceof ServerPlayer serverPlayer){
-            int i = 0;
-            for (ItemStack stack : serverPlayer.getInventory().armor){
-                if (stack.getItem() instanceof SporeBaseArmor baseArmor && baseArmor.getVariant(stack) == SporeArmorMutations.CHARRED){
-                    i=i+2;
-                }
-            }
-            if (i > 0){
-                event.getEntity().setRemainingFireTicks(i * 20);
-            }
-        }
-        if (living instanceof Mob attacker){
-            CompoundTag data = attacker.getPersistentData();
-            if (data.contains("hivemind")) {
-                int summonerUUID = data.getInt("hivemind");
-                Level level = attacker.level();
-                Entity summoner = level.getEntity(summonerUUID);
 
-                if (summoner instanceof Proto smartMob) {
-                    int decision = data.getInt("decision");
-                    int member = data.getInt("member");
-                    smartMob.praisedForDecision(decision,member);
+        /* --------------------------------------------------------
+         *  CHARRED ARMOR FIRE TICKS (SAFE)
+         * -------------------------------------------------------- */
+        if (attacker instanceof ServerPlayer sp) {
+            int fire = 0;
+
+            for (ItemStack stack : sp.getInventory().armor) {
+                if (stack.getItem() instanceof SporeBaseArmor base &&
+                        base.getVariant(stack) == SporeArmorMutations.CHARRED) {
+
+                    fire += 2;
+                }
+            }
+
+            if (fire > 0) {
+                target.setRemainingFireTicks(fire * 20);
+            }
+        }
+
+        /* --------------------------------------------------------
+         *  HIVEMIND LOGIC
+         * -------------------------------------------------------- */
+        if (attacker instanceof Mob mob) {
+            CompoundTag tag = mob.getPersistentData();
+
+            if (tag.contains("hivemind")) {
+                Level lvl = mob.level();
+                Entity summoner = lvl.getEntity(tag.getInt("hivemind"));
+
+                if (summoner instanceof Proto proto) {
+                    proto.praisedForDecision(tag.getInt("decision"), tag.getInt("member"));
                 }
             }
         }
-        if (target instanceof Mob creature){
-            CompoundTag data = creature.getPersistentData();
-            if (data.contains("hivemind")) {
-                int summonerUUID = data.getInt("hivemind");
-                Level level = creature.level();
-                Entity summoner = level.getEntity(summonerUUID);
-                if (summoner instanceof Proto smartMob) {
-                    int decision = data.getInt("decision");
-                    int member = data.getInt("member");
-                    smartMob.punishForDecision(decision,member);
+
+        if (target instanceof Mob mob) {
+            CompoundTag tag = mob.getPersistentData();
+
+            if (tag.contains("hivemind")) {
+                Level lvl = mob.level();
+                Entity summoner = lvl.getEntity(tag.getInt("hivemind"));
+
+                if (summoner instanceof Proto proto) {
+                    proto.punishForDecision(tag.getInt("decision"), tag.getInt("member"));
                 }
             }
         }
+
+        /* --------------------------------------------------------
+         *  FINAL APPLY (SAFE)
+         * -------------------------------------------------------- */
+        event.setNewDamage(modified);
     }
 }
