@@ -41,9 +41,6 @@ public class DamageHandeling {
         float dmg = event.getNewDamage();  // always modify THIS value
         float modified = dmg;
 
-        /* --------------------------------------------------------
-         *  PCI DAMAGE HANDLING (SAFE SCALAR VERSION)
-         * -------------------------------------------------------- */
         if (attacker instanceof Player player && target.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
             ItemStack weapon = player.getMainHandItem();
 
@@ -58,10 +55,8 @@ public class DamageHandeling {
                 modified = clampMin(modified, (float) (freeze ? freezeDamage * dmgMod : freezeDamage));
                 target.setTicksFrozen(600);
 
-                // Reduce PCI charge (safe)
-                pci.setCharge(weapon, charge - 1);
+                pci.setCharge(weapon, charge - freezeDamage);
 
-                // Give cooldown
                 player.getCooldowns().addCooldown(pci, 20);
 
                 pci.playSound(player);
