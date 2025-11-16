@@ -3,24 +3,7 @@
     "translate": "enchantment.spore.cryogenic_aspect"
   },
   "supported_items": [
-    "spore:saber",
-    "spore:greatsword",
-    "spore:armads",
-    "spore:infected_bow",
-    "spore:maul",
-    "spore:scythe",
-    "spore:combat_shovel",
-    "spore:infected_spear",
-    "spore:infected_crossbow",
-    "spore:mace",
-    "spore:sickle",
-    "spore:knife",
-    "spore:rapier",
-    "spore:combat_pickaxe",
-    "spore:cleaver",
-    "spore:halberd",
-    "spore:boomerang",
-    "spore:shield"
+    "#spore:enchantable_weapon_items"
   ],
   "weight": 1,
   "max_level": 1,
