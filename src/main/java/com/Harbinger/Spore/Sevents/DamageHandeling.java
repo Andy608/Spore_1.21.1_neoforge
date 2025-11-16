@@ -2,12 +2,16 @@ package com.Harbinger.Spore.Sevents;
 
 import com.Harbinger.Spore.ExtremelySusThings.SporeSavedData;
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
+import com.Harbinger.Spore.Fluids.BileLiquid;
 import com.Harbinger.Spore.Sentities.ArmorPersentageBypass;
+import com.Harbinger.Spore.Sentities.BaseEntities.EvolvedInfected;
 import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.BaseEntities.UtilityEntity;
 import com.Harbinger.Spore.Sentities.EvolvedInfected.Protector;
+import com.Harbinger.Spore.Sentities.EvolvingInfected;
 import com.Harbinger.Spore.Sentities.Organoids.Proto;
 import com.Harbinger.Spore.Sentities.Utility.Illusion;
+import com.Harbinger.Spore.Sentities.Utility.ScentEntity;
 import com.Harbinger.Spore.Sitems.BaseWeapons.DamagePiercingModifier;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorMutations;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeBaseArmor;
@@ -16,8 +20,11 @@ import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Seffects;
 
 import com.Harbinger.Spore.core.Senchantments;
+import com.Harbinger.Spore.core.Sentities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -29,6 +36,7 @@ import net.minecraft.world.level.Level;
 
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DamageHandeling {
@@ -159,34 +167,69 @@ public class DamageHandeling {
         }
         if (attacker instanceof LivingEntity living){
             int thornLevel = 0;
-            int duration = 40 + thornLevel * 40;
+            int mutagenic = 0;
+            int unwavering = 0;
             for (EquipmentSlot slot : EquipmentSlot.values()){
+                if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR) continue;
                 ItemStack stack = target.getItemBySlot(slot);
-                if (!stack.isEmpty() && Senchantments.hasEnchant(target.level(),stack,Senchantments.SERRATED_THORNS)){
-                    thornLevel += thornLevel;
-                }
-            }
-            if (thornLevel > 0) {
-                living.hurt(attacker.damageSources().thorns(target), 3.5f * thornLevel);
-                if (Math.random() < 0.5f) {
-                    living.addEffect(new MobEffectInstance(
-                            MobEffects.POISON,
-                            duration,
-                            0,
-                            false,
-                            true
-                    ));
-                } else {
-                    living.addEffect(new MobEffectInstance(
-                            Seffects.CORROSION,
-                            duration,
-                            0,
-                            false,
-                            true
-                    ));
+                if (!stack.isEmpty()){
+                    if (Senchantments.hasEnchant(target.level(),stack,Senchantments.SERRATED_THORNS)){
+                        thornLevel++;
+                    }
+                    if (Senchantments.hasEnchant(target.level(),stack,Senchantments.MUTAGENIC_REACTANT)){
+                        mutagenic++;
+                    }
+                    if (Senchantments.hasEnchant(target.level(),stack,Senchantments.UNWAVERING_NATURE)){
+                        unwavering++;
+                    }
                 }
 
             }
+            if (thornLevel > 0) {
+                handleSpikes(thornLevel,living);
+            }
+            if (mutagenic > 0) {
+                mutagenicLevel(mutagenic,target);
+            }
+            if (unwavering > 0) {
+                unWavering(unwavering,target);
+            }
+            if (Senchantments.hasEnchant(living.level(),living.getItemBySlot(EquipmentSlot.HEAD),Senchantments.VORACIOUS_MAW)){
+                if (Math.random() < 0.1f && living instanceof Player player){
+                    player.playNotifySound(SoundEvents.GENERIC_EAT, SoundSource.AMBIENT,1,1);
+                    player.getFoodData().eat(6,0);
+                }
+            }
+            if (Senchantments.hasEnchant(living.level(),living.getItemBySlot(EquipmentSlot.MAINHAND),Senchantments.CORROSIVE_POTENCY)){
+                target.addEffect(new MobEffectInstance(Seffects.CORROSION,60,1));
+            }
+            if (Senchantments.hasEnchant(living.level(),living.getItemBySlot(EquipmentSlot.MAINHAND),Senchantments.UNWAVERING_NATURE)){
+                target.addEffect(new MobEffectInstance(Seffects.MYCELIUM,600,1));
+            }
+            if (Senchantments.hasEnchant(living.level(),living.getItemBySlot(EquipmentSlot.MAINHAND),Senchantments.CRYOGENIC_ASPECT)){
+                target.setTicksFrozen(target.getTicksFrozen()+300);
+            }
+            if (Senchantments.hasEnchant(living.level(),living.getItemBySlot(EquipmentSlot.MAINHAND),Senchantments.GASTRIC_SPEWAGE)){
+                for (MobEffectInstance instance : BileLiquid.bileEffects()){
+                    target.addEffect(instance);
+                }
+            }
+            if (Senchantments.hasEnchant(living.level(),living.getItemBySlot(EquipmentSlot.MAINHAND),Senchantments.MUTAGENIC_REACTANT)){
+                if (Math.random() < 0.1 && target instanceof Infected infected && infected instanceof EvolvingInfected evolvedInfected){
+                    if (evolvedInfected instanceof EvolvedInfected evolved){
+                        evolved.setEvolution(SConfig.SERVER.evolution_age_human.get());
+                        evolved.setEvoPoints(evolved.getEvoPoints()+SConfig.SERVER.min_kills_hyper.get());
+                    }else{
+                        infected.setEvolution(SConfig.SERVER.evolution_age_human.get());
+                        infected.setEvoPoints(infected.getEvoPoints()+SConfig.SERVER.min_kills.get());
+                    }
+                    if(living instanceof Player player){
+                        player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel()/2);
+                    }
+                }
+            }
+
+
         }
         /* --------------------------------------------------------
          *  HIVEMIND LOGIC
@@ -221,5 +264,57 @@ public class DamageHandeling {
          *  FINAL APPLY (SAFE)
          * -------------------------------------------------------- */
         event.setNewDamage(modified);
+    }
+
+
+    public static void handleSpikes(int thornLevel,LivingEntity living){
+        int duration = 40 + thornLevel * 40;
+        living.hurt(living.damageSources().thorns(living), 3.5f * thornLevel);
+        if (Math.random() < 0.5f) {
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.POISON,
+                    duration,
+                    0,
+                    false,
+                    true
+            ));
+        } else {
+            living.addEffect(new MobEffectInstance(
+                    Seffects.CORROSION,
+                    duration,
+                    0,
+                    false,
+                    true
+            ));
+        }
+    }
+    public static void mutagenicLevel(int mutagenic,LivingEntity living){
+        if (Math.random() < 0.2){
+            for (int i = 0;i<mutagenic;i++){
+                MobEffectInstance effect = badMutations().get(living.getRandom().nextInt(badMutations().size()));
+                living.addEffect(effect);
+            }
+        }
+    }
+    public static void unWavering(int nature,LivingEntity living){
+        for (int i = 0;i<nature;i++){
+            if (!living.hasEffect(Seffects.MYCELIUM)){
+                living.addEffect(new MobEffectInstance(Seffects.MYCELIUM,600,0));
+            }
+            if (Math.random() < 0.05){
+                ScentEntity scent = new ScentEntity(Sentities.SCENT.get(),living.level());
+                scent.moveTo(living.getX(),living.getY(),living.getZ());
+                living.level().addFreshEntity(scent);
+            }
+        }
+    }
+
+    public static List<MobEffectInstance> badMutations(){
+        List<MobEffectInstance> values = new ArrayList<>();
+        values.add(new MobEffectInstance(MobEffects.WEAKNESS,160,0));
+        values.add(new MobEffectInstance(MobEffects.POISON,80,0));
+        values.add(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,120,0));
+        values.add(new MobEffectInstance(MobEffects.CONFUSION,200,0));
+        return values;
     }
 }
