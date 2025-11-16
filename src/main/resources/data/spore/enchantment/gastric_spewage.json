@@ -2,9 +2,7 @@
   "description": {
     "translate": "enchantment.spore.gastric_spewage"
   },
-  "supported_items": [
-    "#spore:enchantable_weapon_items"
-  ],
+  "supported_items": "#spore:enchantable_weapon_items",
   "weight": 1,
   "max_level": 1,
   "min_cost": {

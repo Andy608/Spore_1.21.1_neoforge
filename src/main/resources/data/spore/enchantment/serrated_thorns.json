@@ -2,9 +2,7 @@
   "description": {
     "translate": "enchantment.spore.voracious_maw"
   },
-  "supported_items": [
-    "#spore:enchantable_armor_items"
-  ],
+  "supported_items": "#spore:enchantable_armor_items",
   "weight": 1,
   "max_level": 1,
   "min_cost": {

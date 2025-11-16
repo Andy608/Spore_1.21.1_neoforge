@@ -2,9 +2,7 @@
   "description": {
     "translate": "enchantment.spore.mutagenic_reactant"
   },
-  "supported_items": [
-    "#spore:enchantable_items"
-  ],
+  "supported_items": "#spore:enchantable_items",
   "weight": 1,
   "max_level": 1,
   "min_cost": {
