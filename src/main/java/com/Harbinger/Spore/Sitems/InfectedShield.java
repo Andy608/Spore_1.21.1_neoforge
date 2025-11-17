@@ -1,12 +1,12 @@
 package com.Harbinger.Spore.Sitems;
 
 
+import com.Harbinger.Spore.Fluids.BileLiquid;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeToolsBaseItem;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeToolsMutations;
-import com.Harbinger.Spore.core.SConfig;
-import com.Harbinger.Spore.core.SdataComponents;
-import com.Harbinger.Spore.core.Ssounds;
+import com.Harbinger.Spore.core.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class InfectedShield extends SporeToolsBaseItem {
+public class InfectedShield extends SporeToolsBaseItem implements Equipable{
     public static final int MAX_CHARGE = 25;
     public InfectedShield() {
         super(SConfig.SERVER.shield_damage.get(), 0, 1, SConfig.SERVER.shield_durability.get(), 0, null);
@@ -38,16 +38,19 @@ public class InfectedShield extends SporeToolsBaseItem {
         return UseAnim.BLOCK;
     }
 
-    public int getUseDuration(ItemStack p_43107_) {
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
+
 
     public InteractionResultHolder<ItemStack> use(Level p_43099_, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (tooHurt(itemstack)){
             player.startUsingItem(hand);
+            return InteractionResultHolder.consume(itemstack);
         }
-        return InteractionResultHolder.consume(itemstack);
+        return InteractionResultHolder.fail(itemstack);
     }
 
     @Override
@@ -104,7 +107,7 @@ public class InfectedShield extends SporeToolsBaseItem {
                     e -> e != player && e.isAlive() && player.hasLineOfSight(e));
 
             for (LivingEntity target : entities) {
-                //((ServerLevel) target.level()).sendParticles(Sparticles.SPORE_IMPACT.get(), target.getX(), target.getY()+1, target.getZ(), 1, 0, 0, 0, 0);
+                ((ServerLevel) target.level()).sendParticles(Sparticles.SPORE_IMPACT.get(), target.getX(), target.getY()+1, target.getZ(), 1, 0, 0, 0, 0);
                 Vec3 direction = target.position().subtract(player.position()).normalize();
                 target.hurtMarked = true;
                 target.knockback(getVariant(stack) == SporeToolsMutations.CALCIFIED ? 2.5f : 1.5F, -direction.x, -direction.z);
@@ -129,13 +132,13 @@ public class InfectedShield extends SporeToolsBaseItem {
         }
     }
     public void abstractEffects(ItemStack stack, LivingEntity arrow){
-        //if (stack.getEnchantmentLevel(Senchantments.CORROSIVE_POTENCY.get())>0){
-          //  arrow.addEffect(new MobEffectInstance(Seffects.CORROSION.get(),200,1));}
-        //if (stack.getEnchantmentLevel(Senchantments.GASTRIC_SPEWAGE.get())>0){
-          //  for (MobEffectInstance instance : BileLiquid.bileEffects())
-            //    arrow.addEffect(instance);}
-        //if (stack.getEnchantmentLevel(Senchantments.CRYOGENIC_ASPECT.get())>0 && arrow.canFreeze()){
-          //  arrow.setTicksFrozen(arrow.getTicksFrozen()+300);}
+        if (Senchantments.hasEnchant(arrow.level(),stack,Senchantments.CORROSIVE_POTENCY)){
+            arrow.addEffect(new MobEffectInstance(Seffects.CORROSION,200,1));}
+        if (Senchantments.hasEnchant(arrow.level(),stack,Senchantments.GASTRIC_SPEWAGE)){
+            for (MobEffectInstance instance : BileLiquid.bileEffects())
+                arrow.addEffect(instance);}
+        if (Senchantments.hasEnchant(arrow.level(),stack,Senchantments.CRYOGENIC_ASPECT) && arrow.canFreeze()){
+            arrow.setTicksFrozen(arrow.getTicksFrozen()+300);}
         arrow.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,200,0));
     }
 
