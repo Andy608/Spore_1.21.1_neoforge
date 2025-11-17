@@ -26,6 +26,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -152,12 +154,22 @@ public class CDUBlockEntity extends BlockEntity implements MenuProvider {
             if (entity instanceof LivingEntity livingEntity &&
                     (livingEntity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES))){
                 livingEntity.setTicksFrozen(livingEntity.getTicksFrozen()+100);
-                livingEntity.hurt(livingEntity.damageSources().freeze(), (float) (SConfig.DATAGEN.cryo_damage.get() *1f));
+                float damage = getDamageAfterArmor((float) (SConfig.DATAGEN.cryo_damage.get() *1f),livingEntity);
+                livingEntity.hurt(livingEntity.damageSources().freeze(), damage);
             }
             if (entity instanceof ScentEntity || entity instanceof InfectionTendril){
                 entity.discard();
             }
         }
+    }
+    public static float getDamageAfterArmor(float damage, LivingEntity target) {
+        double armor = target.getArmorValue();
+        AttributeInstance instance = target.getAttribute(Attributes.ARMOR_TOUGHNESS);
+        double toughness = instance == null ? 0 : instance.getValue();
+        float f = 2.0F + (float)toughness / 4.0F;
+        float armorFactor = Math.min(20.0F, (float)armor);
+
+        return damage * (1.0F - armorFactor / (armorFactor + f));
     }
 
     public static <E extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, CDUBlockEntity e) {
