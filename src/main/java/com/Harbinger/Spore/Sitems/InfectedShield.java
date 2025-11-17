@@ -60,7 +60,6 @@ public class InfectedShield extends SporeToolsBaseItem implements Equipable{
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        this.hurtTool(stack,attacker,1);
         return true;
     }
 
