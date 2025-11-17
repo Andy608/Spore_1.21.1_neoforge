@@ -24,8 +24,7 @@ public class InfectedBoomerang extends SporeSwordBase {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-
-        if (!level.isClientSide) {
+        if (!level.isClientSide && tooHurt(stack)) {
             ItemStack thrownCopy = stack.copy();
 
             ThrownBoomerang boomerang = new ThrownBoomerang(level, player, thrownCopy, getVariant(stack).getColor());

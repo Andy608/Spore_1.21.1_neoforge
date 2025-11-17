@@ -39,11 +39,11 @@ public class InfectedKnife extends SporeSwordBase implements LootModifierWeapon 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (!tooHurt(itemstack)){
-            return InteractionResultHolder.fail(itemstack);
+        if (tooHurt(itemstack)){
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(itemstack);
         }
-        player.startUsingItem(hand);
-        return InteractionResultHolder.consume(itemstack);
+        return InteractionResultHolder.fail(itemstack);
     }
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int T) {

@@ -40,10 +40,10 @@ public class InfectedSpearItem extends SporeSwordBase implements ProjectileItem 
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!tooHurt(itemstack)){
-            return InteractionResultHolder.fail(itemstack);
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(itemstack);
         }
-        player.startUsingItem(hand);
-        return InteractionResultHolder.consume(itemstack);
+        return InteractionResultHolder.fail(itemstack);
     }
 
     @Override

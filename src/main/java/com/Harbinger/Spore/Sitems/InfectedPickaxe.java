@@ -68,7 +68,7 @@ public class InfectedPickaxe extends SporePickaxeItems {
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
         Level level = context.getLevel();
-        if (player instanceof ServerPlayer serverPlayer) {
+        if (player instanceof ServerPlayer serverPlayer && tooHurt(context.getItemInHand())) {
             serverPlayer.playNotifySound(Ssounds.INFECTED_PICKAXE.get(), SoundSource.AMBIENT,1F,1F);
             lookForOres(pos,level,serverPlayer);
             this.hurtTool(context.getItemInHand(),serverPlayer,1);

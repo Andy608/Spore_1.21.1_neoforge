@@ -73,7 +73,7 @@ public class InfectedSickle extends SporeSwordBase {
             return InteractionResultHolder.pass(player.getItemInHand(hand));
         }
         ItemStack itemstack = player.getMainHandItem();
-        if (!level.isClientSide) {
+        if (!level.isClientSide && tooHurt(itemstack)) {
             List<ThrownSickle> projectiles = level.getEntitiesOfClass(ThrownSickle.class, player.getBoundingBox().inflate(32),
                     s -> s.getOwner() == player && !s.isRemoved());
             setThrownSickle(itemstack, false);
