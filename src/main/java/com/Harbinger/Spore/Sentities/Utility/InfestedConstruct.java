@@ -390,12 +390,11 @@ public class InfestedConstruct extends UtilityEntity implements RangedAttackMob,
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions dimensions = super.getDimensions(pose);
-        if (isActive()){
-            return dimensions;
-        }else{
+        EntityDimensions dimensions = super.getDefaultDimensions(pose);
+        if (!isActive()){
             return dimensions.scale(1f,0.4f);
         }
+        return dimensions;
     }
 
     public void callUponInfected(){
