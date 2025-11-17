@@ -77,15 +77,15 @@ public class InfectedShield extends SporeToolsBaseItem implements Equipable{
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
         int current = this.getCharge(stack);
-        this.setCharge(stack,++current);
-        if (current >= InfectedShield.MAX_CHARGE) {
+        if (current >= InfectedShield.MAX_CHARGE && entity != null) {
             this.triggerBash(entity, stack);
         }
         int durabilityLeft = stack.getMaxDamage() - stack.getDamageValue();
-        if (durabilityLeft-amount <= 11){
+        if (durabilityLeft-amount <= 11 && entity != null){
             entity.playSound(Ssounds.INFECTED_GEAR_BREAK.get());
         }
         if (tooHurt(stack)){
+            this.setCharge(stack,++current);
             if (getAdditionalDurability(stack) > 0){
                 hurtExtraDurability(stack,amount,entity);
                 return 0;
