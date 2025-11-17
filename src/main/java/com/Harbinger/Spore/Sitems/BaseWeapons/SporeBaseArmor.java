@@ -79,7 +79,7 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
         this.knockback = knockback;
     }
     public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-        return this.getDynamicAttributeModifiers(stack);
+        return tooHurt(stack) ? this.getDynamicAttributeModifiers(stack) : super.getDefaultAttributeModifiers(stack);
     }
     public ItemAttributeModifiers getDynamicAttributeModifiers(ItemStack stack) {
         EquipmentSlot slot = this.type.getSlot();
@@ -122,23 +122,27 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
+
         int durabilityLeft = stack.getMaxDamage() - stack.getDamageValue();
         if (durabilityLeft - amount <= 11 && entity != null) {
             entity.playSound(Ssounds.INFECTED_GEAR_BREAK.get());
         }
 
         if (tooHurt(stack)) {
+
             if (getAdditionalDurability(stack) > 0) {
                 hurtExtraDurability(stack, amount, entity);
-                return 0;
-            } else {
-                return super.damageItem(stack, calculateDurabilityLost(stack, amount), entity, onBroken);
+                return amount;
             }
-        } else {
-            return 0;
+
+            return super.damageItem(stack, calculateDurabilityLost(stack, amount), entity, onBroken);
         }
+
+        return super.damageItem(stack, amount, entity, onBroken);
     }
+
+
 
     public void tickArmor(Player living, Level level){
 

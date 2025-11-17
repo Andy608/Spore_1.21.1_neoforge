@@ -322,7 +322,7 @@ public class Hevoker extends Hyper {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions dimensions = getDimensions(pose);
+        EntityDimensions dimensions = super.getDefaultDimensions(pose);
         if (this.isFakeDead()){
             return dimensions.scale(2.2F,0.25F);
         }

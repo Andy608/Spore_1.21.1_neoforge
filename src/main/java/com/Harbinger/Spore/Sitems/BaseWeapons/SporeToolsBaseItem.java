@@ -56,8 +56,10 @@ public class SporeToolsBaseItem extends BaseItem implements SporeWeaponData , II
     public boolean isValidRepairItem(ItemStack stack, ItemStack itemStack) {
         return super.isValidRepairItem(stack, itemStack) || itemStack.getItem() == Sitems.BIOMASS.get();
     }
-    public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-        return this.getDynamicAttributeModifiers(stack);
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        return tooHurt(stack) ? this.getDynamicAttributeModifiers(stack) : super.getDefaultAttributeModifiers(stack);
     }
 
     public ItemAttributeModifiers getDynamicAttributeModifiers(ItemStack stack) {

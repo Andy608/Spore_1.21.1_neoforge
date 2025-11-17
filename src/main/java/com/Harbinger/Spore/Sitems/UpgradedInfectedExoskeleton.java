@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -125,13 +126,18 @@ public class UpgradedInfectedExoskeleton extends SporeBaseArmor implements Custo
         }
 
         @Override
-        public void tickArmor(Player entity, Level level) {
-            super.tickArmor(entity, level);
-            if (entity.horizontalCollision && entity.isCrouching()) {
-                Vec3 initialVec = entity.getDeltaMovement();
-                Vec3 climbVec = new Vec3(initialVec.x, 0.2D, initialVec.z);
-                entity.setDeltaMovement(climbVec.x * 0.91D,
-                        climbVec.y * 0.98D, climbVec.z * 0.91D);
+        public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+            super.inventoryTick(stack, level, entity, slotId, isSelected);
+            if (!(entity instanceof LivingEntity living)) return;
+            if (living.getItemBySlot(EquipmentSlot.CHEST).equals(stack)) {
+                if (living.horizontalCollision && living.isCrouching()) {
+                    Vec3 currentMovement = living.getDeltaMovement();
+
+                    if (currentMovement.y < 0.15D) {
+                        Vec3 climbVec = new Vec3(currentMovement.x, 0.15D, currentMovement.z);
+                        living.setDeltaMovement(climbVec);
+                    }
+                }
             }
         }
 
