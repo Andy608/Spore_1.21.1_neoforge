@@ -393,6 +393,7 @@
   "spore.entity.variant.sniper" : "Sniper Mutation",
   "spore.entity.variant.grabber" : "Grabber Mutation",
   "spore.entity.variant.laced" : "Laced Mutation",
+  "spore.entity.variant.banshee" : "Banshee Mutation",
   "spore.entity.variant.sonic" : "Sonic Mutation",
   "spore.scanner.danger.calamity" : "RUN",
   "spore.scanner.danger.hyper" : "Very High",
