@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -85,12 +86,25 @@ public class UtilityEntity extends PathfinderMob {
         }
         return false;
     }
+    private static int countInfectedMobsInChunk(ServerLevel level, BlockPos pos) {
+        int count = 0;
+        ChunkPos chunkPos = new ChunkPos(pos);
+        for (Entity entity : level.getEntities().getAll()) {
+            if (entity.chunkPosition().equals(chunkPos) && entity instanceof Infected) {
+                count++;
+            }
+        }
+        return count;
+    }
     private static boolean furtherSpawnParameters(EntityType<? extends UtilityEntity> p_219014_,ServerLevelAccessor levelAccessor, MobSpawnType type, BlockPos pos, RandomSource source){
         MinecraftServer server = levelAccessor.getServer();
         if (server != null){
             if (server.getPlayerList().getPlayers().isEmpty()){
                 return false;
             }
+        }
+        if (levelAccessor instanceof ServerLevel serverLevel && countInfectedMobsInChunk(serverLevel,pos) > SConfig.SERVER.mob_cap.get()){
+            return false;
         }
         return isDarkEnoughToSpawn(levelAccessor, pos, source) && checkMobSpawnRules(p_219014_, levelAccessor, type, pos, source);
     }
