@@ -43,10 +43,10 @@ public class ScannerItem extends BaseItem2 {
     }
 
 
-    public int getUseDuration(ItemStack p_43419_) {
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
-
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack tool = player.getItemInHand(hand);

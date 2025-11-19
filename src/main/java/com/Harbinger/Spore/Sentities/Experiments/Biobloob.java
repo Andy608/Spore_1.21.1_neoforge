@@ -91,10 +91,10 @@ public class Biobloob extends Experiment implements RangedAttackMob {
     private void applyScaleEffects() {
         Vec3 position = this.position();
         this.setPos(position);
-        computeAttribute(Attributes.MAX_HEALTH.value(),health * getScale());
-        computeAttribute(Attributes.ATTACK_DAMAGE.value(),damage * getScale());
-        computeAttribute(Attributes.ARMOR.value(),armor * getScale());
-        computeAttribute(Attributes.MOVEMENT_SPEED.value(),0.3 * (1.0f / getScale()));
+        computeAttribute(Attributes.MAX_HEALTH,health * getScale());
+        computeAttribute(Attributes.ATTACK_DAMAGE,damage * getScale());
+        computeAttribute(Attributes.ARMOR,armor * getScale());
+        computeAttribute(Attributes.MOVEMENT_SPEED,0.3 * (1.0f / getScale()));
         if (this.getHealth() > this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
         }
@@ -111,8 +111,8 @@ public class Biobloob extends Experiment implements RangedAttackMob {
         if (SCALE.equals(accessor)){this.refreshDimensions();}
     }
 
-    private void computeAttribute(Attribute attributes, double value){
-        AttributeInstance instance = this.getAttribute(Holder.direct(attributes));
+    private void computeAttribute(Holder<Attribute> attributes, double value){
+        AttributeInstance instance = this.getAttribute(attributes);
         if (instance != null){instance.setBaseValue(value);}
     }
 
