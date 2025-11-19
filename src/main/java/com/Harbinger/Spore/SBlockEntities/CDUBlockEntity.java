@@ -113,6 +113,9 @@ public class CDUBlockEntity extends BlockEntity implements MenuProvider {
     public void cleanInfection(BlockPos blockPos){
         int range =2* SConfig.DATAGEN.cryo_range.get();
         AABB aabb = AABB.ofSize(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()), range, range, range);
+        if (level == null){
+            return;
+        }
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, aabb);
 
         for(BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
