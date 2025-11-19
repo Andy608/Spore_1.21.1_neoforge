@@ -472,7 +472,4 @@ public class Infected extends UtilityEntity implements Enemy {
         return super.hasLineOfSight(entity);
     }
 
-    public String getMutation(){
-        return null;
-    }
 }

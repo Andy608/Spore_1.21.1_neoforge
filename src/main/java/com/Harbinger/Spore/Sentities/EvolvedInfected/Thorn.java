@@ -142,6 +142,11 @@ public class Thorn extends EvolvedInfected implements VariantKeeper {
     }
 
     @Override
+    public String getMutation() {
+        return getTypeVariant() != 0 ? this.getVariant().getName() : super.getMutation();
+    }
+
+    @Override
     public int amountOfMutations() {
         return ThornVariants.values().length;
     }

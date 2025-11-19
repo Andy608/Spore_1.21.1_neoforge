@@ -160,20 +160,22 @@ public class ScannerItem extends BaseItem2 {
     }
 
     private void addExtraInfo(LivingEntity entity, List<String> lines) {
-        if (entity instanceof Infected infected) {
-            lines.add(Component.translatable("spore.scanner.line.6").getString() + infected.getKills());
-            lines.add(Component.translatable("spore.scanner.line.7").getString() + infected.getEvoPoints());
-            if (infected.getEvolutionCoolDown() > 0) {
-                lines.add(Component.translatable("spore.scanner.line.8").getString() + infected.getEvolutionCoolDown() + "/" + SConfig.SERVER.evolution_age_human.get());
+        if (entity instanceof UtilityEntity utility) {
+            if (utility instanceof Infected infected){
+                lines.add(Component.translatable("spore.scanner.line.6").getString() + infected.getKills());
+                lines.add(Component.translatable("spore.scanner.line.7").getString() + infected.getEvoPoints());
+                if (infected.getEvolutionCoolDown() > 0) {
+                    lines.add(Component.translatable("spore.scanner.line.8").getString() + infected.getEvolutionCoolDown() + "/" + SConfig.SERVER.evolution_age_human.get());
+                }
+                if (infected.getHunger() > 0) {
+                    lines.add(Component.translatable("spore.scanner.line.9").getString() + infected.getHunger() + "/" + SConfig.SERVER.hunger.get());
+                }
+                lines.add(Component.translatable("spore.scanner.line.10").getString() + infected.getLinked());
             }
-            if (infected.getHunger() > 0) {
-                lines.add(Component.translatable("spore.scanner.line.9").getString() + infected.getHunger() + "/" + SConfig.SERVER.hunger.get());
+            if (utility.getMutation() != null) {
+                lines.add(Component.translatable(utility.getMutation()).getString());
             }
-            lines.add(Component.translatable("spore.scanner.line.10").getString() + infected.getLinked());
-            if (infected.getMutation() != null) {
-                lines.add(Component.translatable(infected.getMutation()).getString());
-            }
-            if (infected instanceof Scamper scamper) {
+            if (utility instanceof Scamper scamper) {
                 lines.add(Component.translatable("spore.scanner.line.scamper").getString() + scamper.getAge() + "/" + SConfig.SERVER.scamper_age.get());
             }
         }
@@ -181,10 +183,8 @@ public class ScannerItem extends BaseItem2 {
 
     private void addDrops(LivingEntity living, List<String> lines) {
         List<? extends String> itemDrops = null;
-        if (living instanceof Infected infected) {
+        if (living instanceof UtilityEntity infected) {
             itemDrops = infected.getDropList();
-        } else if (living instanceof UtilityEntity utilityEntity) {
-            itemDrops = utilityEntity.getDropList();
         }
 
         if (itemDrops == null || itemDrops.isEmpty()) {

@@ -5,5 +5,7 @@
   "ingredient": {
     "item": "spore:wing_membrane"
   },
-  "result": "spore:fried_wing_membrane"
+  "result":{
+    "id" : "spore:fried_wing_membrane"
+  }
 }
