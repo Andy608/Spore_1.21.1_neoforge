@@ -76,6 +76,9 @@ public class LivingTickEvent {
                     if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
                         ItemStack stack = player.getItemBySlot(slot);
                         if (!stack.isEmpty() && stack.isDamageableItem()) {
+                            if (stack.getItem() instanceof SporeArmorData data && !data.tooHurt(stack)){
+                                return;
+                            }
                             int newDamage = stack.getDamageValue() + corrosion.getAmplifier() + 1;
                             if (newDamage < stack.getMaxDamage()) {
                                 if (newDamage != stack.getDamageValue()) {
