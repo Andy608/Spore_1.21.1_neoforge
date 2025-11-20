@@ -28,37 +28,38 @@ public class Reaver extends SwordItem implements LootModifierWeapon {
     private final List<ComboValues> hyperList;
     private final List<ComboValues> organoidList;
     private final List<ComboValues> calamityList;
+    private static final Tier PCI_TIER = new Tier() {
+        @Override
+        public int getUses() {
+            return SConfig.SERVER.reaver_durability.get();
+        }
+        @Override
+        public float getSpeed() {
+            return -1;
+        }
+
+        @Override
+        public float getAttackDamageBonus() {
+            return SConfig.SERVER.reaver_damage.get() -1;
+        }
+
+        @Override
+        public TagKey<Block> getIncorrectBlocksForDrops() {
+            return BlockTags.INCORRECT_FOR_WOODEN_TOOL;
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return 3;
+        }
+
+        @Override
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(Sitems.COMPOUND_PLATE.get());
+        }
+    };
     public Reaver() {
-        super(new Tier() {
-            @Override
-            public int getUses() {
-                return SConfig.SERVER.reaver_durability.get();
-            }
-            @Override
-            public float getSpeed() {
-                return -1;
-            }
-
-            @Override
-            public float getAttackDamageBonus() {
-                return SConfig.SERVER.reaver_damage.get() -1;
-            }
-
-            @Override
-            public TagKey<Block> getIncorrectBlocksForDrops() {
-                return BlockTags.INCORRECT_FOR_WOODEN_TOOL;
-            }
-
-            @Override
-            public int getEnchantmentValue() {
-                return 3;
-            }
-
-            @Override
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(Sitems.COMPOUND_PLATE.get());
-            }
-        }, new Properties());
+        super(PCI_TIER, new Properties().attributes(SwordItem.createAttributes(PCI_TIER,SConfig.SERVER.reaver_damage.get() -1,-1)));
         Sitems.TECHNOLOGICAL_ITEMS.add(this);
         basicInfectedList = calculateMap(SConfig.SERVER.reaver_loot.get());
         evolvedList = calculateMap(SConfig.SERVER.reaver_loot1.get());
@@ -67,13 +68,14 @@ public class Reaver extends SwordItem implements LootModifierWeapon {
         calamityList = calculateMap(SConfig.SERVER.reaver_loot4.get());
     }
 
+
     public List<ComboValues> calculateMap(List<? extends String> list){
         List<ComboValues> values = new ArrayList<>();
         for(String string : list){
             String[] s = string.split("\\|");
             Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s[0]));
             int value = Integer.parseInt(s[1]);
-            if (item != null && value != 0){
+            if (value != 0){
                 ItemStack stack = new ItemStack(item);
                 ComboValues comboValues = new ComboValues(stack,value);
                 values.add(comboValues);
@@ -90,22 +92,15 @@ public class Reaver extends SwordItem implements LootModifierWeapon {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity livingEntity, LivingEntity victim) {
-        if (livingEntity instanceof Calamity){
-            return shaveLoot(stack,livingEntity,victim,getRandomFromList(calamityList));
-        }
-        if (livingEntity instanceof com.Harbinger.Spore.Sentities.BaseEntities.Organoid){
-            return shaveLoot(stack,livingEntity,victim,getRandomFromList(organoidList));
-        }
-        if (livingEntity instanceof com.Harbinger.Spore.Sentities.BaseEntities.Hyper){
-            return shaveLoot(stack,livingEntity,victim,getRandomFromList(hyperList));
-        }
-        if (livingEntity instanceof EvolvedInfected){
-            return shaveLoot(stack,livingEntity,victim,getRandomFromList(evolvedList));
-        }
-        if (livingEntity instanceof Infected){
-            return shaveLoot(stack,livingEntity,victim,getRandomFromList(basicInfectedList));
-        }
-        return super.hurtEnemy(stack, livingEntity, victim);
+        return switch (livingEntity) {
+            case Calamity calamity -> shaveLoot(stack, livingEntity, victim, getRandomFromList(calamityList));
+            case Organoid organoid -> shaveLoot(stack, livingEntity, victim, getRandomFromList(organoidList));
+            case Hyper hyper -> shaveLoot(stack, livingEntity, victim, getRandomFromList(hyperList));
+            case EvolvedInfected evolvedInfected ->
+                    shaveLoot(stack, livingEntity, victim, getRandomFromList(evolvedList));
+            case Infected infected -> shaveLoot(stack, livingEntity, victim, getRandomFromList(basicInfectedList));
+            default -> super.hurtEnemy(stack, livingEntity, victim);
+        };
     }
 
     public ComboValues getRandomFromList(List<ComboValues> values){
