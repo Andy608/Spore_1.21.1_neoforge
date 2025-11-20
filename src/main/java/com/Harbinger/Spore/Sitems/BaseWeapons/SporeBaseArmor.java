@@ -139,7 +139,7 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
             return super.damageItem(stack, calculateDurabilityLost(stack, amount), entity, onBroken);
         }
 
-        return super.damageItem(stack, amount, entity, onBroken);
+        return 0;
     }
 
 

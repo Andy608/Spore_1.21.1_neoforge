@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:proto_spawnegg"
+      "id": "spore:proto_spawnegg"
     },
     "title":{"translate": "advancement.spore.spore.title"},
     "description":{"translate": "advancement.spore.spore.description"},
@@ -13,7 +13,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "spore:body_parts"
+            "items": "#spore:body_parts"
           }
         ]
       }

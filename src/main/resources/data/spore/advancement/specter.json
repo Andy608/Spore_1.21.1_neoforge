@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:specter_spawnegg"
+      "id": "spore:specter_spawnegg"
     },
     "title":{"translate": "advancement.spore.specter.title"},
     "description":{"translate": "advancement.spore.specter.description"}
@@ -13,8 +13,9 @@
       "trigger": "minecraft:player_hurt_entity",
       "conditions": {
         "entity": {
-          "type": "spore:specter"
-        }
+          "type_specific": {
+            "type": "spore:specter"
+          }
       }
     },
     "hurt_by_infected": {
@@ -22,7 +23,10 @@
       "conditions": {
         "damage": {
           "source_entity": {
-            "type": "spore:specter"
+            "type_specific": {
+              "type": "spore:specter"
+            }
+          }
           }
         }
       }
