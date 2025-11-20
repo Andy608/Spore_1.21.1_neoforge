@@ -78,6 +78,7 @@ public class InfectedShield extends SporeToolsBaseItem implements Equipable{
         int current = this.getCharge(stack);
         if (current >= InfectedShield.MAX_CHARGE && entity != null) {
             this.triggerBash(entity, stack);
+            setCharge(stack,0);
         }
         int durabilityLeft = stack.getMaxDamage() - stack.getDamageValue();
         if (durabilityLeft-amount <= 11 && entity != null){
@@ -125,7 +126,6 @@ public class InfectedShield extends SporeToolsBaseItem implements Equipable{
             if (getVariant(stack) == SporeToolsMutations.BEZERK){
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200,1));
             }
-            setCharge(stack,0);
             player.level().playSound(null, player.blockPosition(), Ssounds.SHIELD_BASH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
             this.hurtTool(stack,player,1);
         }
