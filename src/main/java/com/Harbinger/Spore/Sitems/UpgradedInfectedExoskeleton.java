@@ -245,7 +245,7 @@ public class UpgradedInfectedExoskeleton extends SporeBaseArmor implements Custo
                     .add(Attributes.ARMOR_TOUGHNESS,
                             new AttributeModifier(BASE_TOUGHNESS_ID[index], baseToughness, AttributeModifier.Operation.ADD_VALUE),
                             EquipmentSlotGroup.bySlot(slot))
-                    .add(SAttributes.SWIM_SPEED,
+                    .add(NeoForgeMod.SWIM_SPEED,
                     new AttributeModifier(BASE_SWIM_ID[index], underwaterSpeed, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
                     EquipmentSlotGroup.bySlot(slot));
 
