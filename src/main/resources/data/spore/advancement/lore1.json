@@ -2,7 +2,7 @@
   "parent": "spore:spore",
   "display": {
     "icon": {
-      "item": "spore:corrupted_record"
+      "id": "spore:corrupted_record"
     },
     "title": {
       "translate": "advancement.spore.lore_1.title"

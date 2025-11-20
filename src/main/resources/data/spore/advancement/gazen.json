@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:gazen_spawnegg"
+      "id": "spore:gazen_spawnegg"
     },
     "title":{"translate": "advancement.spore.gazen.title"},
     "description":{"translate": "advancement.spore.gazen.description"}

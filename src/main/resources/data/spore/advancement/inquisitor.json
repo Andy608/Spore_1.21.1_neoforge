@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inquisitor_spawnegg"
+      "id": "spore:inquisitor_spawnegg"
     },
     "title":{"translate": "advancement.spore.inquisitor.title"},
     "description":{"translate": "advancement.spore.inquisitor.description"}

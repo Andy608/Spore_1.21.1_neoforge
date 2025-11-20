@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:braio_spawnegg"
+      "id": "spore:braio_spawnegg"
     },
     "title":{"translate": "advancement.spore.braiomil.title"},
     "description":{"translate": "advancement.spore.braiomil.description"},

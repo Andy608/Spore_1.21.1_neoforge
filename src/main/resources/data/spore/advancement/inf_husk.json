@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inf_husk_spawnegg"
+      "id": "spore:inf_husk_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_husk.title"},
     "description":{"translate": "advancement.spore.inf_husk.description"},

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:busser_spawnegg"
+      "id": "spore:busser_spawnegg"
     },
     "title":{"translate": "advancement.spore.busser.title"},
     "description":{"translate": "advancement.spore.busser.description"},

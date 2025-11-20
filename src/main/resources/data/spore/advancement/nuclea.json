@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:nuclea_spawnegg"
+      "id": "spore:nuclea_spawnegg"
     },
     "title":{"translate": "advancement.spore.nuclea.title"},
     "description":{"translate": "advancement.spore.nuclea.description"},

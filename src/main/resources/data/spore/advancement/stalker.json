@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:stalker_spawnegg"
+      "id": "spore:stalker_spawnegg"
     },
     "title":{"translate": "advancement.spore.stalker.title"},
     "description":{"translate": "advancement.spore.stalker.description"},

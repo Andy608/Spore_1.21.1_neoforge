@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:cdu"
+      "id": "spore:cdu"
     },
     "title":{"translate": "advancement.spore.cdu.title"},
     "description":{"translate": "advancement.spore.cdu.description"}

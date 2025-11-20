@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:mutated_heart"
+      "id": "spore:mutated_heart"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_3.title"

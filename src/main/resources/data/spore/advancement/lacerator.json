@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:lacerator_spawnegg"
+      "id": "spore:lacerator_spawnegg"
     },
     "title":{"translate": "advancement.spore.lacerator.title"},
     "description":{"translate": "advancement.spore.lacerator.description"},

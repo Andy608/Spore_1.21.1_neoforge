@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:infected_human_spawnegg"
+      "id": "spore:infected_human_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_human.title"},
     "description":{"translate": "advancement.spore.inf_human.description"},

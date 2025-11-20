@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inf_pillager_spawnegg"
+      "id": "spore:inf_pillager_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_pillager.title"},
     "description":{"translate": "advancement.spore.inf_pillager.description"},

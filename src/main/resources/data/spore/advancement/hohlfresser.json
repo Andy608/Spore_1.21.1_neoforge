@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:hohlfresser_spawnegg"
+      "id": "spore:hohlfresser_spawnegg"
     },
     "title":{"translate": "advancement.spore.hohlfresser.title"},
     "description":{"translate": "advancement.spore.hohlfresser.description"}

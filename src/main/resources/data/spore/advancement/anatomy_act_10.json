@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:organoid_membrane"
+      "id": "spore:organoid_membrane"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_10.title"

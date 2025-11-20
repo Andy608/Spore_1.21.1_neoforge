@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:griefer_spawnegg"
+      "id": "spore:griefer_spawnegg"
     },
     "title":{"translate": "advancement.spore.griefer.title"},
     "description":{"translate": "advancement.spore.griefer.description"},

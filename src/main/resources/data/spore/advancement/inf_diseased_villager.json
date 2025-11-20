@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inf_diseased_villager_spawnegg"
+      "id": "spore:inf_diseased_villager_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_diseased_villager.title"},
     "description":{"translate": "advancement.spore.inf_diseased_villager.description"},

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:wendigo_spawnegg"
+      "id": "spore:wendigo_spawnegg"
     },
     "title":{"translate": "advancement.spore.wendigo.title"},
     "description":{"translate": "advancement.spore.wendigo.description"}

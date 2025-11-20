@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:cerebrum"
+      "id": "spore:cerebrum"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_6.title"

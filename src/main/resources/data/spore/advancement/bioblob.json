@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:biobloob_spawnegg"
+      "id": "spore:biobloob_spawnegg"
     },
     "title":{"translate": "advancement.spore.biobloob.title"},
     "description":{"translate": "advancement.spore.biobloob.description"},

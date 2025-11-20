@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:altered_spleen"
+      "id": "spore:altered_spleen"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_8.title"

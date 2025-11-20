@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inf_hazmat_spawnegg"
+      "id": "spore:inf_hazmat_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_hazmat.title"},
     "description":{"translate": "advancement.spore.inf_hazmat.description"},

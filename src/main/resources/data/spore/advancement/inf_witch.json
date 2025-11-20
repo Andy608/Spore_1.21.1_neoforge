@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inf_witch_spawnegg"
+      "id": "spore:inf_witch_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_witch.title"},
     "description":{"translate": "advancement.spore.inf_witch.description"},

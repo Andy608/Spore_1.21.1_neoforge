@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:claw_fragment"
+      "id": "spore:claw_fragment"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_1.title"

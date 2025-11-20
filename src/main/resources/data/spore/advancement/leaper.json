@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:leaper_spawnegg"
+      "id": "spore:leaper_spawnegg"
     },
     "title":{"translate": "advancement.spore.leaper.title"},
     "description":{"translate": "advancement.spore.leaper.description"},

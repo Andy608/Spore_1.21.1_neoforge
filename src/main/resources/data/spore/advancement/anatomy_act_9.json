@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:corrosive_sack"
+      "id": "spore:corrosive_sack"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_9.title"

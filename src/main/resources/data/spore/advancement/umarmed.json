@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:umarmed_spawnegg"
+      "id": "spore:umarmed_spawnegg"
     },
     "title":{"translate": "advancement.spore.umarmed.title"},
     "description":{"translate": "advancement.spore.umarmed.description"},

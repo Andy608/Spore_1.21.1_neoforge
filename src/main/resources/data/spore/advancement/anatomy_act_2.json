@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:armor_fragment"
+      "id": "spore:armor_fragment"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_2.title"

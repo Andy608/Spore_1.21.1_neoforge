@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:reconstructor_spawnegg"
+      "id": "spore:reconstructor_spawnegg"
     },
     "title":{"translate": "advancement.spore.reconstructor.title"},
     "description":{"translate": "advancement.spore.reconstructor.description"}

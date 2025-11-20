@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:mutated_fiber"
+      "id": "spore:mutated_fiber"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_4.title"

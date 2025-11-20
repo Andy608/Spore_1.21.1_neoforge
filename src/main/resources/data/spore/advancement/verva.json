@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:verva_spawnegg"
+      "id": "spore:verva_spawnegg"
     },
     "title":{"translate": "advancement.spore.verva.title"},
     "description":{"translate": "advancement.spore.verva.description"},

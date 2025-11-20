@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:compound_plate"
+      "id": "spore:compound_plate"
     },
     "title":{"translate": "advancement.spore.compound_plate.title"},
     "description":{"translate": "advancement.spore.compound_plate.description"}

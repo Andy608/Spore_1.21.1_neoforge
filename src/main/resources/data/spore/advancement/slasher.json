@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:slasher_spawnegg"
+      "id": "spore:slasher_spawnegg"
     },
     "title":{"translate": "advancement.spore.slasher.title"},
     "description":{"translate": "advancement.spore.slasher.description"},

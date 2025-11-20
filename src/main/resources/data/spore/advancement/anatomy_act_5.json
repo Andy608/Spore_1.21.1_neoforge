@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:wing_membrane"
+      "id": "spore:wing_membrane"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_5.title"

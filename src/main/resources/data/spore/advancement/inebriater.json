@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:inebriater_spawnegg"
+      "id": "spore:inebriater_spawnegg"
     },
     "title":{"translate": "advancement.spore.inebriater.title"},
     "description":{"translate": "advancement.spore.inebriater.description"},

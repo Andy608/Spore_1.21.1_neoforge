@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:hvindicator_spawnegg"
+      "id": "spore:hvindicator_spawnegg"
     },
     "title":{"translate": "advancement.spore.hindicator.title"},
     "description":{"translate": "advancement.spore.hindicator.description"}

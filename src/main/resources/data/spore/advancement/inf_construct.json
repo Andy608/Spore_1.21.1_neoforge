@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:construct_spawnegg"
+      "id": "spore:construct_spawnegg"
     },
     "title":{"translate": "advancement.spore.inf_contruct.title"},
     "description":{"translate": "advancement.spore.inf_contruct.description"},

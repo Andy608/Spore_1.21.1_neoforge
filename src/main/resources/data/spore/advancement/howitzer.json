@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:howitzer_spawnegg"
+      "id": "spore:howitzer_spawnegg"
     },
     "title":{"translate": "advancement.spore.howitzer.title"},
     "description":{"translate": "advancement.spore.howitzer.description"}

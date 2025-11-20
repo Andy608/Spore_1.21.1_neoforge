@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:mutated_fiber"
+      "id": "spore:mutated_fiber"
     },
     "title":{"translate": "advancement.spore.inf_mobs.title"},
     "description":{"translate": "advancement.spore.inf_mobs.description"}

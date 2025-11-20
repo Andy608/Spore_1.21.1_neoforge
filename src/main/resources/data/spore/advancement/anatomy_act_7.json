@@ -2,7 +2,7 @@
   "parent": "spore:scanning_world",
   "display": {
     "icon": {
-      "item": "spore:alveolic_sack"
+      "id": "spore:alveolic_sack"
     },
     "title": {
       "translate": "advancement.spore.anatomy_act_7.title"

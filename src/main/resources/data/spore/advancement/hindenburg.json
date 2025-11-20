@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:hinden_spawnegg"
+      "id": "spore:hinden_spawnegg"
     },
     "title":{"translate": "advancement.spore.hindenburg.title"},
     "description":{"translate": "advancement.spore.hindenburg.description"}

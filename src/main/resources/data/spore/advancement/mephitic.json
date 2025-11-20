@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:meph_spawnegg"
+      "id": "spore:meph_spawnegg"
     },
     "title":{"translate": "advancement.spore.mephitic.title"},
     "description":{"translate": "advancement.spore.mephitic.description"},

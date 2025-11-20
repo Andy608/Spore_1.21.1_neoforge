@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:zoaholic"
+      "id": "spore:zoaholic"
     },
     "title":{"translate": "advancement.spore.zoaholic.title"},
     "description":{"translate": "advancement.spore.zoaholic.description"}

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:saugling_spawnegg"
+      "id": "spore:saugling_spawnegg"
     },
     "title":{"translate": "advancement.spore.saugling.title"},
     "description":{"translate": "advancement.spore.saugling.description"},

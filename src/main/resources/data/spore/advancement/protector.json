@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:prot_spawnegg"
+      "id": "spore:prot_spawnegg"
     },
     "title":{"translate": "advancement.spore.protector.title"},
     "description":{"translate": "advancement.spore.protector.description"},

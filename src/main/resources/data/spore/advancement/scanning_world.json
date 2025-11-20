@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "spore:scanner"
+      "id": "spore:scanner"
     },
     "title":{"translate": "advancement.spore.scanner.title"},
     "description":{"translate": "advancement.spore.scanner.description"}
@@ -16,11 +16,7 @@
           {
             "items": [
               "spore:scanner"
-            ],
-            "count": {
-              "min": 1,
-              "max": 1
-            }
+            ]
           }
         ]
       }
