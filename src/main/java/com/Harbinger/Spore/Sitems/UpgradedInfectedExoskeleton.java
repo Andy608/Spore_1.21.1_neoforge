@@ -27,6 +27,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForgeMod;
 
 import java.util.List;
 
@@ -203,7 +204,7 @@ public class UpgradedInfectedExoskeleton extends SporeBaseArmor implements Custo
                         EquipmentSlotGroup.bySlot(slot));
             }
             if (this.getVariant(stack) == SporeArmorMutations.DROWNED){
-                builder.add(Attributes.WATER_MOVEMENT_EFFICIENCY,
+                builder.add(NeoForgeMod.SWIM_SPEED,
                         new AttributeModifier(BASE_SWIM_ID[index], 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
                         EquipmentSlotGroup.bySlot(slot));
             }

@@ -1,6 +1,5 @@
 package com.Harbinger.Spore.Sitems.BaseWeapons;
 
-import com.Harbinger.Spore.core.SAttributes;
 import com.Harbinger.Spore.core.Senchantments;
 import com.Harbinger.Spore.core.Sitems;
 import com.Harbinger.Spore.core.Ssounds;
@@ -23,6 +22,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -103,7 +103,7 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
                     EquipmentSlotGroup.bySlot(slot));
         }
         if (this.getVariant(stack) == SporeArmorMutations.DROWNED){
-            builder.add(SAttributes.SWIM_SPEED,
+            builder.add(NeoForgeMod.SWIM_SPEED,
                     new AttributeModifier(BASE_SWIM_ID[index], 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
                     EquipmentSlotGroup.bySlot(slot));
         }

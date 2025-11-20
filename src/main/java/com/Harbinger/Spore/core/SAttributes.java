@@ -8,8 +8,6 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.function.Supplier;
-
 
 public class SAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES =
@@ -40,9 +38,5 @@ public class SAttributes {
                     .setSyncable(true));
     public static final Holder<Attribute> GRINDING = ATTRIBUTES.register("grinding",
             () -> new RangedAttribute(constructLang("grinding"), 0.0D, 0.0D, 64.0D)
-                    .setSyncable(true));
-
-    public static final Holder<Attribute> SWIM_SPEED = ATTRIBUTES.register("swim_speed",
-            () -> new RangedAttribute(constructLang("swim_speed"), 0.0D, 0.0D, 64.0D)
                     .setSyncable(true));
 }
