@@ -13,9 +13,7 @@
       "trigger": "minecraft:player_hurt_entity",
       "conditions": {
         "entity": {
-          "type_specific": {
-            "type": "spore:specter"
-          }
+          "type": "spore:specter"
       }
     },
     "hurt_by_infected": {
@@ -23,9 +21,7 @@
       "conditions": {
         "damage": {
           "source_entity": {
-            "type_specific": {
-              "type": "spore:specter"
-            }
+            "type": "spore:specter"
           }
           }
         }
