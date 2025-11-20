@@ -67,7 +67,7 @@ public class DamageHandeling {
 
                 pci.setCharge(weapon, charge - freezeDamage);
 
-                player.getCooldowns().addCooldown(pci, 20);
+                player.getCooldowns().addCooldown(pci,(int) Math.ceil(targetHealth / 5f) * 20);
 
                 pci.playSound(player);
             }
