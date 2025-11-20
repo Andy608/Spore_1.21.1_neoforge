@@ -208,7 +208,7 @@ public interface FoliageSpread {
             String[] string = str.split("\\|" );
             Block blockCon1 = Utilities.tryToCreateBlock(ResourceLocation.parse(string[0]));
             Block blockCon2 = Utilities.tryToCreateBlock(ResourceLocation.parse(string[1]));
-            if (blockCon1 != Blocks.MYCELIUM && blockCon2 != null){
+            if (blockCon1 != Blocks.AIR && blockCon2 != Blocks.AIR){
                 if (blockCon1 == blockstate.getBlock()){
                     level.setBlock(blockpos,blockCon2.defaultBlockState(),3);
                 }

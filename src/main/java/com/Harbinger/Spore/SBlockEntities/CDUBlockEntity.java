@@ -63,7 +63,7 @@ public class CDUBlockEntity extends BlockEntity implements MenuProvider {
             String[] string = str.split("\\|" );
             Block blockCon1 = Utilities.tryToCreateBlock(ResourceLocation.parse(string[0]));
             Block blockCon2 = Utilities.tryToCreateBlock(ResourceLocation.parse(string[1]));
-            if (blockCon1 != null && blockCon2 != null){
+            if (blockCon1 != Blocks.AIR && blockCon2 != Blocks.AIR){
                 blocks.add(new StoreDouble(blockCon1,blockCon2));
             }
         }

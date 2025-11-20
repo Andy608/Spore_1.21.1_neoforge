@@ -195,7 +195,7 @@ public class Utilities {
      }
     public static Block tryToCreateBlock(ResourceLocation location){
         Optional<Block> optional = BuiltInRegistries.BLOCK.getOptional(location);
-        return optional.orElse(Blocks.MYCELIUM);
+        return optional.orElse(Blocks.AIR);
     }
     public static Holder<MobEffect> tryToCreateEffect(ResourceLocation location){
         Optional<Holder<MobEffect>> optional = Optional.of(wrapHolder(BuiltInRegistries.MOB_EFFECT.get(location)));
