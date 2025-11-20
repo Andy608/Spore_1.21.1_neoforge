@@ -3,6 +3,7 @@ package com.Harbinger.Spore.Sitems;
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorMutations;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeBaseArmor;
+import com.Harbinger.Spore.core.SAttributes;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Sitems;
@@ -243,7 +244,7 @@ public class UpgradedInfectedExoskeleton extends SporeBaseArmor implements Custo
                     .add(Attributes.ARMOR_TOUGHNESS,
                             new AttributeModifier(BASE_TOUGHNESS_ID[index], baseToughness, AttributeModifier.Operation.ADD_VALUE),
                             EquipmentSlotGroup.bySlot(slot))
-                    .add(Attributes.WATER_MOVEMENT_EFFICIENCY,
+                    .add(SAttributes.SWIM_SPEED,
                     new AttributeModifier(BASE_SWIM_ID[index], underwaterSpeed, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
                     EquipmentSlotGroup.bySlot(slot));
 

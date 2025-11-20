@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +25,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.Harbinger.Spore.core.SAttributes.SWIM_SPEED;
 
 public class LivingTickEvent {
     private static final TagKey<Block> tag = BlockTags.create(ResourceLocation.parse("spore:fungal_blocks"));
@@ -66,8 +69,24 @@ public class LivingTickEvent {
                 if (list.size() > 4) {
                     player.playSound(Ssounds.AREA_AMBIENT.get());
                 }
+                computeSwimSpeed(player);
             }
+
+
         }
+    }
+    public static void computeSwimSpeed(Player player){
+        if (!player.isInLiquid()) return;
+
+
+        AttributeInstance inst = player.getAttribute(SWIM_SPEED);
+        if (inst == null) return;
+        double multiplier = inst.getValue();
+        var motion = player.getDeltaMovement();
+        double boostedX = motion.x * multiplier;
+        double boostedZ = motion.z * multiplier;
+
+        player.setDeltaMovement(boostedX, motion.y, boostedZ);
     }
     public static void TickEffects(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();

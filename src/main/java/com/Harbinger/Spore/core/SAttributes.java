@@ -41,4 +41,8 @@ public class SAttributes {
     public static final Holder<Attribute> GRINDING = ATTRIBUTES.register("grinding",
             () -> new RangedAttribute(constructLang("grinding"), 0.0D, 0.0D, 64.0D)
                     .setSyncable(true));
+
+    public static final Holder<Attribute> SWIM_SPEED = ATTRIBUTES.register("swim_speed",
+            () -> new RangedAttribute(constructLang("swim_speed"), 0.0D, 0.0D, 64.0D)
+                    .setSyncable(true));
 }
