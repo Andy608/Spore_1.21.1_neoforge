@@ -3,6 +3,7 @@ package com.Harbinger.Spore.Sevents;
 import com.Harbinger.Spore.Effect.SporeEffectsHandler;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorData;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeToolsBaseItem;
+import com.Harbinger.Spore.core.SAttributes;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Senchantments;
 import com.Harbinger.Spore.core.Ssounds;
@@ -69,24 +70,10 @@ public class LivingTickEvent {
                 if (list.size() > 4) {
                     player.playSound(Ssounds.AREA_AMBIENT.get());
                 }
-                computeSwimSpeed(player);
             }
 
 
         }
-    }
-    public static void computeSwimSpeed(Player player){
-        if (!player.isInLiquid()) return;
-
-
-        AttributeInstance inst = player.getAttribute(SWIM_SPEED);
-        if (inst == null) return;
-        double multiplier = inst.getValue();
-        var motion = player.getDeltaMovement();
-        double boostedX = motion.x * multiplier;
-        double boostedZ = motion.z * multiplier;
-
-        player.setDeltaMovement(boostedX, motion.y, boostedZ);
     }
     public static void TickEffects(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();

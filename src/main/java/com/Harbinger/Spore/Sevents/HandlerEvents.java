@@ -96,7 +96,6 @@ public class HandlerEvents {
                 }
             }
     }
-
     @SubscribeEvent
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
