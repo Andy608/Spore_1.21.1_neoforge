@@ -4,11 +4,13 @@ package com.Harbinger.Spore.Sentities.Organoids;
 import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.BaseEntities.Organoid;
 import com.Harbinger.Spore.Sentities.Utility.Illusion;
+import com.Harbinger.Spore.Sentities.VariantKeeper;
+import com.Harbinger.Spore.Sentities.Variants.DelusionerVariants;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Sentities;
 import com.Harbinger.Spore.core.Ssounds;
-import net.minecraft.core.Holder;
+import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,6 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -26,12 +29,15 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Delusionare extends Organoid {
+public class Delusionare extends Organoid implements VariantKeeper {
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Delusionare.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SPELL_TIME = SynchedEntityData.defineId(Delusionare.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SPELL_ID = SynchedEntityData.defineId(Delusionare.class, EntityDataSerializers.INT);
     public Delusionare(EntityType<? extends PathfinderMob> type, Level level) {
@@ -52,6 +58,7 @@ public class Delusionare extends Organoid {
         super.addAdditionalSaveData(tag);
         tag.putInt("spell_timer",entityData.get(SPELL_TIME));
         tag.putInt("spell_id",entityData.get(SPELL_ID));
+        tag.putInt("Variant",this.getTypeVariant());
     }
 
     @Override
@@ -59,6 +66,7 @@ public class Delusionare extends Organoid {
         super.readAdditionalSaveData(tag);
         entityData.set(SPELL_TIME, tag.getInt("spell_timer"));
         entityData.set(SPELL_ID, tag.getInt("spell_id"));
+        entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
     }
 
     @Override
@@ -66,6 +74,7 @@ public class Delusionare extends Organoid {
         super.defineSynchedData(builder);
         builder.define(SPELL_TIME,0);
         builder.define(SPELL_ID,0);
+        builder.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     public int getSpellById(){
@@ -134,6 +143,43 @@ public class Delusionare extends Organoid {
         super.registerGoals();
         addTargettingGoals();
         this.goalSelector.addGoal(4,new CastMagicGoal(this));
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        DelusionerVariants variant = Util.getRandom(DelusionerVariants.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+
+    public DelusionerVariants getVariant() {
+        return DelusionerVariants.byId(this.getTypeVariant() & 255);
+    }
+
+    public int getTypeVariant() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    }
+    @Override
+    public void setVariant(int i) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT,i > DelusionerVariants.values().length || i < 0 ? 0 : i);
+    }
+
+    @Override
+    public int amountOfMutations() {
+        return DelusionerVariants.values().length;
+    }
+
+    private void setVariant(DelusionerVariants variant) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+    }
+
+    @Override
+    public String getMutation() {
+        if (getTypeVariant() != 0){
+            return this.getVariant().getName();
+        }
+        return super.getMutation();
     }
 
     public static class CastMagicGoal extends Goal{

@@ -185,6 +185,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(WombModelStageIII.LAYER_LOCATION, WombModelStageIII::createBodyLayer);
         event.registerLayerDefinition(BurstUsurperModel.LAYER_LOCATION, BurstUsurperModel::createBodyLayer);
         event.registerLayerDefinition(SprayUsurperModel.LAYER_LOCATION, SprayUsurperModel::createBodyLayer);
+        event.registerLayerDefinition(DelusionerEnchanterModel.LAYER_LOCATION, DelusionerEnchanterModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
