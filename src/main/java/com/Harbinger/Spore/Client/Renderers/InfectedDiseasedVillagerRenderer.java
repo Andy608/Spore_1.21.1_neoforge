@@ -3,16 +3,36 @@ package com.Harbinger.Spore.Client.Renderers;
 import com.Harbinger.Spore.Client.Models.InfectedZombieVillager;
 import com.Harbinger.Spore.Client.Special.BaseInfectedRenderer;
 import com.Harbinger.Spore.Sentities.BasicInfected.InfectedVillager;
+import com.Harbinger.Spore.Sentities.Variants.InfVillagerSkins;
 import com.Harbinger.Spore.Spore;
+import com.google.common.collect.Maps;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class InfectedDiseasedVillagerRenderer<Type extends InfectedVillager> extends BaseInfectedRenderer<Type , InfectedZombieVillager<Type>> {
-    private static final ResourceLocation TEXTURE =  ResourceLocation.fromNamespaceAndPath(Spore.MODID,
-            "textures/entity/inf_zombie_villager.png");
+    public static final Map<InfVillagerSkins, ResourceLocation> TEXTURE =
+            Util.make(Maps.newEnumMap(InfVillagerSkins.class), (p_114874_) -> {
+                p_114874_.put(InfVillagerSkins.DEFAULT,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager.png"));
+                p_114874_.put(InfVillagerSkins.DESERT,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager_desert.png"));
+                p_114874_.put(InfVillagerSkins.JUNGLE,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager_jungle.png"));
+                p_114874_.put(InfVillagerSkins.SAVANNA,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager_savanna.png"));
+                p_114874_.put(InfVillagerSkins.SWAMP,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager_swamp.png"));
+                p_114874_.put(InfVillagerSkins.TAIGA,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager_taiga.png"));
+                p_114874_.put(InfVillagerSkins.TUNDRA,
+                        ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/z_villager/inf_zombie_villager_tundra.png"));
+            });
     private static final ResourceLocation EYES_TEXTURE =  ResourceLocation.fromNamespaceAndPath(Spore.MODID,
             "textures/entity/eyes/inf_zombie_villager.png");
     public InfectedDiseasedVillagerRenderer(EntityRendererProvider.Context context) {
@@ -21,7 +41,7 @@ public class InfectedDiseasedVillagerRenderer<Type extends InfectedVillager> ext
 
     @Override
     public ResourceLocation getTextureLocation(Type entity) {
-        return TEXTURE;
+        return TEXTURE.get(entity.getVariant());
     }
 
     @Override
