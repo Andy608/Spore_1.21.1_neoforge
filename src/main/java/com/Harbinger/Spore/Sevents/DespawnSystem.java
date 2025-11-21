@@ -4,13 +4,14 @@ import com.Harbinger.Spore.Sentities.BaseEntities.EvolvedInfected;
 import com.Harbinger.Spore.Sentities.BaseEntities.Hyper;
 import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.BaseEntities.Organoid;
+import com.Harbinger.Spore.Sentities.Projectile.*;
 import com.Harbinger.Spore.Sentities.Utility.ScentEntity;
 import com.Harbinger.Spore.core.SConfig;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,21 +35,30 @@ public class DespawnSystem {
     }
     private static void cleanUpMobs(ServerLevel level) {
         List<Infected> infected = new ArrayList<>();
+        List<Projectile> projectileExcess = new ArrayList<>();
         List<EvolvedInfected> evolved = new ArrayList<>();
         List<Hyper> hyper = new ArrayList<>();
         List<Organoid> organoid = new ArrayList<>();
         List<ScentEntity> scent = new ArrayList<>();
 
         for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof LivingEntity living &&
-                    !SConfig.SERVER.despawn_blacklist.get().contains(living.getEncodeId()) &&
-                    !living.hasCustomName()) {
+            if (!SConfig.SERVER.despawn_blacklist.get().contains(entity.getEncodeId()) &&
+                    !entity.hasCustomName()) {
 
-                if (living instanceof Organoid o) organoid.add(o);
-                else if (living instanceof EvolvedInfected e) evolved.add(e);
-                else if (living instanceof Hyper h) hyper.add(h);
-                else if (living instanceof ScentEntity s) scent.add(s);
-                else if (living instanceof Infected i) infected.add(i);
+                switch (entity) {
+                    case Organoid o -> organoid.add(o);
+                    case EvolvedInfected e -> evolved.add(e);
+                    case Hyper h -> hyper.add(h);
+                    case ScentEntity s -> scent.add(s);
+                    case Infected i -> infected.add(i);
+                    case AcidBall i -> projectileExcess.add(i);
+                    case BileProjectile i -> projectileExcess.add(i);
+                    case StingerProjectile i -> projectileExcess.add(i);
+                    case Vomit i -> projectileExcess.add(i);
+                    case FleshBomb i -> projectileExcess.add(i);
+                    default -> {
+                    }
+                }
             }
         }
 
@@ -57,9 +67,10 @@ public class DespawnSystem {
         despawnExcess(level, hyper, SConfig.SERVER.max_hyper_cap.get());
         despawnExcess(level, organoid, SConfig.SERVER.max_organoid_cap.get());
         despawnExcess(level, scent, SConfig.SERVER.max_scent_cap.get());
+        despawnExcess(level, projectileExcess, 100);
     }
 
-    private static <T extends LivingEntity> void despawnExcess(ServerLevel level, List<T> entities, int cap) {
+    private static <T extends Entity> void despawnExcess(ServerLevel level, List<T> entities, int cap) {
         if (entities.size() <= cap) return;
         int toRemove = entities.size() - cap;
         int despawns = 0;
@@ -72,7 +83,7 @@ public class DespawnSystem {
                 despawns++;
             }
         } else {
-            entities.sort(Comparator.comparingDouble((LivingEntity e) ->
+            entities.sort(Comparator.comparingDouble((Entity e) ->
                     level.getNearestPlayer(e, -1) != null ? e.distanceToSqr(Objects.requireNonNull(level.getNearestPlayer(e, -1))) : Double.MAX_VALUE).reversed());
             for (int i = 0; i < toRemove; i++) {
                 T entity = entities.get(i);

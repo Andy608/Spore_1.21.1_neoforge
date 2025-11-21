@@ -38,10 +38,6 @@ public class Leaper extends EvolvedInfected implements Carrier {
         this.navigation = new WallClimberNavigation(this,level);
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
 
     @Override
     public List<? extends String> getDropList() {

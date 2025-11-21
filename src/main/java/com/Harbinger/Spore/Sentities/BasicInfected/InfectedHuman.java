@@ -27,10 +27,6 @@ public class InfectedHuman extends Infected implements EvolvingInfected {
         super(type, level);
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
 
     @Override
     protected void registerGoals() {

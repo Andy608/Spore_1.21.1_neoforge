@@ -33,7 +33,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class Brot extends Hyper {
-    private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(Brot.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(Hyper.class, EntityDataSerializers.INT);
     private int swell;
     private final int maxSwell = 40;
     private boolean leapt =  false;

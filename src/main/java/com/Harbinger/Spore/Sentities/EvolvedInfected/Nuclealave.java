@@ -45,11 +45,6 @@ public class Nuclealave extends EvolvedInfected implements RangedAttackMob , Arm
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     public List<? extends String> getDropList() {
         return SConfig.DATAGEN.nucke_loot.get();
     }

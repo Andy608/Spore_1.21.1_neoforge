@@ -55,11 +55,6 @@ public class Bloater extends EvolvedInfected implements WaterInfected {
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     public boolean canDrownInFluidType(FluidType type) {
         return false;
     }

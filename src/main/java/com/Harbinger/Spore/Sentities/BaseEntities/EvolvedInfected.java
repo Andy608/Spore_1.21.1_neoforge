@@ -27,7 +27,7 @@ public class EvolvedInfected extends Infected {
 
     @Override
     protected boolean canRide(Entity entity) {
-        if (entity instanceof Infected || entity instanceof UtilityEntity){
+        if (entity instanceof UtilityEntity){
             return super.canRide(entity);
         }
         return false;

@@ -262,7 +262,7 @@ public class Howler extends EvolvedInfected implements VariantKeeper, ArmorPerse
                     ScreamBuffInfected(mob);
                 } else {
                     boolean skulk = ModList.get().isLoaded("sculkhorde");
-                    int summons =skulk ? random.nextInt(3, 9): random.nextInt(1, 3);
+                    int summons =skulk ? random.nextInt(3, 9): random.nextInt(1, 4);
                     for (int i = 0; i < summons; i++) {
                         SummonScream(mob,isSkulk,skulk);
                     }

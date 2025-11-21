@@ -324,14 +324,6 @@ public class Infected extends UtilityEntity implements Enemy {
         builder.define(LINKED, false);
         builder.define(PERSISTENT, false);
         builder.define(ORIGIN, origin());
-        int houdini = addHoudini();
-        if (houdini != 0){
-            builder.define(EntityDataSerializers.INT.createAccessor(houdini), 0);
-        }
-    }
-
-    public int addHoudini(){
-        return 0;
     }
 
     public String origin(){return "";}

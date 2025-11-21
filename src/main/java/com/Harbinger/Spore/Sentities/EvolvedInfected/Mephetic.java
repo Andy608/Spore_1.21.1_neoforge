@@ -56,11 +56,6 @@ public class Mephetic extends EvolvedInfected implements RangedAttackMob {
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(3, new CustomMeleeAttackGoal(this, 1, false) {
             @Override

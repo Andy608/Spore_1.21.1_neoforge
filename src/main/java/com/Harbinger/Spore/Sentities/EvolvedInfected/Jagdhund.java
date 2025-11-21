@@ -56,11 +56,6 @@ public class Jagdhund extends EvolvedInfected {
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     public List<? extends String> getDropList() {
         return SConfig.DATAGEN.jagd_loot.get();
     }

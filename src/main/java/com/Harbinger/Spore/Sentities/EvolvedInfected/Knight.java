@@ -44,10 +44,6 @@ public class Knight extends EvolvedInfected implements EvolvingInfected {
         super.registerGoals();
     }
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-    @Override
     public List<? extends String> getDropList() {
         return SConfig.DATAGEN.inf_knight_loot.get();
     }

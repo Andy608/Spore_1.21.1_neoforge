@@ -56,11 +56,6 @@ public class Inebriator extends EvolvedInfected {
         return values;
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
-
     public void checkForPatients(){
         Level level = this.level();
         if (!level.isClientSide()){

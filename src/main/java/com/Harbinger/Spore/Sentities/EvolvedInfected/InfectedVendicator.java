@@ -41,10 +41,6 @@ public class InfectedVendicator extends EvolvedInfected implements ArmedInfected
         super(type, level);
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
 
     @Override
     public List<? extends String> getDropList() {

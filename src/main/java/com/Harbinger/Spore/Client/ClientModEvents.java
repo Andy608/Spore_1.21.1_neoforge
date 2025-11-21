@@ -14,7 +14,9 @@ import com.Harbinger.Spore.Particles.*;
 import com.Harbinger.Spore.Screens.*;
 import com.Harbinger.Spore.Sentities.BasicInfected.InfectedHusk;
 import com.Harbinger.Spore.Sentities.BasicInfected.InfectedPlayer;
+import com.Harbinger.Spore.Sentities.Calamities.Hohlfresser;
 import com.Harbinger.Spore.Sentities.Projectile.ThrownSpear;
+import com.Harbinger.Spore.Sentities.Utility.NukeEntity;
 import com.Harbinger.Spore.Sitems.Agents.AbstractSyringe;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorData;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeWeaponData;
@@ -30,6 +32,7 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +45,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+
+import java.util.List;
 
 @Mod(value = Spore.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = Spore.MODID, value = Dist.CLIENT)
@@ -289,6 +294,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.ARENA_TENDRIL.get(), RaidTendrilRenderer::new);
         event.registerEntityRenderer(Sentities.TUMOROID_NUKE.get(), TumoroidNukeRenderer::new);
         event.registerEntityRenderer(Sentities.ILLUSION.get(), IllusionRenderer::new);
+        event.registerEntityRenderer(Sentities.WAVE.get(), WaveRenderer::new);
     }
 
 
@@ -420,5 +426,41 @@ public class ClientModEvents {
     public static void openInjectionScreen(Player player) {
         InjectionRecipeMenu menu = new InjectionRecipeMenu(1, player.getInventory());
         Minecraft.getInstance().setScreen(new InjectionRecipeScreen(menu, player.getInventory(), Component.literal("")));
+    }
+
+    @SubscribeEvent
+    public static void onCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+
+        if (player != null) {
+            float maxShakeDistance = 25.0f; // Max distance for shake
+            float maxShakeIntensity = 2.0f; // Max shake intensity
+
+            List<NukeEntity> nukes = player.level().getEntitiesOfClass(NukeEntity.class, player.getBoundingBox().inflate(maxShakeDistance));
+            List<Hohlfresser> worm = player.level().getEntitiesOfClass(Hohlfresser.class, player.getBoundingBox().inflate(maxShakeDistance));
+            for (NukeEntity nuke : nukes) {
+                double distance = player.distanceTo(nuke);
+                shakeCamera(distance,maxShakeDistance,maxShakeIntensity,event);
+            }
+            for (Hohlfresser worm1 : worm) {
+                if (worm1.isUnderground() && worm1.isMoving() && worm1.isInWall(worm1)){
+                    double distance = player.distanceTo(worm1);
+                    shakeCamera(distance,maxShakeDistance,4,event);
+                }
+            }
+        }
+    }
+    private static void shakeCamera(double distance , float maxShakeDistance,float maxShakeIntensity,ViewportEvent.ComputeCameraAngles event){
+        if (distance < maxShakeDistance) {
+            RandomSource randomSource = RandomSource.create();
+            float intensity = (1.0f - (float) (distance / maxShakeDistance)) * maxShakeIntensity;
+
+            float shakeX = (randomSource.nextFloat() - 0.5f) * intensity;
+            float shakeY = (randomSource.nextFloat() - 0.5f) * intensity;
+
+            event.setYaw(event.getYaw() + shakeX);
+            event.setPitch(event.getPitch() + shakeY);
+        }
     }
 }

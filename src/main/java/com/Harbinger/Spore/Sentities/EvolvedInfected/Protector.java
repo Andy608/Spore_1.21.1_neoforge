@@ -58,11 +58,6 @@ public class Protector extends EvolvedInfected implements ArmedInfected,HasUsabl
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
-
 
     @Override
     public List<? extends String> getDropList() {

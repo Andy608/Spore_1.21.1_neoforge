@@ -33,11 +33,6 @@ public class InfectedWanderingTrader extends Infected implements EvolvingInfecte
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new UseItemGoal<>(this,
                 PotionContents.createItemStack(Items.POTION, Potions.LONG_INVISIBILITY),

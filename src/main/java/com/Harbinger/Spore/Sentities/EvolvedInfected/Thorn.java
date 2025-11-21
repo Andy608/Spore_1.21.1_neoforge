@@ -51,11 +51,6 @@ public class Thorn extends EvolvedInfected implements VariantKeeper {
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_ID_TYPE_VARIANT, 0);

@@ -118,10 +118,6 @@ public class InfectedWitch extends Infected implements RangedAttackMob , RangedB
         return SConfig.DATAGEN.inf_witch_loot.get();
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
 
     @Override
     public void tick() {

@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class Hyper extends Infected{
-    public static final EntityDataAccessor<BlockPos> NEST = SynchedEntityData.defineId(Infected.class, EntityDataSerializers.BLOCK_POS);
+    public static final EntityDataAccessor<BlockPos> NEST = SynchedEntityData.defineId(Hyper.class, EntityDataSerializers.BLOCK_POS);
     public Hyper(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
         this.navigation = new WallClimberNavigation(this,level);

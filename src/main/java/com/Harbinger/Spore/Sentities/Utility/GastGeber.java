@@ -49,11 +49,6 @@ public class GastGeber extends EvolvedInfected implements FoliageSpread {
     }
 
     @Override
-    public int addHoudini() {
-        return 23;
-    }
-
-    @Override
     public boolean removeWhenFarAway(double p_21542_) {
         return false;
     }

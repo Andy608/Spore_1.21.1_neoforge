@@ -39,10 +39,6 @@ public class InfectedDrowned extends Infected implements WaterInfected , Evolvin
         this.navigation = new HybridPathNavigation(this,this.level());
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
 
     public void travel(Vec3 p_32858_) {
         if (this.isEffectiveAi() && this.isInFluidType()) {

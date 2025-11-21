@@ -34,11 +34,6 @@ public class Scavenger extends EvolvedInfected implements FlyingInfected {
         this.navigation = new FlyingPathNavigation(this,level);
     }
 
-    @Override
-    public int addHoudini() {
-        return 23;
-    }
-
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, SConfig.SERVER.scavenger_hp.get() * SConfig.SERVER.global_health.get())
