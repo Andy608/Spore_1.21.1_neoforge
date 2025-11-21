@@ -17,7 +17,6 @@ import com.Harbinger.Spore.Sentities.VariantKeeper;
 import com.Harbinger.Spore.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
@@ -101,7 +100,7 @@ public class Proto extends Organoid implements CasingGenerator, FoliageSpread {
     private int isVariantKeeper(String s){
         ResourceLocation location = ResourceLocation.parse(s);
         Entity entity = Utilities.tryToCreateEntity(location).create(level());
-        return entity instanceof VariantKeeper keeper ? this.getRandom().nextInt(keeper.amountOfMutations()-1) : -1;
+        return entity instanceof VariantKeeper keeper ? this.getRandom().nextInt(keeper.amountOfMutations()) : -1;
     }
 
     @Nullable
