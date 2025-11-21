@@ -4,7 +4,9 @@ package com.Harbinger.Spore.Sentities.Organoids;
 import com.Harbinger.Spore.Sentities.AI.CalamitiesAI.ScatterShotRangedGoal;
 import com.Harbinger.Spore.Sentities.BaseEntities.Organoid;
 import com.Harbinger.Spore.Sentities.Projectile.AdaptableProjectile;
+import com.Harbinger.Spore.Sentities.VariantKeeper;
 import com.Harbinger.Spore.Sentities.Variants.BulletParameters;
+import com.Harbinger.Spore.Sentities.Variants.UsurperVariants;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.Util;
@@ -13,20 +15,21 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Usurper extends Organoid implements RangedAttackMob {
+public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper {
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Usurper.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TIMER = SynchedEntityData.defineId(Usurper.class, EntityDataSerializers.INT);
     public Usurper(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -50,18 +53,21 @@ public class Usurper extends Organoid implements RangedAttackMob {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("timer",entityData.get(TIMER));
+        tag.putInt("Variant",this.getTypeVariant());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         entityData.set(TIMER, tag.getInt("timer"));
+        entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(TIMER,0);
+        builder.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     @Override
@@ -131,4 +137,40 @@ public class Usurper extends Organoid implements RangedAttackMob {
     }
 
 
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        UsurperVariants variant = Util.getRandom(UsurperVariants.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+
+    public UsurperVariants getVariant() {
+        return UsurperVariants.byId(this.getTypeVariant() & 255);
+    }
+
+    public int getTypeVariant() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    }
+    @Override
+    public void setVariant(int i) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT,i > UsurperVariants.values().length || i < 0 ? 0 : i);
+    }
+
+    @Override
+    public int amountOfMutations() {
+        return UsurperVariants.values().length;
+    }
+
+    private void setVariant(UsurperVariants variant) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+    }
+
+    @Override
+    public String getMutation() {
+        if (getTypeVariant() != 0){
+            return this.getVariant().getName();
+        }
+        return super.getMutation();
+    }
 }

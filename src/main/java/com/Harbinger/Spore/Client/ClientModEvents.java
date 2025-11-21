@@ -183,6 +183,8 @@ public class ClientModEvents {
         event.registerLayerDefinition(WombModel.LAYER_LOCATION, WombModel::createBodyLayer);
         event.registerLayerDefinition(WombModelStageII.LAYER_LOCATION, WombModelStageII::createBodyLayer);
         event.registerLayerDefinition(WombModelStageIII.LAYER_LOCATION, WombModelStageIII::createBodyLayer);
+        event.registerLayerDefinition(BurstUsurperModel.LAYER_LOCATION, BurstUsurperModel::createBodyLayer);
+        event.registerLayerDefinition(SprayUsurperModel.LAYER_LOCATION, SprayUsurperModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
