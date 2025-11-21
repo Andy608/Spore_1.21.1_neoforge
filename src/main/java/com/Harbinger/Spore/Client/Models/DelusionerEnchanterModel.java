@@ -1,6 +1,7 @@
 package com.Harbinger.Spore.Client.Models;// Made with Blockbench 5.0.4
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
+
 import com.Harbinger.Spore.Sentities.Organoids.Delusionare;
 import com.Harbinger.Spore.Spore;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,46 +19,138 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Spore.MODID, "delusionerenchantermodel"), "main");
 	private final ModelPart Deli;
 	private final ModelPart TumorBase;
-	private final ModelPart HeadBase;
-	private final ModelPart MainBody;
-	private final ModelPart Torso;
-	private final ModelPart TopTorso;
+	private final ModelPart BodyBase;
+	private final ModelPart BodyCrown;
+	private final ModelPart BodyTumors;
+	private final ModelPart BodyBaseHead;
+	private final ModelPart BodyHeadCrown;
+	private final ModelPart BodyToTorso;
+	private final ModelPart BtTT1;
+	private final ModelPart BtTT2;
+	private final ModelPart BtTT3;
+	private final ModelPart BtTT4;
+	private final ModelPart DelusionerTorso;
+	private final ModelPart LowerTorsoFungus;
+	private final ModelPart TorsoToUpper;
+	private final ModelPart TtUT1;
+	private final ModelPart TtUT2;
+	private final ModelPart TtUT3;
+	private final ModelPart TtUT4;
+	private final ModelPart DelusionerUpperTorso;
+	private final ModelPart UpperTorsoFungus;
+	private final ModelPart UpperToHead;
+	private final ModelPart UtHT1;
+	private final ModelPart UtHT2;
+	private final ModelPart UtHT3;
+	private final ModelPart UtHT4;
 	private final ModelPart Head;
-	private final ModelPart Tumors;
 	private final ModelPart Jaw;
-	private final ModelPart RightArm;
-	private final ModelPart LeftArm;
-	private final ModelPart RightForArm;
-	private final ModelPart LeftForArm;
-	private final ModelPart Finger1;
-	private final ModelPart Finger2;
-	private final ModelPart Finger3;
-	private final ModelPart Finger4;
-	private final ModelPart Finger5;
-	private final ModelPart Finger6;
-	private final ModelPart Book;
+	private final ModelPart Nose;
+	private final ModelPart HeadCrown1;
+	private final ModelPart HeadCrown2;
+	private final ModelPart HeadTumors;
+	private final ModelPart Arms;
+	private final ModelPart UpperToRightArm;
+	private final ModelPart UtRT1;
+	private final ModelPart UtRT2;
+	private final ModelPart RightArmSeg1;
+	private final ModelPart RightArmToRightHand;
+	private final ModelPart RtHT1;
+	private final ModelPart RtHT2;
+	private final ModelPart RightArmSeg2;
+	private final ModelPart Tendrils2;
+	private final ModelPart LT4;
+	private final ModelPart LT1Seg3;
+	private final ModelPart LT5;
+	private final ModelPart LT2Seg3;
+	private final ModelPart LT6;
+	private final ModelPart LT3Seg3;
+	private final ModelPart UpperToLeftArm;
+	private final ModelPart UtLT1;
+	private final ModelPart UtLT2;
+	private final ModelPart LeftArmSeg1;
+	private final ModelPart LeftArmTumor;
+	private final ModelPart LeftArmToLeftHand;
+	private final ModelPart LtHT1;
+	private final ModelPart LtHT2;
+	private final ModelPart LeftArmSeg2;
+	private final ModelPart Tendrils;
+	private final ModelPart LT1;
+	private final ModelPart LT1Seg2;
+	private final ModelPart LT2;
+	private final ModelPart LT2Seg2;
+	private final ModelPart LT3;
+	private final ModelPart LT3Seg2;
+	private final ModelPart Table;
+	private final ModelPart book;
 
 	public DelusionerEnchanterModel(ModelPart root) {
 		this.Deli = root.getChild("Deli");
-		this.TumorBase = Deli.getChild("TumorBase");
-		this.HeadBase = Deli.getChild("BodyBase").getChild("BodyBaseHead");
-		this.MainBody = Deli.getChild("BodyBase").getChild("BodyToTorso");
-		this.Torso = MainBody.getChild("DelusionerTorso");
-		this.TopTorso = Torso.getChild("TorsoToUpper");
-		this.Head = TopTorso.getChild("DelusionerUpperTorso").getChild("UpperToHead");
-		this.Tumors = Head.getChild("Head").getChild("HeadTumors");
-		this.Jaw = Head.getChild("Head").getChild("Jaw");
-		this.RightArm = TopTorso.getChild("DelusionerUpperTorso").getChild("Arms").getChild("UpperToRightArm");
-		this.LeftArm = TopTorso.getChild("DelusionerUpperTorso").getChild("Arms").getChild("UpperToLeftArm");
-		this.RightForArm = RightArm.getChild("RightArmSeg1").getChild("RightArmToRightHand");
-		this.LeftForArm = LeftArm.getChild("LeftArmSeg1").getChild("LeftArmToLeftHand");
-		this.Finger1 = RightForArm.getChild("RightArmSeg2").getChild("Tendrils2").getChild("LT4");
-		this.Finger2 = RightForArm.getChild("RightArmSeg2").getChild("Tendrils2").getChild("LT5");
-		this.Finger3 = RightForArm.getChild("RightArmSeg2").getChild("Tendrils2").getChild("LT6");
-		this.Finger4 = LeftForArm.getChild("LeftArmSeg2").getChild("Tendrils").getChild("LT1");
-		this.Finger5 = LeftForArm.getChild("LeftArmSeg2").getChild("Tendrils").getChild("LT2");
-		this.Finger6 = LeftForArm.getChild("LeftArmSeg2").getChild("Tendrils").getChild("LT3");
-		this.Book = Deli.getChild("Table").getChild("book");
+		this.TumorBase = this.Deli.getChild("TumorBase");
+		this.BodyBase = this.Deli.getChild("BodyBase");
+		this.BodyCrown = this.BodyBase.getChild("BodyCrown");
+		this.BodyTumors = this.BodyBase.getChild("BodyTumors");
+		this.BodyBaseHead = this.BodyBase.getChild("BodyBaseHead");
+		this.BodyHeadCrown = this.BodyBaseHead.getChild("BodyHeadCrown");
+		this.BodyToTorso = this.BodyBase.getChild("BodyToTorso");
+		this.BtTT1 = this.BodyToTorso.getChild("BtTT1");
+		this.BtTT2 = this.BodyToTorso.getChild("BtTT2");
+		this.BtTT3 = this.BodyToTorso.getChild("BtTT3");
+		this.BtTT4 = this.BodyToTorso.getChild("BtTT4");
+		this.DelusionerTorso = this.BodyToTorso.getChild("DelusionerTorso");
+		this.LowerTorsoFungus = this.DelusionerTorso.getChild("LowerTorsoFungus");
+		this.TorsoToUpper = this.DelusionerTorso.getChild("TorsoToUpper");
+		this.TtUT1 = this.TorsoToUpper.getChild("TtUT1");
+		this.TtUT2 = this.TorsoToUpper.getChild("TtUT2");
+		this.TtUT3 = this.TorsoToUpper.getChild("TtUT3");
+		this.TtUT4 = this.TorsoToUpper.getChild("TtUT4");
+		this.DelusionerUpperTorso = this.TorsoToUpper.getChild("DelusionerUpperTorso");
+		this.UpperTorsoFungus = this.DelusionerUpperTorso.getChild("UpperTorsoFungus");
+		this.UpperToHead = this.DelusionerUpperTorso.getChild("UpperToHead");
+		this.UtHT1 = this.UpperToHead.getChild("UtHT1");
+		this.UtHT2 = this.UpperToHead.getChild("UtHT2");
+		this.UtHT3 = this.UpperToHead.getChild("UtHT3");
+		this.UtHT4 = this.UpperToHead.getChild("UtHT4");
+		this.Head = this.UpperToHead.getChild("Head");
+		this.Jaw = this.Head.getChild("Jaw");
+		this.Nose = this.Head.getChild("Nose");
+		this.HeadCrown1 = this.Head.getChild("HeadCrown1");
+		this.HeadCrown2 = this.Head.getChild("HeadCrown2");
+		this.HeadTumors = this.Head.getChild("HeadTumors");
+		this.Arms = this.DelusionerUpperTorso.getChild("Arms");
+		this.UpperToRightArm = this.Arms.getChild("UpperToRightArm");
+		this.UtRT1 = this.UpperToRightArm.getChild("UtRT1");
+		this.UtRT2 = this.UpperToRightArm.getChild("UtRT2");
+		this.RightArmSeg1 = this.UpperToRightArm.getChild("RightArmSeg1");
+		this.RightArmToRightHand = this.RightArmSeg1.getChild("RightArmToRightHand");
+		this.RtHT1 = this.RightArmToRightHand.getChild("RtHT1");
+		this.RtHT2 = this.RightArmToRightHand.getChild("RtHT2");
+		this.RightArmSeg2 = this.RightArmToRightHand.getChild("RightArmSeg2");
+		this.Tendrils2 = this.RightArmSeg2.getChild("Tendrils2");
+		this.LT4 = this.Tendrils2.getChild("LT4");
+		this.LT1Seg3 = this.LT4.getChild("LT1Seg3");
+		this.LT5 = this.Tendrils2.getChild("LT5");
+		this.LT2Seg3 = this.LT5.getChild("LT2Seg3");
+		this.LT6 = this.Tendrils2.getChild("LT6");
+		this.LT3Seg3 = this.LT6.getChild("LT3Seg3");
+		this.UpperToLeftArm = this.Arms.getChild("UpperToLeftArm");
+		this.UtLT1 = this.UpperToLeftArm.getChild("UtLT1");
+		this.UtLT2 = this.UpperToLeftArm.getChild("UtLT2");
+		this.LeftArmSeg1 = this.UpperToLeftArm.getChild("LeftArmSeg1");
+		this.LeftArmTumor = this.LeftArmSeg1.getChild("LeftArmTumor");
+		this.LeftArmToLeftHand = this.LeftArmSeg1.getChild("LeftArmToLeftHand");
+		this.LtHT1 = this.LeftArmToLeftHand.getChild("LtHT1");
+		this.LtHT2 = this.LeftArmToLeftHand.getChild("LtHT2");
+		this.LeftArmSeg2 = this.LeftArmToLeftHand.getChild("LeftArmSeg2");
+		this.Tendrils = this.LeftArmSeg2.getChild("Tendrils");
+		this.LT1 = this.Tendrils.getChild("LT1");
+		this.LT1Seg2 = this.LT1.getChild("LT1Seg2");
+		this.LT2 = this.Tendrils.getChild("LT2");
+		this.LT2Seg2 = this.LT2.getChild("LT2Seg2");
+		this.LT3 = this.Tendrils.getChild("LT3");
+		this.LT3Seg2 = this.LT3.getChild("LT3Seg2");
+		this.Table = this.Deli.getChild("Table");
+		this.book = this.Table.getChild("book");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -340,7 +433,7 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 
 		PartDefinition LT3Seg2 = LT3.addOrReplaceChild("LT3Seg2", CubeListBuilder.create().texOffs(0, 56).addBox(-1.0F, -4.3F, -1.0F, 2.0F, 5.0F, 2.0F, new CubeDeformation(-0.65F)), PartPose.offsetAndRotation(0.1899F, -2.636F, -0.1056F, 0.1745F, 0.0F, 0.0F));
 
-		PartDefinition page = LeftArmSeg2.addOrReplaceChild("page", CubeListBuilder.create().texOffs(114, 89).addBox(0.5F, -4.0F, 0.0F, 5.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.4636F, 2.5467F, 0.6359F, 0.0F, 0.3491F, 0.0F));
+		PartDefinition pageE = LeftArmSeg2.addOrReplaceChild("pageE", CubeListBuilder.create().texOffs(114, 89).addBox(0.5F, -4.0F, 0.0F, 5.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.4636F, 2.5467F, 0.6359F, 0.0F, 0.3491F, 0.0F));
 
 		PartDefinition Table = Deli.addOrReplaceChild("Table", CubeListBuilder.create().texOffs(0, 100).addBox(-8.0F, -10.0F, -8.0F, 16.0F, 12.0F, 16.0F, new CubeDeformation(-2.0F)), PartPose.offsetAndRotation(0.0F, -10.0F, -9.0F, 0.2657F, -0.1685F, -0.0456F));
 
@@ -406,7 +499,9 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
-	private void animateTumor(ModelPart part,float value){
+
+
+	private void animateTumor(ModelPart part, float value){
 		part.xScale = 1+ Mth.cos(value/8)/8;
 		part.yScale = 1+ Mth.cos(value/8)/8;
 		part.zScale = 1+ Mth.cos(value/8)/8;
@@ -422,37 +517,37 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.animateTumor(this.TumorBase,ageInTicks);
-		this.animateTumor(this.Tumors,-ageInTicks);
-		this.HeadBase.yRot = Mth.cos(ageInTicks/6)/5;
-		this.MainBody.zRot = Mth.cos(ageInTicks/10)/10;
-		this.Torso.yRot = Mth.sin(ageInTicks/7)/7;
-		this.TopTorso.zRot = Mth.sin(ageInTicks/6)/6;
+		this.animateTumor(this.HeadTumors,-ageInTicks);
+		this.BodyBaseHead.yRot = Mth.cos(ageInTicks/6)/5;
+		this.BodyToTorso.zRot = Mth.cos(ageInTicks/10)/10;
+		this.DelusionerTorso.yRot = Mth.sin(ageInTicks/7)/7;
+		this.TorsoToUpper.zRot = Mth.sin(ageInTicks/6)/6;
 		this.Head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.Head.xRot = headPitch /  ( 90F / (float) Math.PI);
 		this.Jaw.yRot = Mth.cos(ageInTicks/6)/5;
-		this.RightArm.zRot = -0.7f-Mth.cos(ageInTicks/7)/7;
-		this.LeftArm.zRot = -RightArm.zRot;
-		this.RightForArm.yRot = Mth.cos(ageInTicks/6)/6;
-		this.LeftForArm.yRot = -RightForArm.yRot;
+		this.UpperToRightArm.zRot = -0.7f-Mth.cos(ageInTicks/7)/7;
+		this.UpperToLeftArm.zRot = -UpperToRightArm.zRot;
+		this.RightArmToRightHand.yRot = Mth.cos(ageInTicks/6)/6;
+		this.LeftArmToLeftHand.yRot = -RightArmToRightHand.yRot;
 		if (entity.isCasting()){
-			this.RightArm.xRot = Mth.sin(ageInTicks/8)/8;
-			this.LeftArm.xRot = Mth.cos(ageInTicks/8)/8;
-			this.Book.yRot = Mth.sin(ageInTicks/6)/6;
+			this.UpperToRightArm.xRot = Mth.sin(ageInTicks/8)/8;
+			this.UpperToLeftArm.xRot = Mth.cos(ageInTicks/8)/8;
+			this.book.yRot = Mth.cos(ageInTicks/6)/6;
 		}else{
-			this.Book.yRot = 0;
-			this.RightArm.xRot = 1.3f;
-			this.LeftArm.xRot = 1.3f;
+			this.UpperToRightArm.xRot = 1.3f;
+			this.UpperToLeftArm.xRot = 1.3f;
+			this.book.yRot = 0;
 		}
-		animateFinger(this.Finger1,-ageInTicks);
-		animateFinger1(this.Finger2,ageInTicks);
-		animateFinger(this.Finger3,ageInTicks);
-		animateFinger1(this.Finger4,-ageInTicks);
-		animateFinger1(this.Finger5,ageInTicks);
-		animateFinger(this.Finger6,-ageInTicks);
+		animateFinger(this.LT4,-ageInTicks);
+		animateFinger1(this.LT5,ageInTicks);
+		animateFinger(this.LT6,ageInTicks);
+		animateFinger1(this.LT1,-ageInTicks);
+		animateFinger1(this.LT2,ageInTicks);
+		animateFinger(this.LT3,-ageInTicks);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int alpha) {
-		Deli.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+		Deli.render(poseStack, vertexConsumer, packedLight, packedOverlay,  alpha);
 	}
 }

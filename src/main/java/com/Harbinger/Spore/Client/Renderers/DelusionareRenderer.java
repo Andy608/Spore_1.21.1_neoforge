@@ -25,7 +25,7 @@ public class DelusionareRenderer<Type extends Delusionare> extends OrganoidMobRe
 
     public DelusionareRenderer(EntityRendererProvider.Context context) {
         super(context, new DelusionerModel<>(context.bakeLayer(DelusionerModel.LAYER_LOCATION)), 1f);
-        this.mage = new DelusionerEnchanterModel<>(context.bakeLayer(DelusionerModel.LAYER_LOCATION));
+        this.mage = new DelusionerEnchanterModel<>(context.bakeLayer(DelusionerEnchanterModel.LAYER_LOCATION));
     }
 
 
