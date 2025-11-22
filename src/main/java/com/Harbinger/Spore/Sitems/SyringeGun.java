@@ -168,7 +168,7 @@ public class SyringeGun extends BaseItem2 implements CustomModelArmorData {
         boolean inHand = player.getMainHandItem() == stack || player.getOffhandItem() == stack;
         if (inHand && isReloading(stack)) {
             if (getReloadTimer(stack) == 5){
-                player.playNotifySound(Ssounds.SYRINGE_SPIN.get(), SoundSource.AMBIENT,0.5f,1);
+                player.playNotifySound(Ssounds.SYRINGE_SPIN.value(), SoundSource.AMBIENT,0.5f,1);
             }
             if (getReloadTimer(stack) > 0) setReloadTimer(stack, getReloadTimer(stack) - 1);
             else {
@@ -180,7 +180,7 @@ public class SyringeGun extends BaseItem2 implements CustomModelArmorData {
         if (getShootCooldown(stack) > 0){
             if (getShootCooldown(stack) == 5 && level.isClientSide){
                 int chamber = getCurrentChamber(stack);
-                player.playNotifySound(Ssounds.SYRINGE_SPIN.get(), SoundSource.AMBIENT,0.5f,1);
+                player.playNotifySound(Ssounds.SYRINGE_SPIN.value(), SoundSource.AMBIENT,0.5f,1);
                 SGReloadAnimationTracker.triggerRotationToChamber(player,chamber,10);
             }
             setShootCooldown(stack, getShootCooldown(stack) - 1);
@@ -200,7 +200,7 @@ public class SyringeGun extends BaseItem2 implements CustomModelArmorData {
                 if (!ammo.isEmpty()) {
                     if (player.level().isClientSide) {
                         SGReloadAnimationTracker.triggerRotationToChamber(player,i,10);
-                        player.playNotifySound(Ssounds.SYRINGE_RELOAD.get(), SoundSource.AMBIENT, 0.5f, 1);
+                        player.playNotifySound(Ssounds.SYRINGE_RELOAD.value(), SoundSource.AMBIENT, 0.5f, 1);
                     } else {
                         ItemStack taken = ammo.split(1);
                         setMagazine(gun, taken, i);
@@ -242,7 +242,7 @@ public class SyringeGun extends BaseItem2 implements CustomModelArmorData {
                 arrow.moveTo(player.position().add(vec3.x,1.4,vec3.z));
                 arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
                 level.addFreshEntity(arrow);
-                player.playNotifySound(Ssounds.SYRINGE_SHOOT.get(), SoundSource.AMBIENT,0.5f,1);
+                player.playNotifySound(Ssounds.SYRINGE_SHOOT.value(), SoundSource.AMBIENT,0.5f,1);
             } else {
                 SGAnimationTracker.trigger(player);
             }

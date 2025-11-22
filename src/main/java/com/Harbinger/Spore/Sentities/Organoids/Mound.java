@@ -199,7 +199,7 @@ public class Mound extends Organoid implements FoliageSpread {
         }
 
         if (getCounter() == (maxCounter - 2)) {
-            this.playSound(Ssounds.PUFF.get());
+            this.playSound(Ssounds.PUFF.value());
         }
     }
 
@@ -229,7 +229,7 @@ public class Mound extends Organoid implements FoliageSpread {
             cloud.setRadiusPerTick(((1.5F * getAge()) - cloud.getRadius()) / (float) cloud.getDuration());
             cloud.addEffect(new MobEffectInstance(Seffects.MYCELIUM, 200, 1));
             this.level().addFreshEntity(cloud);
-            this.playSound(Ssounds.PUFF.get(), 0.5f, 0.5f);
+            this.playSound(Ssounds.PUFF.value(), 0.5f, 0.5f);
         }
     }
 

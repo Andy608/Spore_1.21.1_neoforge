@@ -214,11 +214,11 @@ public class Vigil extends Organoid implements TraceableEntity, VariantKeeper {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.VIGIL_AMBIENT.get();
+        return Ssounds.VIGIL_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
 

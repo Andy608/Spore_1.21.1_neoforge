@@ -108,12 +108,12 @@ public class SurgeryTableBlockEntity extends BlockEntity implements MenuProvider
             itemHandler.extractItem(STRING_SLOT,1,false);
         });
         if (level != null){
-            this.level.playLocalSound(this.getBlockPos(), Ssounds.SURGERY.get(), SoundSource.BLOCKS,1f,1f,true);
+            this.level.playLocalSound(this.getBlockPos(), Ssounds.SURGERY.value(), SoundSource.BLOCKS,1f,1f,true);
         }
     }
     public Optional<RecipeHolder<GraftingRecipe>> getCurrentGraftingRecipe() {
         ItemStack[] items = new ItemStack[25];
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 25; i++) {
             items[i] = itemHandler.getStackInSlot(i);
         }
         return this.level.getRecipeManager()
@@ -130,7 +130,7 @@ public class SurgeryTableBlockEntity extends BlockEntity implements MenuProvider
             }
         });
         if (level != null){
-            this.level.playLocalSound(this.getBlockPos(), Ssounds.SURGERY.get(), SoundSource.BLOCKS,1f,1f,true);
+            this.level.playLocalSound(this.getBlockPos(), Ssounds.SURGERY.value(), SoundSource.BLOCKS,1f,1f,true);
         }
     }
     public void assembleWeapon(Player player, ItemStack stack){

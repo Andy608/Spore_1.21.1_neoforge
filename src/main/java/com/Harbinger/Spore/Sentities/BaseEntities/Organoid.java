@@ -58,7 +58,7 @@ public class Organoid extends UtilityEntity implements Enemy {
         }
     }
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.ORGANOID_DAMAGE.get();
+        return Ssounds.ORGANOID_DAMAGE.value();
     }
 
     @Override

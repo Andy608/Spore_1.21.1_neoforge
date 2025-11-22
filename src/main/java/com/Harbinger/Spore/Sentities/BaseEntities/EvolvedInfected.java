@@ -49,7 +49,7 @@ public class EvolvedInfected extends Infected {
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.EVOLVE_HURT.get();
+        return Ssounds.EVOLVE_HURT.value();
     }
     @Override
     public boolean removeWhenFarAway(double p_21542_) {

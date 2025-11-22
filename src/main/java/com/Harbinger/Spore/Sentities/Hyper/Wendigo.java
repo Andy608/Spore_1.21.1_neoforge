@@ -263,7 +263,7 @@ public class Wendigo extends Hyper {
         if (IS_STALKING.equals(dataAccessor)){
             if (this.getTarget() != null && this.getIsSprinting()<=0){
                 this.setIsSprinting(10);
-                this.playSound(Ssounds.WENDIGO_SCREECH.get());
+                this.playSound(Ssounds.WENDIGO_SCREECH.value());
             }
             this.setCamo(this.isStalking() ? getBiomeTint() : 0);
             this.refreshDimensions();
@@ -280,12 +280,12 @@ public class Wendigo extends Hyper {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.WENDIGO_AMBIENT.get();
+        return Ssounds.WENDIGO_AMBIENT.value();
     }
 
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

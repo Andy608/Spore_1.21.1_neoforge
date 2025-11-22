@@ -96,7 +96,7 @@ public class HiveSpawn extends BaseEntityBlock implements SimpleWaterloggedBlock
                     level.addFreshEntity(proto);
                 }
                 for(ServerPlayer player : level.getServer().getPlayerList().getPlayers()){
-                    player.playNotifySound(Ssounds.REBIRTH.get(),SoundSource.AMBIENT,1f,1f);
+                    player.playNotifySound(Ssounds.REBIRTH.value(),SoundSource.AMBIENT,1f,1f);
                     player.displayClientMessage(Component.translatable("hivemind_summon_message"), false);
                 }
             }else if (structureBlocks.getKills() >= SConfig.DATAGEN.hive_spawn_kills.get() && !checkForOtherMinds(blockPos,level)){

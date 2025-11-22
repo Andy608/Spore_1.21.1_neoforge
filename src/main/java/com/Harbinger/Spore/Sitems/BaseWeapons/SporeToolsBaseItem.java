@@ -87,7 +87,7 @@ public class SporeToolsBaseItem extends BaseItem implements SporeWeaponData , II
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
         int durabilityLeft = stack.getMaxDamage() - stack.getDamageValue();
         if (durabilityLeft - amount <= 11) {
-            entity.playSound(Ssounds.INFECTED_GEAR_BREAK.get());
+            entity.playSound(Ssounds.INFECTED_GEAR_BREAK.value());
         }
         if (durabilityLeft < 10) return 0;
         return super.damageItem(stack, amount, entity, onBroken);
@@ -185,7 +185,7 @@ public class SporeToolsBaseItem extends BaseItem implements SporeWeaponData , II
         if (shouldOverride) {
             this.setVariant(SporeToolsMutations.DEFAULT, stack);
             itemStack.shrink(1);
-            player.playNotifySound(Ssounds.SYRINGE_SUCK.get(), SoundSource.AMBIENT, 1f, 1f);
+            player.playNotifySound(Ssounds.SYRINGE_SUCK.value(), SoundSource.AMBIENT, 1f, 1f);
         }
 
         return shouldOverride;

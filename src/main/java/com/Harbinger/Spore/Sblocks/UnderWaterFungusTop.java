@@ -60,7 +60,7 @@ public class UnderWaterFungusTop extends GenericFoliageBlock{
             areaeffectcloud.setRadiusPerTick(-areaeffectcloud.getRadius() / (float) areaeffectcloud.getDuration());
             level.addFreshEntity(areaeffectcloud);
             level.removeBlock(blockpos,false);
-            level.playSound(null,blockpos, Ssounds.FUNGAL_BURST.get(), SoundSource.BLOCKS,1,1);
+            level.playSound(null,blockpos, Ssounds.FUNGAL_BURST.value(), SoundSource.BLOCKS,1,1);
         }
     }
 

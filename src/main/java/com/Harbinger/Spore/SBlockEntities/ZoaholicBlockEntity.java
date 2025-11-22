@@ -145,7 +145,7 @@ public class ZoaholicBlockEntity extends BlockEntity implements AnimatedEntity, 
             if (e.getProcessing() >0){
                 e.setProcessing(e.getProcessing()-1);
                 if (e.getProcessing() == 198){
-                    level.playSound(null, pos, Ssounds.PRINTING.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(null, pos, Ssounds.PRINTING.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
                 if (e.getProcessing() == 1){
                     e.writeDocument(level,pos);
@@ -153,7 +153,7 @@ public class ZoaholicBlockEntity extends BlockEntity implements AnimatedEntity, 
             }
             if (e.getBiomass() % 60 == 0){
                 e.spreadMadness(level,pos);
-                level.playSound(null, pos, Ssounds.HEART_BEAT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(null, pos, Ssounds.HEART_BEAT.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
             }
         }
     }

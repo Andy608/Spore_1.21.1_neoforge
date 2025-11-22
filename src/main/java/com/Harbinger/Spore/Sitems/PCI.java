@@ -86,7 +86,7 @@ public class PCI extends BaseItem2 implements CustomModelArmorData {
         return true;
     }
     public void playSound(Player player){
-        player.playNotifySound(Ssounds.PCI_INJECT.get(), SoundSource.AMBIENT,1f,1f);
+        player.playNotifySound(Ssounds.PCI_INJECT.value(), SoundSource.AMBIENT,1f,1f);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class PCI extends BaseItem2 implements CustomModelArmorData {
                 stack.shrink(1);
                 setCharge(itemStack, SConfig.SERVER.pci_max_charge.get());
                 player.getCooldowns().addCooldown(this,RELOAD_TICKS);
-                player.playNotifySound(Ssounds.CDU_INSERT.get(), SoundSource.AMBIENT,1f,1f);
+                player.playNotifySound(Ssounds.CDU_INSERT.value(), SoundSource.AMBIENT,1f,1f);
                 return true;
             }
         }

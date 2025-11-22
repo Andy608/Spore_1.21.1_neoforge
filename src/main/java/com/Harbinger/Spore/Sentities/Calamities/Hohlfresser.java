@@ -178,7 +178,7 @@ public class Hohlfresser extends Calamity implements TrueCalamity, RangedAttackM
     }
     public void setUnderground(boolean val) {
         if (val) {
-            this.playSound(Ssounds.WORM_DIGGING.get());
+            this.playSound(Ssounds.WORM_DIGGING.value());
             ticksUnder = 40;
         } else {
             entityData.set(VULNERABLE, 200);
@@ -342,7 +342,7 @@ public class Hohlfresser extends Calamity implements TrueCalamity, RangedAttackM
             tryAndCrumbleBlocks();
         }
         if (tickCount % 80 == 0 && isUnderground() && isInWall(this)){
-            this.playSound(Ssounds.WORM_DIGGING.get());
+            this.playSound(Ssounds.WORM_DIGGING.value());
         }
         if (tickCount % 10 == 0){
             handleShooting();
@@ -624,7 +624,7 @@ public class Hohlfresser extends Calamity implements TrueCalamity, RangedAttackM
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.playSound(Ssounds.SIEGER_BITE.get());
+        this.playSound(Ssounds.SIEGER_BITE.value());
         return super.doHurtTarget(entity);
     }
 
@@ -741,7 +741,7 @@ public class Hohlfresser extends Calamity implements TrueCalamity, RangedAttackM
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.HOHL_AMBIENT.get();
+        return Ssounds.HOHL_AMBIENT.value();
     }
 
     protected SoundEvent getStepSound() {

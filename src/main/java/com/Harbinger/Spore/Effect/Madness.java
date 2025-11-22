@@ -39,7 +39,7 @@ public class Madness extends MobEffect implements SporeEffectsHandler{
     }
 
     public void playClientSounds(LivingEntity entity){
-        entity.playSound(Ssounds.MADNESS.get());
+        entity.playSound(Ssounds.MADNESS.value());
     }
 
 

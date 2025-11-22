@@ -350,15 +350,15 @@ public class InfestedConstruct extends UtilityEntity implements RangedAttackMob,
     }
 
     protected SoundEvent getAmbientSound() {
-        return isActive() ? Ssounds.CONSTRUCT_AMBIENT.get() : null;
+        return isActive() ? Ssounds.CONSTRUCT_AMBIENT.value() : null;
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return this.getMachineHealth() > 0 || !isActive() ? SoundEvents.IRON_GOLEM_HURT : Ssounds.INF_DAMAGE.get();
+        return this.getMachineHealth() > 0 || !isActive() ? SoundEvents.IRON_GOLEM_HURT : Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

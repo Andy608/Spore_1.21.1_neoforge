@@ -3,7 +3,6 @@ package com.Harbinger.Spore.Sevents;
 import com.Harbinger.Spore.Effect.SporeEffectsHandler;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeArmorData;
 import com.Harbinger.Spore.Sitems.BaseWeapons.SporeToolsBaseItem;
-import com.Harbinger.Spore.core.SAttributes;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Senchantments;
 import com.Harbinger.Spore.core.Ssounds;
@@ -16,7 +15,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -26,8 +24,6 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.Harbinger.Spore.core.SAttributes.SWIM_SPEED;
 
 public class LivingTickEvent {
     private static final TagKey<Block> tag = BlockTags.create(ResourceLocation.parse("spore:fungal_blocks"));
@@ -68,7 +64,7 @@ public class LivingTickEvent {
                         });
 
                 if (list.size() > 4) {
-                    player.playSound(Ssounds.AREA_AMBIENT.get());
+                    player.playSound(Ssounds.AREA_AMBIENT.value());
                 }
             }
 

@@ -56,15 +56,15 @@ public class Lacerator extends Experiment {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.LACERATOR_AMBIENT.get();
+        return Ssounds.LACERATOR_AMBIENT.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {
@@ -79,9 +79,9 @@ public class Lacerator extends Experiment {
     public void tick() {
         super.tick();
         if (tickCount % 40 == 0){
-            this.playSound(Ssounds.ENGINE.get());
+            this.playSound(Ssounds.ENGINE.value());
             if (this.isAggressive()){
-                this.playSound(Ssounds.SAW_SOUND.get());
+                this.playSound(Ssounds.SAW_SOUND.value());
             }
         }
     }
@@ -114,7 +114,7 @@ public class Lacerator extends Experiment {
         @Override
         public void start() {
             super.start();
-            this.mob.playSound(Ssounds.SAW_SOUND.get());
+            this.mob.playSound(Ssounds.SAW_SOUND.value());
         }
     }
 }

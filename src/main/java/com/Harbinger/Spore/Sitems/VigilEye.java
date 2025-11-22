@@ -46,7 +46,7 @@ public class VigilEye extends BaseItem{
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int value) {
         super.releaseUsing(stack, level, livingEntity, value);
-        livingEntity.playSound(Ssounds.VIGIL_EYE_USE.get());
+        livingEntity.playSound(Ssounds.VIGIL_EYE_USE.value());
         if (!level.isClientSide){
         AABB searchbox = livingEntity.getBoundingBox().inflate(128);
         List<Entity> entities = level.getEntities(livingEntity,searchbox);

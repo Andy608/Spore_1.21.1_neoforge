@@ -152,7 +152,7 @@ public class Illusion extends UtilityEntity implements ArmorPersentageBypass, En
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return Ssounds.MADNESS.get();
+        return Ssounds.MADNESS.value();
     }
 
     @Override

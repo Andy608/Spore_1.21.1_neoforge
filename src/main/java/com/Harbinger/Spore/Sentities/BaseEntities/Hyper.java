@@ -80,7 +80,7 @@ public class Hyper extends Infected{
         return false;
     }
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.HYPER_DAMAGE.get();
+        return Ssounds.HYPER_DAMAGE.value();
     }
     @Override
     public boolean hasLineOfSight(Entity entity) {

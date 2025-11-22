@@ -119,7 +119,7 @@ public class Howitzer extends Calamity implements TrueCalamity, RangedAttackMob 
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.playSound(Ssounds.LANDING.get(),0.5f,0.5f);
+        this.playSound(Ssounds.LANDING.value(),0.5f,0.5f);
         return super.doHurtTarget(entity);
     }
 
@@ -458,7 +458,7 @@ public class Howitzer extends Calamity implements TrueCalamity, RangedAttackMob 
         arm.setNuclear(this.isRadioactive());
         arm.moveTo(this.getX() + vec3.x, this.getY() + 1.6,this.getZ()+ vec3.z);
         level().addFreshEntity(arm);
-        this.playSound(Ssounds.LIMB_SLASH.get());
+        this.playSound(Ssounds.LIMB_SLASH.value());
         return 0;
     }
 
@@ -489,7 +489,7 @@ public class Howitzer extends Calamity implements TrueCalamity, RangedAttackMob 
                 living.invulnerableTime = 0;
             }
         }
-        this.playSound(Ssounds.LANDING.get());
+        this.playSound(Ssounds.LANDING.value());
     }
     private FleshBomb.BombType compareEntity(LivingEntity living,int burnable){
         AABB aabb = living.getBoundingBox().inflate(4);
@@ -535,10 +535,10 @@ public class Howitzer extends Calamity implements TrueCalamity, RangedAttackMob 
         bomb.moveTo(this.getX() + value,this.getY()+7,this.getZ()+ value);
         bomb.shoot(dx * 0.085F,6.5f+ Math.hypot(dx, dz) * 0.02F +(dy>0?dy:0*0.5),dz  * 0.085F, 2f, 14.0F);
         level().addFreshEntity(bomb);
-        this.playSound(Ssounds.FALLING_BOMB.get());
+        this.playSound(Ssounds.FALLING_BOMB.value());
     }
     protected SoundEvent getAmbientSound() {
-        return Ssounds.HOWITZER_AMBIENT.get();
+        return Ssounds.HOWITZER_AMBIENT.value();
     }
 
     protected SoundEvent getStepSound() {

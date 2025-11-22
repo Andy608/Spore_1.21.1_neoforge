@@ -125,7 +125,7 @@ public class InfectedCleaver extends SporeSwordBase implements DeathRewardingWea
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (tooHurt(stack)){
-            player.playNotifySound(Ssounds.CLEAVER_SPIN.get(), SoundSource.AMBIENT,1F,1F);
+            player.playNotifySound(Ssounds.CLEAVER_SPIN.value(), SoundSource.AMBIENT,1F,1F);
             player.startUsingItem(hand);
             this.hurtTool(player.getItemInHand(hand),player,1);
             return InteractionResultHolder.consume(stack);
@@ -171,7 +171,7 @@ public class InfectedCleaver extends SporeSwordBase implements DeathRewardingWea
         }
 
         if (charge % 20 == 0){
-            player.playNotifySound(Ssounds.CLEAVER_SPIN.get(), SoundSource.AMBIENT, 1F, 1F);
+            player.playNotifySound(Ssounds.CLEAVER_SPIN.value(), SoundSource.AMBIENT, 1F, 1F);
         }
 
         super.onUseTick(level, entity, stack, count);

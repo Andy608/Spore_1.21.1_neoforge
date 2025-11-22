@@ -294,12 +294,12 @@ public class Busser extends EvolvedInfected implements Carrier, FlyingInfected, 
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.INF_GROWL.get();
+        return Ssounds.INF_GROWL.value();
     }
 
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

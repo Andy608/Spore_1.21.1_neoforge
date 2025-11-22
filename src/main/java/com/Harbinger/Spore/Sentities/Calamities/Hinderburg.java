@@ -134,7 +134,7 @@ public class Hinderburg extends Calamity implements FlyingInfected , TrueCalamit
             tickBomb();
             if (this.getBombTimer() == 1){
                 Entity entity = this.getTarget() != null ? this.getTarget() : this;
-                entity.playSound(Ssounds.HINDEN_NUKE.get());
+                entity.playSound(Ssounds.HINDEN_NUKE.value());
             }
             if (this.getBombTimer() >= 80){
                 this.SummonNuke();
@@ -350,11 +350,11 @@ public class Hinderburg extends Calamity implements FlyingInfected , TrueCalamit
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.HINDEN_AMBIENT.get();
+        return Ssounds.HINDEN_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {
@@ -463,7 +463,7 @@ public class Hinderburg extends Calamity implements FlyingInfected , TrueCalamit
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.playSound(Ssounds.SIEGER_BITE.get());
+        this.playSound(Ssounds.SIEGER_BITE.value());
         return super.doHurtTarget(entity);
     }
     @Override

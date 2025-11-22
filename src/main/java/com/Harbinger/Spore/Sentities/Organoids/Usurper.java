@@ -173,16 +173,16 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
             double dz = livingEntity.getZ() - this.getZ();
             projectile.moveTo(this.getX(), this.getY()+1.2D ,this.getZ());
             projectile.shoot(dx, dy - projectile.getY() + Math.hypot(dx, dz) * 0.001F, dz, 1.5f, 3.0F);
-            this.playSound(Ssounds.SPIT.get());
+            this.playSound(Ssounds.SPIT.value());
             level().addFreshEntity(projectile);
         }
     }
     protected SoundEvent getAmbientSound() {
-        return Ssounds.USURPER_AMBIENT.get();
+        return Ssounds.USURPER_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
 

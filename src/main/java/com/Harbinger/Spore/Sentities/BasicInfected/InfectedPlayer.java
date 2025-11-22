@@ -178,15 +178,15 @@ public class InfectedPlayer extends Infected implements RangedAttackMob , ArmedI
         this.entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
     }
     protected SoundEvent getAmbientSound() {
-        return Ssounds.ADVENTURER_AMBIENT.get();
+        return Ssounds.ADVENTURER_AMBIENT.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

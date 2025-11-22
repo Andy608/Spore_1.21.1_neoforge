@@ -132,15 +132,15 @@ public class Biobloob extends Experiment implements RangedAttackMob {
         return SConfig.DATAGEN.bioblob_loot.get();
     }
     protected SoundEvent getAmbientSound() {
-        return Ssounds.BIOBLOB.get();
+        return Ssounds.BIOBLOB.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

@@ -65,7 +65,7 @@ public abstract class AbstractSyringe extends BaseItem2 {
     public abstract void useSyringe(ItemStack stack,LivingEntity living);
 
     protected void addMycelium(LivingEntity living){
-        living.playSound(Ssounds.SYRINGE_INJECT.get(),1F,1F);
+        living.playSound(Ssounds.SYRINGE_INJECT.value(),1F,1F);
         living.addEffect(new MobEffectInstance(Seffects.MYCELIUM,300,0));
     }
 

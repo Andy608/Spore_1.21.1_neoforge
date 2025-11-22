@@ -144,7 +144,7 @@ public class ThrownBoomerang extends AbstractArrow {
             }
 
             this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-            this.playSound(Ssounds.INFECTED_WEAPON_HIT_ENTITY.get(), 1.0F, 1.0F);
+            this.playSound(Ssounds.INFECTED_WEAPON_HIT_ENTITY.value(), 1.0F, 1.0F);
         }
     }
 
@@ -160,7 +160,7 @@ public class ThrownBoomerang extends AbstractArrow {
 
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
-        return Ssounds.INFECTED_WEAPON_HIT_BLOCK.get();
+        return Ssounds.INFECTED_WEAPON_HIT_BLOCK.value();
     }
 
     @Override

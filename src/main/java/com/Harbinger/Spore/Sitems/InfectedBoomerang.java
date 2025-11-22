@@ -36,7 +36,7 @@ public class InfectedBoomerang extends SporeSwordBase {
             }
 
             level.addFreshEntity(boomerang);
-            level.playSound(null, player, Ssounds.INFECTED_WEAPON_THROW.get(), SoundSource.PLAYERS, 1.5F, 0.9F);
+            level.playSound(null, player, Ssounds.INFECTED_WEAPON_THROW.value(), SoundSource.PLAYERS, 1.5F, 0.9F);
 
             stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
             if (!player.getAbilities().instabuild) {

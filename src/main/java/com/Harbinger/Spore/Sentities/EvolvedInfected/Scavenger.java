@@ -97,7 +97,7 @@ public class Scavenger extends EvolvedInfected implements FlyingInfected {
             screams = 0;
             return;
         }
-        this.playSound(Ssounds.SCAVENGER_SCREECH.get());
+        this.playSound(Ssounds.SCAVENGER_SCREECH.value());
         screams++;
         screamForHelp(living);
     }
@@ -170,11 +170,11 @@ public class Scavenger extends EvolvedInfected implements FlyingInfected {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.INF_VILLAGER_GROWL.get();
+        return Ssounds.INF_VILLAGER_GROWL.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_VILLAGER_DEATH.get();
+        return Ssounds.INF_VILLAGER_DEATH.value();
     }
 
 }

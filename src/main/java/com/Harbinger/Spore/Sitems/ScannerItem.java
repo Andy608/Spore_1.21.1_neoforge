@@ -53,10 +53,10 @@ public class ScannerItem extends BaseItem2 {
         if (!level.isClientSide) {
             LivingEntity victim = getScannedEntity(player, level);
             if (victim != null) {
-                player.playNotifySound(Ssounds.SCANNER_MOB.get(), SoundSource.AMBIENT,1F,1F);
+                player.playNotifySound(Ssounds.SCANNER_MOB.value(), SoundSource.AMBIENT,1F,1F);
                 showInfo(tool, victim, player);
             }else {
-                player.playNotifySound(Ssounds.SCANNER_EMPTY.get(), SoundSource.AMBIENT,1F,1F);
+                player.playNotifySound(Ssounds.SCANNER_EMPTY.value(), SoundSource.AMBIENT,1F,1F);
             }
             player.getCooldowns().addCooldown(this, 20);
         }
@@ -232,7 +232,7 @@ public class ScannerItem extends BaseItem2 {
     public boolean overrideStackedOnOther(@NotNull ItemStack stack, Slot slot, @NotNull ClickAction clickAction, @NotNull Player player) {
         ItemStack itemStack = slot.getItem();
         if (itemStack.getItem() instanceof OrganItem organItem && clickAction == ClickAction.SECONDARY) {
-            player.playNotifySound(Ssounds.SCANNER_ITEM.get(), SoundSource.AMBIENT,1F,1F);
+            player.playNotifySound(Ssounds.SCANNER_ITEM.value(), SoundSource.AMBIENT,1F,1F);
             SporePacketHandler.sendToServer(new AdvancementGivingPackage(organItem.getAdvancementIds(),player.getId()));
             return true;
         }

@@ -264,11 +264,11 @@ public class Brauerei extends Organoid implements RangedAttackMob, VariantKeeper
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.BRAUREI_AMBIENT.get();
+        return Ssounds.BRAUREI_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     public BraureiVariants getVariant() {

@@ -44,7 +44,7 @@ public class WeaponSyringe extends AbstractSyringe{
     public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction clickAction, Player player) {
         ItemStack itemStack = slot.getItem();
         if (itemStack.getItem() instanceof SporeWeaponData weaponData && clickAction == ClickAction.SECONDARY){
-            player.playNotifySound(Ssounds.SYRINGE_INJECT.get(), SoundSource.AMBIENT,1F,1F);
+            player.playNotifySound(Ssounds.SYRINGE_INJECT.value(), SoundSource.AMBIENT,1F,1F);
             weaponData.setVariant(mutations,itemStack);
             stack.shrink(1);
             return true;

@@ -101,11 +101,11 @@ public class Leaper extends EvolvedInfected implements Carrier {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.INF_VILLAGER_AMBIENT.get();
+        return Ssounds.INF_VILLAGER_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_VILLAGER_DEATH.get();
+        return Ssounds.INF_VILLAGER_DEATH.value();
     }
 
 

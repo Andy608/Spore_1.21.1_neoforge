@@ -50,7 +50,7 @@ public class HohlMultipart extends LivingEntity implements TrueCalamity {
         super(p_20966_, p_20967_);
     }
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.CALAMITY_DAMAGE.get();
+        return Ssounds.CALAMITY_DAMAGE.value();
     }
     @Override
     public boolean canBeCollidedWith() {

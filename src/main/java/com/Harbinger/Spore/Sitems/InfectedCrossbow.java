@@ -204,7 +204,7 @@ public class InfectedCrossbow extends CrossbowItem implements SporeWeaponData {
         if (shouldOverride) {
             this.setVariant(SporeToolsMutations.DEFAULT, stack);
             itemStack.shrink(1);
-            player.playNotifySound(Ssounds.SYRINGE_SUCK.get(), SoundSource.AMBIENT, 1f, 1f);
+            player.playNotifySound(Ssounds.SYRINGE_SUCK.value(), SoundSource.AMBIENT, 1f, 1f);
         }
 
         return shouldOverride;

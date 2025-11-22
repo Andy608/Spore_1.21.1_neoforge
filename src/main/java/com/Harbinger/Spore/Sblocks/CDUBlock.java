@@ -134,8 +134,8 @@ public class CDUBlock extends BaseEntityBlock {
                 if (blockEntity.getFuel() > 0){
                     player.displayClientMessage(Component.literal("Current fuel " + blockEntity.getFuel() + "/" + blockEntity.maxFuel),true);
                 }else{
-                    level.playLocalSound(pos, Ssounds.CDU_INSERT.get(), SoundSource.BLOCKS,2f,2f,true);
-                    level.playLocalSound(pos, Ssounds.CDU_AMBIENT.get(), SoundSource.BLOCKS,1f,1f,true);
+                    level.playLocalSound(pos, Ssounds.CDU_INSERT.value(), SoundSource.BLOCKS,2f,2f,true);
+                    level.playLocalSound(pos, Ssounds.CDU_AMBIENT.value(), SoundSource.BLOCKS,1f,1f,true);
                     blockEntity.setFuel(blockEntity.maxFuel);
                     item.shrink(1);
                 }

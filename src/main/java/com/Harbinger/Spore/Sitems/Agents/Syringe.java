@@ -41,7 +41,7 @@ public class Syringe extends BaseItem2 {
         if (match != null) {
             ItemStack result = new ItemStack(match.output());
             if (!result.isEmpty()) {
-                player.playNotifySound(Ssounds.SYRINGE_SUCK.get(), SoundSource.AMBIENT, 1F, 1F);
+                player.playNotifySound(Ssounds.SYRINGE_SUCK.value(), SoundSource.AMBIENT, 1F, 1F);
                 living.hurt(level.damageSources().playerAttack(player), 1f);
 
                 if (!player.getInventory().add(result.copy())) {

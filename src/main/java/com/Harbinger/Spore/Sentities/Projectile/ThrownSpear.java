@@ -132,7 +132,7 @@ public class ThrownSpear extends AbstractArrow {
         Entity entity1 = this.getOwner();
         DamageSource damagesource = this.damageSources().trident(this, entity1 == null ? this : entity1);
         this.dealtDamage = true;
-        SoundEvent soundevent = Ssounds.INFECTED_WEAPON_HIT_ENTITY.get();
+        SoundEvent soundevent = Ssounds.INFECTED_WEAPON_HIT_ENTITY.value();
         if (entity.hurt(damagesource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
@@ -165,7 +165,7 @@ public class ThrownSpear extends AbstractArrow {
     }
 
     protected SoundEvent getDefaultHitGroundSoundEvent() {
-        return Ssounds.INFECTED_WEAPON_HIT_BLOCK.get();
+        return Ssounds.INFECTED_WEAPON_HIT_BLOCK.value();
     }
 
     public void playerTouch(Player p_37580_) {

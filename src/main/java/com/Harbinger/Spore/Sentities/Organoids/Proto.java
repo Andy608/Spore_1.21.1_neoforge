@@ -509,11 +509,11 @@ public class Proto extends Organoid implements CasingGenerator, FoliageSpread {
         return super.hurt(source, amount);
     }
     protected SoundEvent getAmbientSound() {
-        return Ssounds.PROTO_AMBIENT.get();
+        return Ssounds.PROTO_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     @Override
@@ -623,7 +623,7 @@ public class Proto extends Organoid implements CasingGenerator, FoliageSpread {
                 level.addFreshEntity(creature);
                 level.getServer();
                 for(ServerPlayer player : level.getServer().getPlayerList().getPlayers()){
-                    player.playNotifySound(Ssounds.CALAMITY_SPAWN.get(), SoundSource.AMBIENT,1f,1f);
+                    player.playNotifySound(Ssounds.CALAMITY_SPAWN.value(), SoundSource.AMBIENT,1f,1f);
                     player.displayClientMessage(Component.translatable("calamity_summon_message"), false);
                 }
                 this.setSignal(null);
@@ -662,7 +662,7 @@ public class Proto extends Organoid implements CasingGenerator, FoliageSpread {
                 calamity.setSearchArea(pos);
                 this.setSignal(null);
                 for(ServerPlayer player : this.level().getServer().getPlayerList().getPlayers()){
-                    player.playNotifySound(Ssounds.CALAMITY_INCOMING.get(), SoundSource.AMBIENT,1f,1f);
+                    player.playNotifySound(Ssounds.CALAMITY_INCOMING.value(), SoundSource.AMBIENT,1f,1f);
                     player.displayClientMessage(Component.translatable("calamity_coming_message"), false);
                 }
                 return false;

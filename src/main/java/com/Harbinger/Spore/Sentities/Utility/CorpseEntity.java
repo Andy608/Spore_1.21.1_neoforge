@@ -118,7 +118,7 @@ public class CorpseEntity extends Entity {
     public InteractionResult interactAt(Player player, Vec3 hitVec, InteractionHand hand) {
         if (!level().isClientSide && player.getItemInHand(hand).getItem() instanceof Reaver && Math.random() < 0.3f){
             summonItem(HitboxesForParts.byId(getCorpseType()).getCalamityType().getStack());
-            this.playSound(Ssounds.REAVER_REAVE.get());
+            this.playSound(Ssounds.REAVER_REAVE.value());
         }
         createLoot();
         return InteractionResult.SUCCESS;

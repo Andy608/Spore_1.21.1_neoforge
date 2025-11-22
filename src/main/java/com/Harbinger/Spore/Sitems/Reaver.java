@@ -114,7 +114,7 @@ public class Reaver extends SwordItem implements LootModifierWeapon {
         if (!level.isClientSide && values != null && Math.random() < (values.value * 0.01)){
         ItemEntity item = new ItemEntity(level,pos.getX(),pos.getY(),pos.getZ(),values.stack);
         level.addFreshEntity(item);
-        livingEntity.playSound(Ssounds.REAVER_REAVE.get());
+        livingEntity.playSound(Ssounds.REAVER_REAVE.value());
         }
         return super.hurtEnemy(stack, livingEntity, victim);
     }

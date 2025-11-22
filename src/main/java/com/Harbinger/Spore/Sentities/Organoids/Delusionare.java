@@ -95,7 +95,7 @@ public class Delusionare extends Organoid implements VariantKeeper {
     protected void tickSpell(){
         this.entityData.set(SPELL_TIME,this.entityData.get(SPELL_TIME)+1);
         if (entityData.get(SPELL_TIME) == 40){
-            this.playSound(Ssounds.DELUSIONER_CASTING.get());
+            this.playSound(Ssounds.DELUSIONER_CASTING.value());
         }
         if (entityData.get(SPELL_TIME) > 80){
             this.castSpell(this.getSpellById());
@@ -239,11 +239,11 @@ public class Delusionare extends Organoid implements VariantKeeper {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.DELUSIONER_AMBIENT.get();
+        return Ssounds.DELUSIONER_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     public void castSpell(int value){

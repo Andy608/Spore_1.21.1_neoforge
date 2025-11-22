@@ -351,7 +351,7 @@ public class Hevoker extends Hyper {
         HyperClaw claw = new HyperClaw(Sentities.HEVOKER_ARM.get(),level());
         claw.moveTo(this.getX() + vec3.x, this.getY() + vec3.y,this.getZ()+ vec3.z);
         level().addFreshEntity(claw);
-        this.playSound(Ssounds.LIMB_SLASH.get());
+        this.playSound(Ssounds.LIMB_SLASH.value());
     }
     public void moveHitBoxesAround(){
         Vec3[] avec3 = new Vec3[this.subEntities.length];
@@ -391,11 +391,11 @@ public class Hevoker extends Hyper {
 
 
     protected SoundEvent getAmbientSound() {
-        return isFakeDead() ? null : Ssounds.HEVOKER_AMBIENT.get();
+        return isFakeDead() ? null : Ssounds.HEVOKER_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

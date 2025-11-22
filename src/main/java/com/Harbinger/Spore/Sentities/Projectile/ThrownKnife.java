@@ -133,7 +133,7 @@ public class ThrownKnife extends AbstractArrow {
         Entity entity1 = this.getOwner();
         DamageSource damagesource = this.damageSources().trident(this, entity1 == null ? this : entity1);
         this.dealtDamage = true;
-        SoundEvent soundevent = Ssounds.INFECTED_WEAPON_HIT_ENTITY.get();
+        SoundEvent soundevent = Ssounds.INFECTED_WEAPON_HIT_ENTITY.value();
         if (entity.hurt(damagesource, baseDamage)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
@@ -212,7 +212,7 @@ public class ThrownKnife extends AbstractArrow {
 
     }
     protected SoundEvent getDefaultHitGroundSoundEvent() {
-        return Ssounds.INFECTED_WEAPON_HIT_BLOCK.get();
+        return Ssounds.INFECTED_WEAPON_HIT_BLOCK.value();
     }
     protected float getWaterInertia() {
         return 0.99F;

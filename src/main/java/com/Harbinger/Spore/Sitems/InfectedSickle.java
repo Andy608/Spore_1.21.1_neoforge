@@ -120,7 +120,7 @@ public class InfectedSickle extends SporeSwordBase {
                 thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2F , 0.75F);
                 level.addFreshEntity(thrownSpear);
                 this.setThrownSickle(stack,true);
-                level.playSound(null, thrownSpear, Ssounds.INFECTED_WEAPON_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                level.playSound(null, thrownSpear, Ssounds.INFECTED_WEAPON_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
             }
             player.awardStat(Stats.ITEM_USED.get(this));
         }

@@ -236,11 +236,11 @@ public class Jagdhund extends EvolvedInfected {
     }
 
     protected SoundEvent getAmbientSound() {
-        return isUnderground() ? null : Ssounds.HUSK_AMBIENT.get();
+        return isUnderground() ? null : Ssounds.HUSK_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

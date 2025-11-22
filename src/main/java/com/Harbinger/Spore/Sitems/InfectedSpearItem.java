@@ -61,7 +61,7 @@ public class InfectedSpearItem extends SporeSwordBase implements ProjectileItem 
                 spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
             level.addFreshEntity(spear);
-            level.playSound(null, player, Ssounds.INFECTED_WEAPON_THROW.get(), SoundSource.PLAYERS, 0.5F, 1.1F);
+            level.playSound(null, player, Ssounds.INFECTED_WEAPON_THROW.value(), SoundSource.PLAYERS, 0.5F, 1.1F);
             stack.hurtAndBreak(1, player, hand);
 
             if (!player.getAbilities().instabuild) {

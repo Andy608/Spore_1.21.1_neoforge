@@ -193,11 +193,11 @@ public class Scamper extends EvolvedInfected implements WaterInfected, VariantKe
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.SCAMPER_AMBIENT.get();
+        return Ssounds.SCAMPER_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

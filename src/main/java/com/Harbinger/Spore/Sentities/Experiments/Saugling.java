@@ -195,7 +195,7 @@ public class Saugling extends Experiment {
 
                 if (!livingEntities.isEmpty()) {
                     setPrimed(true);
-                    this.playSound(Ssounds.SAUGLING_JUMPSCARE.get());
+                    this.playSound(Ssounds.SAUGLING_JUMPSCARE.value());
                     this.setTarget(livingEntities.get(random.nextInt(livingEntities.size())));
                 }
             } else {
@@ -282,15 +282,15 @@ public class Saugling extends Experiment {
     }
 
     protected SoundEvent getAmbientSound() {
-        return this.isHidden() ? Ssounds.SAUGLING_CHEST_AMBIENT.get() : Ssounds.SAUGLING_AMBIENT.get();
+        return this.isHidden() ? Ssounds.SAUGLING_CHEST_AMBIENT.value() : Ssounds.SAUGLING_AMBIENT.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

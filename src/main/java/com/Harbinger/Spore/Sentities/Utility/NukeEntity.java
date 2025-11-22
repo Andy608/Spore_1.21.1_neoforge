@@ -152,7 +152,7 @@ public class NukeEntity extends Entity {
         List<Entity> players = level().getEntities(this,aabb,entity -> {return  entity instanceof ServerPlayer;});
         for (Entity entity : players){
             if (entity instanceof ServerPlayer serverPlayer){
-                serverPlayer.playNotifySound(Ssounds.NUKE.get(), SoundSource.AMBIENT,1f,1f);
+                serverPlayer.playNotifySound(Ssounds.NUKE.value(), SoundSource.AMBIENT,1f,1f);
             }
         }
     }

@@ -138,7 +138,7 @@ public class FleshBomb extends AbstractArrow {
     public void tick() {
         super.tick();
         if (tickCount % 70 == 0){
-            this.playSound(Ssounds.FALLING_BOMB.get());
+            this.playSound(Ssounds.FALLING_BOMB.value());
         }
         if (this.getBombType() == 1){
             for (int i = 0; i < 360; i++) {

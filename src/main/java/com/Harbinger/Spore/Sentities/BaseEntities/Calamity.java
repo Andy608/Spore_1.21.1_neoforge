@@ -487,7 +487,7 @@ public class Calamity extends UtilityEntity implements Enemy, ArmorPersentageByp
             double z0 = this.getZ() + (random.nextFloat() - 0.1) * 3.2D;
             serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x0, y0, z0, 4, 0, 0, 0, 1);
         }
-        this.playSound(Ssounds.CALAMITY_DEATH.get());
+        this.playSound(Ssounds.CALAMITY_DEATH.value());
         super.die(source);
         summonBiomass();
         this.discard();
@@ -499,7 +499,7 @@ public class Calamity extends UtilityEntity implements Enemy, ArmorPersentageByp
         entity.level().addFreshEntity(mound);
     }
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.CALAMITY_DAMAGE.get();
+        return Ssounds.CALAMITY_DAMAGE.value();
     }
 
     @Override

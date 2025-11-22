@@ -607,11 +607,11 @@ public class Umarmer extends Organoid implements VariantKeeper {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.UMARMER_AMBIENT.get();
+        return Ssounds.UMARMER_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     @Override

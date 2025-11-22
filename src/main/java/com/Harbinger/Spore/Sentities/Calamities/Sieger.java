@@ -214,7 +214,7 @@ public class Sieger extends Calamity implements RangedAttackMob, TrueCalamity {
         if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) > 200){
             return null;
         }
-        return Ssounds.SIEGER_AMBIENT.get();
+        return Ssounds.SIEGER_AMBIENT.value();
     }
 
     protected SoundEvent getStepSound() {
@@ -290,7 +290,7 @@ public class Sieger extends Calamity implements RangedAttackMob, TrueCalamity {
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.playSound(Ssounds.SIEGER_BITE.get());
+        this.playSound(Ssounds.SIEGER_BITE.value());
         return super.doHurtTarget(entity);
     }
 
@@ -327,7 +327,7 @@ public class Sieger extends Calamity implements RangedAttackMob, TrueCalamity {
     public boolean hurt(CalamityMultipart calamityMultipart, DamageSource source, float value) {
         if (calamityMultipart == this.tail || calamityMultipart == this.tail2){
             if (this.getTailHp() > 0 && value > this.getTailHp()){
-                this.playSound(Ssounds.LIMB_SLASH.get());
+                this.playSound(Ssounds.LIMB_SLASH.value());
                 SummonDetashedTail();
             }
             this.hurt(source,this.isAdapted() ? value:value * 2);

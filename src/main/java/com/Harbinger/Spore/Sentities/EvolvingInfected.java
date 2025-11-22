@@ -67,7 +67,7 @@ public interface EvolvingInfected {
         List<Entity> entities = living.level().getEntities(living,living.getBoundingBox().inflate(64),entity -> {return entity instanceof Player;
         });
         for (Entity entity : entities){
-            if (entity instanceof Player player){player.playNotifySound(Ssounds.HYPER_EVOLVE.get(), SoundSource.AMBIENT,1f,1f);}
+            if (entity instanceof Player player){player.playNotifySound(Ssounds.HYPER_EVOLVE.value(), SoundSource.AMBIENT,1f,1f);}
         }
     }
     default  void Evolve(Infected livingEntity, List<? extends String> value, ScamperVariants variants){

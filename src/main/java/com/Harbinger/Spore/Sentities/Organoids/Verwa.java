@@ -172,11 +172,11 @@ public class Verwa extends Organoid {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.WOMB_AMBIENT.get();
+        return Ssounds.WOMB_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     public void setStoredMob(String storedMob){

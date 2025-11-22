@@ -38,7 +38,7 @@ public class SporeBurstSupport extends Goal {
     public void start() {
         this.calamity.setStun(60);
         if (calamity instanceof TrueCalamity trueCalamity){
-            calamity.playSound(Ssounds.SPORE_BURST.get());
+            calamity.playSound(Ssounds.SPORE_BURST.value());
             AABB boundingBox = calamity.getBoundingBox().inflate(trueCalamity.chemicalRange());
             sporeBurst(trueCalamity.buffs(),trueCalamity.debuffs(),boundingBox);
             killCDUs(boundingBox);

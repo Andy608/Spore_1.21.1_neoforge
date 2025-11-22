@@ -83,15 +83,15 @@ public class GastGeber extends EvolvedInfected implements FoliageSpread {
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.GAST_AMBIENT.get();
+        return Ssounds.GAST_AMBIENT.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource p_34327_) {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {
@@ -204,7 +204,7 @@ public class GastGeber extends EvolvedInfected implements FoliageSpread {
                 if (this.getSpreadInterval() < maxCounter){
                     setSpreadInterval(this.getSpreadInterval()+1);
                     if (this.getSpreadInterval() == maxCounter-1){
-                        this.playSound(Ssounds.PUFF.get());
+                        this.playSound(Ssounds.PUFF.value());
                     }
                 }else{
                     if (SConfig.SERVER.mound_foliage.get())
@@ -221,7 +221,7 @@ public class GastGeber extends EvolvedInfected implements FoliageSpread {
             }
         }
         if (this.tickCount % 200 == 0 && isRooted() && getTarget() != null){
-            this.playSound(Ssounds.GAST_AMBIENT.get(),2f,2f);
+            this.playSound(Ssounds.GAST_AMBIENT.value(),2f,2f);
             SpreadEffect();
         }
         if (this.tickCount % 1200 == 0 && !isRooted() && getAggression() <= 0){

@@ -70,7 +70,7 @@ public class Braionmil extends EvolvedInfected implements EvolvingInfected {
 
             int i = this.getSwellDir();
             if (i > 0 && this.swell == 0) {
-                this.playSound(Ssounds.BRAIOMIL_ATTACK.get(), 1.0F, 0.5F);
+                this.playSound(Ssounds.BRAIOMIL_ATTACK.value(), 1.0F, 0.5F);
             }
 
             this.swell += i;
@@ -172,11 +172,11 @@ public class Braionmil extends EvolvedInfected implements EvolvingInfected {
 
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.INF_GROWL.get();
+        return Ssounds.INF_GROWL.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

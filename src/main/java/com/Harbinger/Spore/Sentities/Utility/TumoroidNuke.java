@@ -98,7 +98,7 @@ public class TumoroidNuke extends UtilityEntity{
     }
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.WOMB_AMBIENT.get();
+        return Ssounds.WOMB_AMBIENT.value();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class TumoroidNuke extends UtilityEntity{
             if (fire && this.level() instanceof ServerLevel serverLevel){
                 Utilities.convertBlocks(serverLevel,this,this.getOnPos(),14, Blocks.FIRE.defaultBlockState());
             }
-            level().playSound(this,blockPosition(),Ssounds.TUMOROID_EXPLOSION.get(), SoundSource.MASTER,1f,1f);
+            level().playSound(this,blockPosition(),Ssounds.TUMOROID_EXPLOSION.value(), SoundSource.MASTER,1f,1f);
             this.discard();
         }
     }

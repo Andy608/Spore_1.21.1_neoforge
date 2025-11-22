@@ -65,7 +65,7 @@ public class BiologicalReagent extends BaseItem {
         LevelAccessor accessor = player.level();
         if (testSlotCompat(stack)  && !Senchantments.hasEnchant(accessor,itemStack,getAppliedEnchantment())){
             if (getAppliedEnchantment() != null && clickAction == ClickAction.SECONDARY){
-                player.playNotifySound(Ssounds.REAGENT.get(), SoundSource.AMBIENT,1F,1F);
+                player.playNotifySound(Ssounds.REAGENT.value(), SoundSource.AMBIENT,1F,1F);
                 Senchantments.EnchantItem(accessor,stack,getAppliedEnchantment());
                 itemStack.setCount(itemStack.getCount() -1);
                 if (Math.random() < chance()){

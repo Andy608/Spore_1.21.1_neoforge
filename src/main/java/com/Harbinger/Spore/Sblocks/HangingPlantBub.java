@@ -46,7 +46,7 @@ public class HangingPlantBub extends HangingPlant{
                 level.setBlock(blockpos, block2.setValue(property, true), 3);
                 }else {level.setBlock(blockpos, block2, 3);}}
             level.addFreshEntity(areaeffectcloud);
-            level.playSound(null,blockpos, Ssounds.FUNGAL_BURST.get(), SoundSource.BLOCKS,1,1);
+            level.playSound(null,blockpos, Ssounds.FUNGAL_BURST.value(), SoundSource.BLOCKS,1,1);
         }
     }
 

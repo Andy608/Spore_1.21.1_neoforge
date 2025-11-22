@@ -103,14 +103,14 @@ public class Gazenbrecher extends Calamity implements WaterInfected , RangedAtta
         }
         if (this.isInFluidType()){
             if (this.getTarget() == null &&  this.radar >= 1200){
-                this.playSound(Ssounds.SONAR.get());
+                this.playSound(Ssounds.SONAR.value());
                 this.radar = 0;
                 AABB boundingBox = this.getBoundingBox().inflate(64);
                 List<Entity> entities = this.level().getEntities(this, boundingBox);
                 for (Entity entity : entities) {
                     if (SConfig.SERVER.whitelist.get().contains(entity.getEncodeId()) || entity instanceof Player player && !player.getAbilities().instabuild){
                         if (entity instanceof LivingEntity livingEntity  && livingEntity.isAlive()){
-                            this.playSound(Ssounds.SIGNAL.get(),2f,1f);
+                            this.playSound(Ssounds.SIGNAL.value(),2f,1f);
                             this.setTarget(livingEntity);
                         }
                     }
@@ -272,10 +272,10 @@ public class Gazenbrecher extends Calamity implements WaterInfected , RangedAtta
         if (calamityMultipart == this.tongue){
             if (this.getTongueHp() > 0 && value > this.getTongueHp()){
                 if (this.getTongueHp() > 0 && value > this.getTongueHp()){
-                    this.playSound(Ssounds.LIMB_SLASH.get());
+                    this.playSound(Ssounds.LIMB_SLASH.value());
                     SummonDetashedTongue();
                 }
-                this.playSound(Ssounds.LIMB_SLASH.get());
+                this.playSound(Ssounds.LIMB_SLASH.value());
             }
             this.hurt(source,value * 1.5f);
             this.setTongueHp(value > this.getTongueHp() ? 0 : this.getTongueHp() - value);
@@ -344,12 +344,12 @@ public class Gazenbrecher extends Calamity implements WaterInfected , RangedAtta
     @Override
     public boolean doHurtTarget(Entity entity) {
         if (this.isAdaptedToFire()){entity.setRemainingFireTicks(200);}
-        this.playSound(Ssounds.SIEGER_BITE.get());
+        this.playSound(Ssounds.SIEGER_BITE.value());
         return super.doHurtTarget(entity);
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {
@@ -363,7 +363,7 @@ public class Gazenbrecher extends Calamity implements WaterInfected , RangedAtta
         if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) > 200){
             return null;
         }
-        return Ssounds.GAZEN_AMBIENT.get();
+        return Ssounds.GAZEN_AMBIENT.value();
     }
 
     @Override

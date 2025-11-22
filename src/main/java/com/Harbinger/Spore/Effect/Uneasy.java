@@ -14,7 +14,7 @@ public class Uneasy extends MobEffect implements SporeEffectsHandler{
 
     public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
-            player.playSound(Ssounds.HEART_BEAT.get());
+            player.playSound(Ssounds.HEART_BEAT.value());
             return true;
         }
         return false;
@@ -27,7 +27,7 @@ public class Uneasy extends MobEffect implements SporeEffectsHandler{
     @Override
     public void triggerEffects(LivingEntity entity, int intensity) {
         if (entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
-            player.playSound(Ssounds.HEART_BEAT.get());
+            player.playSound(Ssounds.HEART_BEAT.value());
         }
     }
 }

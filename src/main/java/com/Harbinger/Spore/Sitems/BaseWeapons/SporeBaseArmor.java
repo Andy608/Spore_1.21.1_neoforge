@@ -127,7 +127,7 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
 
         int durabilityLeft = stack.getMaxDamage() - stack.getDamageValue();
         if (durabilityLeft - amount <= 11 && entity != null) {
-            entity.playSound(Ssounds.INFECTED_GEAR_BREAK.get());
+            entity.playSound(Ssounds.INFECTED_GEAR_BREAK.value());
         }
 
         if (tooHurt(stack)) {
@@ -158,7 +158,7 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
 
     @Override
     public Holder<SoundEvent> getEquipSound() {
-        return Holder.direct(Ssounds.INFECTED_GEAR_EQUIP.get());
+        return Holder.direct(Ssounds.INFECTED_GEAR_EQUIP.value());
     }
 
     @Override
@@ -244,7 +244,7 @@ public abstract class SporeBaseArmor extends ArmorItem implements SporeArmorData
         if (shouldOverride) {
             this.setVariant(SporeArmorMutations.DEFAULT, stack);
             itemStack.shrink(1);
-            player.playNotifySound(Ssounds.SYRINGE_SUCK.get(), SoundSource.AMBIENT, 1f, 1f);
+            player.playNotifySound(Ssounds.SYRINGE_SUCK.value(), SoundSource.AMBIENT, 1f, 1f);
         }
 
         return shouldOverride;

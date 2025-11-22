@@ -80,8 +80,8 @@ public class Howler extends EvolvedInfected implements VariantKeeper, ArmorPerse
                 .add(Attributes.ATTACK_KNOCKBACK, 3);
     }
 
-    @Override protected SoundEvent getAmbientSound() { return Ssounds.INF_PILLAGER_AMBIENT.get(); }
-    @Override protected SoundEvent getDeathSound() { return Ssounds.INF_DAMAGE.get(); }
+    @Override protected SoundEvent getAmbientSound() { return Ssounds.INF_PILLAGER_AMBIENT.value(); }
+    @Override protected SoundEvent getDeathSound() { return Ssounds.INF_DAMAGE.value(); }
     protected SoundEvent getStepSound() { return SoundEvents.ZOMBIE_STEP; }
     @Override
     protected void playStepSound(BlockPos p_20135_, BlockState p_20136_) {
@@ -163,7 +163,7 @@ public class Howler extends EvolvedInfected implements VariantKeeper, ArmorPerse
             }
         }
 
-        this.playSound(Ssounds.HOWLER_GROWL.get());
+        this.playSound(Ssounds.HOWLER_GROWL.value());
     }
     public void SummonScream(LivingEntity caster,boolean isSkulk,boolean sculkAround) {
         ServerLevelAccessor levelAccessor = (ServerLevelAccessor) caster.level();
@@ -188,7 +188,7 @@ public class Howler extends EvolvedInfected implements VariantKeeper, ArmorPerse
                         null
                 );
                 level.addFreshEntity(summoned);
-                this.playSound(Ssounds.HOWLER_GROWL.get());
+                this.playSound(Ssounds.HOWLER_GROWL.value());
             }
         }
     }
@@ -321,7 +321,7 @@ public class Howler extends EvolvedInfected implements VariantKeeper, ArmorPerse
             }else {
                 callOrSummon();
                 timeBeforeBigScream = 0;
-                mob.playSound(Ssounds.HOWLER_GROWL.get());
+                mob.playSound(Ssounds.HOWLER_GROWL.value());
             }
         }
         public void callOrSummon(){

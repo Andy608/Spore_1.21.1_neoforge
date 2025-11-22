@@ -117,7 +117,7 @@ public class Brot extends Hyper {
             }
             int i = this.getSwellDir();
             if (i > 0 && this.swell == 0) {
-                this.playSound(Ssounds.BRAIOMIL_ATTACK.get(), 1.0F, 0.5F);
+                this.playSound(Ssounds.BRAIOMIL_ATTACK.value(), 1.0F, 0.5F);
             }
             this.swell += i;
             if (this.swell < 0) {
@@ -203,11 +203,11 @@ public class Brot extends Hyper {
 
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.BROT_AMBIENT.get();
+        return Ssounds.BROT_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     protected SoundEvent getStepSound() {

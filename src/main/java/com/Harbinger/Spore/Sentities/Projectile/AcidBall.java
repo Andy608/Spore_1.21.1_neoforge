@@ -47,6 +47,7 @@ public class AcidBall extends AbstractArrow implements ItemSupplier {
     public static AcidBall shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
         AcidBall entityarrow = new AcidBall(Sentities.ACID_BALL.get(), world);
         entityarrow.setOwner(entity);
+        entityarrow.moveTo(entity.getX(), entity.getY()+1.2D ,entity.getZ());
         entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
         entityarrow.setBaseDamage(damage);
         world.addFreshEntity(entityarrow);
@@ -59,6 +60,7 @@ public class AcidBall extends AbstractArrow implements ItemSupplier {
         double dx = target.getX() - entity.getX();
         double dy = target.getY() + target.getEyeHeight() - 2;
         double dz = target.getZ() - entity.getZ();
+        entityarrow.moveTo(entity.getX(), entity.getY()+1.2D ,entity.getZ());
         entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * 0.2F, dz, 1f * 2, 12.0F);
         entityarrow.setBaseDamage(damage);
         entity.level().addFreshEntity(entityarrow);

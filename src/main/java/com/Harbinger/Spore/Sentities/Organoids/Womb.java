@@ -72,11 +72,11 @@ public class Womb extends Organoid implements MenuProvider {
 
 
     protected SoundEvent getAmbientSound() {
-        return Ssounds.WOMB_AMBIENT.get();
+        return Ssounds.WOMB_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return Ssounds.INF_DAMAGE.get();
+        return Ssounds.INF_DAMAGE.value();
     }
 
     @Override
