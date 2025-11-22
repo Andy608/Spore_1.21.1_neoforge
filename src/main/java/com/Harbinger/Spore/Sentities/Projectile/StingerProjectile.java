@@ -4,6 +4,7 @@ import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.BaseEntities.UtilityEntity;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Sentities;
+import com.Harbinger.Spore.core.Sitems;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -45,7 +46,7 @@ public class StingerProjectile extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return ItemStack.EMPTY;
+        return new ItemStack(Sitems.BILE.get());
     }
 
     @Override

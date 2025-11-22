@@ -5,6 +5,7 @@ import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Fluids.BileLiquid;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Sentities;
+import com.Harbinger.Spore.core.Sitems;
 import com.Harbinger.Spore.core.Sparticles;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -114,7 +115,7 @@ public class VomitHohlBall extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return ItemStack.EMPTY;
+        return new ItemStack(Sitems.BILE.get());
     }
 
     @Override

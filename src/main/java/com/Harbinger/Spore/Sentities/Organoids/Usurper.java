@@ -104,7 +104,7 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
     @Override
     protected void registerGoals() {
         this.addTargettingGoals();
-        this.goalSelector.addGoal(2,new RangedAttackGoal(this,0,5,10,8){
+        this.goalSelector.addGoal(1,new RangedAttackGoal(this,0,5,10,16){
             @Override
             public boolean canUse() {
                 return super.canUse() && getVariant() == UsurperVariants.SPRAY;

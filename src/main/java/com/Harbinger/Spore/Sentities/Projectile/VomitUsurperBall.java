@@ -5,6 +5,7 @@ import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Fluids.BileLiquid;
 import com.Harbinger.Spore.core.Seffects;
 import com.Harbinger.Spore.core.Sentities;
+import com.Harbinger.Spore.core.Sitems;
 import com.Harbinger.Spore.core.Sparticles;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -57,6 +58,7 @@ public class VomitUsurperBall extends AbstractArrow {
     public static VomitUsurperBall shoot(Level world, LivingEntity entity, float power, double damage) {
         VomitUsurperBall entityarrow = new VomitUsurperBall(Sentities.USURPER_VOMIT_BALL.get(), world);
         entityarrow.setOwner(entity);
+        entityarrow.moveTo(entity.getX(), entity.getY()+1.2D ,entity.getZ());
         entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
         entityarrow.setBaseDamage(damage);
         world.addFreshEntity(entityarrow);
@@ -69,6 +71,7 @@ public class VomitUsurperBall extends AbstractArrow {
         double dx = target.getX() - entity.getX();
         double dy = target.getY() + target.getEyeHeight() - 2;
         double dz = target.getZ() - entity.getZ();
+        entityarrow.moveTo(entity.getX(), entity.getY()+1.2D ,entity.getZ());
         entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * 0.2F, dz, 2, 4.0F);
         entityarrow.setBaseDamage(damage);
         entity.level().addFreshEntity(entityarrow);
@@ -87,7 +90,7 @@ public class VomitUsurperBall extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return ItemStack.EMPTY;
+        return new ItemStack(Sitems.BILE.get());
     }
 
     @Override
