@@ -244,7 +244,7 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 		PartDefinition B_T_T4_r1 = BtTT4.addOrReplaceChild("B_T_T4_r1", CubeListBuilder.create().texOffs(2, 0).addBox(0.2997F, -0.3884F, -0.0653F, 1.0F, 6.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.1099F, 6.9491F, -1.4415F, 0.3054F, 0.3054F, 0.0F));
 
 		PartDefinition DelusionerTorso = BodyToTorso.addOrReplaceChild("DelusionerTorso", CubeListBuilder.create().texOffs(36, 74).addBox(-3.5F, -5.0F, -2.0F, 7.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
-		.texOffs(58, 94).addBox(-3.5F, -5.0F, -2.0F, 7.0F, 13.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(-1.75F, -14.75F, -1.0F, 0.1309F, 0.0F, 0.0F));
+				.texOffs(58, 94).addBox(-3.5F, -5.0F, -2.0F, 7.0F, 13.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(-1.75F, -14.75F, -1.0F, 0.1309F, 0.0F, 0.0F));
 
 		PartDefinition LowerTorsoFungus = DelusionerTorso.addOrReplaceChild("LowerTorsoFungus", CubeListBuilder.create(), PartPose.offset(0.6907F, -0.0892F, -0.3475F));
 
@@ -307,8 +307,8 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 		PartDefinition UtHT4_r1 = UtHT4.addOrReplaceChild("UtHT4_r1", CubeListBuilder.create().texOffs(2, 0).addBox(-1.7997F, 3.1116F, 0.4346F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.1099F, 6.9491F, -1.4415F, 0.3054F, -0.3054F, 0.0F));
 
 		PartDefinition Head = UpperToHead.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(36, 14).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-		.texOffs(96, 0).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 11.0F, 8.0F, new CubeDeformation(0.1F))
-		.texOffs(54, 80).addBox(-4.0F, -2.0F, 0.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(1.75F, -3.0F, -3.0F));
+				.texOffs(96, 0).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 11.0F, 8.0F, new CubeDeformation(0.1F))
+				.texOffs(54, 80).addBox(-4.0F, -2.0F, 0.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(1.75F, -3.0F, -3.0F));
 
 		PartDefinition Jaw = Head.addOrReplaceChild("Jaw", CubeListBuilder.create().texOffs(54, 80).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, 0.6545F, 0.0F, -0.2618F));
 
@@ -355,7 +355,7 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 		PartDefinition UtRT2_r1 = UtRT2.addOrReplaceChild("UtRT2_r1", CubeListBuilder.create().texOffs(60, 20).addBox(-5.0F, -1.0F, 0.0F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3568F, -0.2048F, 0.0757F));
 
 		PartDefinition RightArmSeg1 = UpperToRightArm.addOrReplaceChild("RightArmSeg1", CubeListBuilder.create().texOffs(91, 37).addBox(-6.0F, -2.25F, -2.0F, 6.0F, 4.0F, 4.0F, new CubeDeformation(-0.2F))
-		.texOffs(78, 90).addBox(-6.0F, -2.25F, -2.0F, 6.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-3.7911F, 0.076F, 0.2629F, 0.0F, -0.7854F, 0.0F));
+				.texOffs(78, 90).addBox(-6.0F, -2.25F, -2.0F, 6.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-3.7911F, 0.076F, 0.2629F, 0.0F, -0.7854F, 0.0F));
 
 		PartDefinition RightArmToRightHand = RightArmSeg1.addOrReplaceChild("RightArmToRightHand", CubeListBuilder.create(), PartPose.offsetAndRotation(-5.852F, -0.4594F, -0.6027F, -0.2877F, -0.5155F, 0.0F));
 
@@ -368,7 +368,7 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 		PartDefinition RtHT2_r1 = RtHT2.addOrReplaceChild("RtHT2_r1", CubeListBuilder.create().texOffs(60, 20).addBox(-5.0F, -1.0F, 0.0F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3568F, -0.2048F, 0.0757F));
 
 		PartDefinition RightArmSeg2 = RightArmToRightHand.addOrReplaceChild("RightArmSeg2", CubeListBuilder.create().texOffs(14, 88).addBox(-6.0F, -2.0F, -1.5F, 6.0F, 4.0F, 4.0F, new CubeDeformation(-0.2F))
-		.texOffs(0, 76).addBox(-6.0F, -2.0F, -1.5F, 7.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-4.0F, 0.0F, -0.25F, 0.1219F, -0.1872F, 0.2105F));
+				.texOffs(0, 76).addBox(-6.0F, -2.0F, -1.5F, 7.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-4.0F, 0.0F, -0.25F, 0.1219F, -0.1872F, 0.2105F));
 
 		PartDefinition SleeveEnd_r1 = RightArmSeg2.addOrReplaceChild("SleeveEnd_r1", CubeListBuilder.create().texOffs(30, 92).addBox(-2.9918F, -2.0F, -1.9973F, 3.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-5.1562F, -0.1488F, 0.5F, 0.0F, 0.0F, -0.3491F));
 
@@ -415,7 +415,7 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 		PartDefinition LtHT2_r1 = LtHT2.addOrReplaceChild("LtHT2_r1", CubeListBuilder.create().texOffs(60, 20).addBox(-2.0F, -1.0F, 0.0F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3568F, 0.2048F, -0.0757F));
 
 		PartDefinition LeftArmSeg2 = LeftArmToLeftHand.addOrReplaceChild("LeftArmSeg2", CubeListBuilder.create().texOffs(42, 86).addBox(0.0F, -2.0F, -1.5F, 6.0F, 4.0F, 4.0F, new CubeDeformation(-0.2F))
-		.texOffs(0, 76).mirror().addBox(-1.0F, -2.0F, -1.5F, 7.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)).mirror(false), PartPose.offsetAndRotation(3.7691F, 0.0F, -0.6935F, -0.0678F, 0.4755F, -0.1473F));
+				.texOffs(0, 76).mirror().addBox(-1.0F, -2.0F, -1.5F, 7.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)).mirror(false), PartPose.offsetAndRotation(3.7691F, 0.0F, -0.6935F, -0.0678F, 0.4755F, -0.1473F));
 
 		PartDefinition SleeveEnd_r2 = LeftArmSeg2.addOrReplaceChild("SleeveEnd_r2", CubeListBuilder.create().texOffs(30, 92).addBox(-1.5F, -2.0F, -2.0F, 3.0F, 4.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(6.558F, 0.3614F, 0.5027F, 3.1416F, 0.0F, -2.7925F));
 
@@ -433,7 +433,7 @@ public class DelusionerEnchanterModel<T extends Delusionare> extends EntityModel
 
 		PartDefinition LT3Seg2 = LT3.addOrReplaceChild("LT3Seg2", CubeListBuilder.create().texOffs(0, 56).addBox(-1.0F, -4.3F, -1.0F, 2.0F, 5.0F, 2.0F, new CubeDeformation(-0.65F)), PartPose.offsetAndRotation(0.1899F, -2.636F, -0.1056F, 0.1745F, 0.0F, 0.0F));
 
-		PartDefinition pageE = LeftArmSeg2.addOrReplaceChild("pageE", CubeListBuilder.create().texOffs(114, 89).addBox(0.5F, -4.0F, 0.0F, 5.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.4636F, 2.5467F, 0.6359F, 0.0F, 0.3491F, 0.0F));
+		PartDefinition page = LeftArmSeg2.addOrReplaceChild("page", CubeListBuilder.create().texOffs(114, 89).addBox(0.5F, -4.0F, 0.0F, 5.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.4636F, 2.5467F, 0.6359F, 0.0F, 0.3491F, 0.0F));
 
 		PartDefinition Table = Deli.addOrReplaceChild("Table", CubeListBuilder.create().texOffs(0, 100).addBox(-8.0F, -10.0F, -8.0F, 16.0F, 12.0F, 16.0F, new CubeDeformation(-2.0F)), PartPose.offsetAndRotation(0.0F, -10.0F, -9.0F, 0.2657F, -0.1685F, -0.0456F));
 
