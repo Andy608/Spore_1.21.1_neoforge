@@ -52,11 +52,11 @@ public class IncubatorRenderer extends BaseBlockEntityRenderer<IncubatorBlockEnt
     public void renderGlassTransparency(IncubatorBlockEntity blockEntity, PoseStack stack, MultiBufferSource bufferSource, int pPackedLight, int pPackedOverlay){
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucent(GLASS));
         this.setModelScale(stack,blockEntity);
-        this.getModel().renderToBuffer(stack,vertexConsumer,pPackedLight, pPackedOverlay,1);
+        this.getModel().renderToBuffer(stack,vertexConsumer,pPackedLight, pPackedOverlay,-11);
     }
     public void renderActiveButtons(IncubatorBlockEntity blockEntity, PoseStack stack, MultiBufferSource bufferSource, int pPackedLight, int pPackedOverlay){
         VertexConsumer vertexConsumer = bufferSource.getBuffer(blockEntity.isActive() ? RenderType.eyes(BUTTONS) : RenderType.entityCutout(BUTTONS));
-        this.getModel().renderToBuffer(stack,vertexConsumer,pPackedLight, pPackedOverlay,1);
+        this.getModel().renderToBuffer(stack,vertexConsumer,pPackedLight, pPackedOverlay,-1);
     }
     public void renderItem(PoseStack stack, ItemStack itemStack,MultiBufferSource source,float value,Level level,BlockPos pos){
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
