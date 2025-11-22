@@ -298,6 +298,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.TUMOROID_NUKE.get(), TumoroidNukeRenderer::new);
         event.registerEntityRenderer(Sentities.ILLUSION.get(), IllusionRenderer::new);
         event.registerEntityRenderer(Sentities.WAVE.get(), WaveRenderer::new);
+        event.registerEntityRenderer(Sentities.USURPER_VOMIT_BALL.get(), UsurperVomitRenderer::new);
     }
 
 

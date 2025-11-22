@@ -258,6 +258,10 @@ public class Sentities {
             EntityType.Builder.<VomitHohlBall>of(VomitHohlBall::new, MobCategory.MISC)
                     .setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));
 
+    public static final Supplier<EntityType<VomitUsurperBall>> USURPER_VOMIT_BALL = register("usurper_vomit_ball",
+            EntityType.Builder.<VomitUsurperBall>of(VomitUsurperBall::new, MobCategory.MISC)
+                    .setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));
+
     public static final Supplier<EntityType<AcidBall>> ACID_BALL = register("acid_ball",
             EntityType.Builder.<AcidBall>of(AcidBall::new, MobCategory.MISC)
                     .setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));

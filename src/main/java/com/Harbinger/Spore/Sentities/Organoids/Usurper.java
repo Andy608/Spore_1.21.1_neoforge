@@ -4,6 +4,8 @@ package com.Harbinger.Spore.Sentities.Organoids;
 import com.Harbinger.Spore.Sentities.AI.CalamitiesAI.ScatterShotRangedGoal;
 import com.Harbinger.Spore.Sentities.BaseEntities.Organoid;
 import com.Harbinger.Spore.Sentities.Projectile.AdaptableProjectile;
+import com.Harbinger.Spore.Sentities.Projectile.VomitHohlBall;
+import com.Harbinger.Spore.Sentities.Projectile.VomitUsurperBall;
 import com.Harbinger.Spore.Sentities.VariantKeeper;
 import com.Harbinger.Spore.Sentities.Variants.BulletParameters;
 import com.Harbinger.Spore.Sentities.Variants.UsurperVariants;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -31,6 +34,7 @@ import java.util.List;
 public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Usurper.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TIMER = SynchedEntityData.defineId(Usurper.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> BURST_CONTROL = SynchedEntityData.defineId(Usurper.class, EntityDataSerializers.INT);
     public Usurper(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
     }
@@ -68,12 +72,50 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
         super.defineSynchedData(builder);
         builder.define(TIMER,0);
         builder.define(DATA_ID_TYPE_VARIANT, 0);
+        builder.define(BURST_CONTROL, 0);
+    }
+    public void setBurstControl(int value){
+        entityData.set(BURST_CONTROL,value);
+    }
+    public int getBurstControl(){
+        return entityData.get(BURST_CONTROL);
+    }
+    public void countDownBurstControl(){
+        setBurstControl(getBurstControl()-1);
+    }
+
+    public void tickBurstShotController(){
+        LivingEntity target = this.getTarget();
+        if (target == null){
+            return;
+        }
+        if (getBurstControl() > -5){
+            countDownBurstControl();
+        }else {
+            if (this.hasLineOfSight(target)){
+                setBurstControl(random.nextInt(3,7));
+            }
+        }
+        if (getBurstControl() > 0){
+            performRangedAttack(target,0);
+        }
     }
 
     @Override
     protected void registerGoals() {
         this.addTargettingGoals();
-        this.goalSelector.addGoal(2,new ScatterShotRangedGoal(this,0,40,32,1,4));
+        this.goalSelector.addGoal(2,new RangedAttackGoal(this,0,5,10,8){
+            @Override
+            public boolean canUse() {
+                return super.canUse() && getVariant() == UsurperVariants.SPRAY;
+            }
+        });
+        this.goalSelector.addGoal(2,new ScatterShotRangedGoal(this,0,40,32,1,4){
+            @Override
+            public boolean canUse() {
+                return super.canUse() && getVariant() == UsurperVariants.DEFAULT;
+            }
+        });
         this.goalSelector.addGoal(3 ,new RandomLookAroundGoal(this));
         super.registerGoals();
     }
@@ -86,6 +128,9 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
                 this.entityData.set(TIMER,this.entityData.get(TIMER) + 1);
             }else if (this.entityData.get(TIMER) >= 1200){
                 tickBurrowing();
+            }
+            if (tickCount % 20 == 0 && getVariant() == UsurperVariants.BURST){
+                tickBurstShotController();
             }
         }
     }
@@ -118,15 +163,19 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
 
     @Override
     public void performRangedAttack(LivingEntity livingEntity, float p_33318_) {
-        BulletParameters parameters = Util.getRandom(BulletParameters.values(),this.random);
-        AdaptableProjectile projectile = new AdaptableProjectile(parameters,this.level(),this);
-        double dx = livingEntity.getX() - this.getX();
-        double dy = livingEntity.getY() + livingEntity.getEyeHeight();
-        double dz = livingEntity.getZ() - this.getZ();
-        projectile.moveTo(this.getX(), this.getY()+1.2D ,this.getZ());
-        projectile.shoot(dx, dy - projectile.getY() + Math.hypot(dx, dz) * 0.001F, dz, 1.5f, 3.0F);
-        this.playSound(Ssounds.SPIT.get());
-        level().addFreshEntity(projectile);
+        if (this.getVariant() == UsurperVariants.SPRAY){
+            VomitUsurperBall.shoot(this,livingEntity,(float) (1 * SConfig.SERVER.global_damage.get()));
+        }else {
+            BulletParameters parameters = Util.getRandom(BulletParameters.values(),this.random);
+            AdaptableProjectile projectile = new AdaptableProjectile(parameters,this.level(),this);
+            double dx = livingEntity.getX() - this.getX();
+            double dy = livingEntity.getY() + livingEntity.getEyeHeight();
+            double dz = livingEntity.getZ() - this.getZ();
+            projectile.moveTo(this.getX(), this.getY()+1.2D ,this.getZ());
+            projectile.shoot(dx, dy - projectile.getY() + Math.hypot(dx, dz) * 0.001F, dz, 1.5f, 3.0F);
+            this.playSound(Ssounds.SPIT.get());
+            level().addFreshEntity(projectile);
+        }
     }
     protected SoundEvent getAmbientSound() {
         return Ssounds.USURPER_AMBIENT.get();

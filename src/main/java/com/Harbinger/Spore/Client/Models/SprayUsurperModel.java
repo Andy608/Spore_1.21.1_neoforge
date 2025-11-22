@@ -492,7 +492,7 @@ public class SprayUsurperModel<T extends Usurper> extends EntityModel<T> impleme
 		this.OrganoidSeg1.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.OrganoidSeg2.zRot = -0.5f-Mth.sin(ageInTicks/6)/6;
 		this.Head.xRot = headPitch /  ( 90F / (float) Math.PI);
-		this.HeadJoint.xRot = headPitch /  ( 90F / (float) Math.PI);
+		this.animateTentacleX(HeadJoint,headPitch /  ( 90F / (float) Math.PI));
 		this.LeftJaw.yRot = Mth.cos(ageInTicks/5)/5;
 		this.RightJaw.yRot = Mth.sin(ageInTicks/5)/5;
 		this.animateTubes1(Tube,-Mth.cos(ageInTicks/4)/6);
