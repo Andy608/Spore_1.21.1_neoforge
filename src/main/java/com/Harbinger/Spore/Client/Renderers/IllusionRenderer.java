@@ -80,7 +80,7 @@ public class IllusionRenderer extends EntityRenderer<Illusion> {
             if (entityRenderer.getRenderer(entity) instanceof MobRenderer mobRenderer){
                 EntityModel model = mobRenderer.getModel();
                 ResourceLocation texture = mobRenderer.getTextureLocation(entity);
-                VertexConsumer consumer = source.getBuffer(RenderType.entityTranslucent(texture));
+                VertexConsumer consumer = source.getBuffer(RenderType.entityCutout(texture));
                 model.prepareMobModel(entity, f5, f8, value2);
                 model.setupAnim(entity, f5, f8, f7, f2, f6);
                 model.renderToBuffer(stack,consumer,light, OverlayTexture.NO_OVERLAY,-1);
