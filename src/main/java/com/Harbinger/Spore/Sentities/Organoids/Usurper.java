@@ -12,6 +12,7 @@ import com.Harbinger.Spore.Sentities.Variants.UsurperVariants;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +21,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -108,7 +112,12 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
         this.goalSelector.addGoal(1,new RangedAttackGoal(this,0,5,5,1.5f){
             @Override
             public boolean canUse() {
-                return super.canUse() && getVariant() == UsurperVariants.SPRAY;
+                LivingEntity livingentity = Usurper.this.getTarget();
+                if (livingentity != null && livingentity.isAlive() && Usurper.this.distanceTo(livingentity) < 6) {
+                    return super.canUse() &&  getVariant() == UsurperVariants.SPRAY;
+                } else {
+                    return false;
+                }
             }
         });
         this.goalSelector.addGoal(2,new ScatterShotRangedGoal(this,0,40,32,1,4){
@@ -188,6 +197,21 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
 
 
     @Override
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> dataValues) {
+        super.onSyncedDataUpdated(dataValues);
+        if (DATA_ID_TYPE_VARIANT.equals(dataValues)){
+            AttributeInstance range = this.getAttribute(Attributes.FOLLOW_RANGE);
+            if (range != null){
+                if (getVariant() == UsurperVariants.SPRAY){
+                    range.setBaseValue(16);
+                }else {
+                    range.setBaseValue(64);
+                }
+            }
+        }
+    }
+
+    @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         UsurperVariants variant = Util.getRandom(UsurperVariants.values(), this.random);
         setVariant(variant);
@@ -215,6 +239,7 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
     private void setVariant(UsurperVariants variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
+
 
     @Override
     public String getMutation() {
