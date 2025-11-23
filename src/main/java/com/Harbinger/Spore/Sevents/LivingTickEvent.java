@@ -31,7 +31,10 @@ public class LivingTickEvent {
         if (!(event.getEntity() instanceof LivingEntity living)) {
             return;
         }
-        for (MobEffectInstance instance : living.getActiveEffects()) {
+        List<MobEffectInstance> instances = living.getActiveEffects().stream()
+                .filter(instance -> instance.getEffect().value() instanceof SporeEffectsHandler)
+                .toList();
+        for (MobEffectInstance instance : instances){
             int amp = instance.getAmplifier();
             MobEffect effect = instance.getEffect().value();
             if (effect instanceof SporeEffectsHandler handler) {
@@ -46,7 +49,11 @@ public class LivingTickEvent {
             if (effectInstance != null && effectInstance.getDuration() == 1) {
                 int level = effectInstance.getAmplifier();
                 if (level > 0) {
-                    effectInstance.update(new MobEffectInstance(Seffects.MADNESS, 12000, level - 1));
+                    player.addEffect(new MobEffectInstance(
+                            Seffects.MADNESS,
+                            12000,
+                            level - 1
+                    ));
                 }
             }
 

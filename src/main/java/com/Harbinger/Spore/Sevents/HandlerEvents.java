@@ -313,10 +313,10 @@ public class HandlerEvents {
         LivingEntity living = event.getEntity();
         MobEffectInstance instance = event.getEffectInstance();
         if (instance != null){
-            if (instance == Seffects.MYCELIUM && Utilities.helmetList().contains(living.getItemBySlot(EquipmentSlot.HEAD).getItem())){
+            if (instance.getEffect().equals(Seffects.MYCELIUM) && Utilities.helmetList().contains(living.getItemBySlot(EquipmentSlot.HEAD).getItem())){
                 event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             }
-            if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() == Sitems.INF_UP_HELMET.get() && instance == Seffects.MADNESS && instance.getAmplifier() < 1){
+            if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() == Sitems.INF_UP_HELMET.get() && instance.getEffect().equals(Seffects.MADNESS) && instance.getAmplifier() < 1){
                 event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             }
         }
