@@ -29,6 +29,11 @@ public class Senchantments {
         Holder<Enchantment> enchantmentHolder = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(resourceKey);
         stack.enchant(enchantmentHolder,1);
     }
+    public static void EnchantItem(LevelAccessor level, ItemStack stack, ResourceKey<Enchantment>  resourceKey,int power)
+    {
+        Holder<Enchantment> enchantmentHolder = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(resourceKey);
+        stack.enchant(enchantmentHolder,power);
+    }
     public static boolean hasEnchant(LevelAccessor level, ItemStack stack, ResourceKey<Enchantment>  resourceKey){
         return stack.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(resourceKey)) != 0;
     }
