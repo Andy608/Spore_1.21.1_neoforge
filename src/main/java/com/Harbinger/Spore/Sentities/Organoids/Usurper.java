@@ -112,12 +112,7 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
         this.goalSelector.addGoal(1,new RangedAttackGoal(this,0,5,5,1.5f){
             @Override
             public boolean canUse() {
-                LivingEntity livingentity = Usurper.this.getTarget();
-                if (livingentity != null && livingentity.isAlive() && Usurper.this.distanceTo(livingentity) < 6) {
-                    return super.canUse() &&  getVariant() == UsurperVariants.SPRAY;
-                } else {
-                    return false;
-                }
+                return super.canUse() &&  getVariant() == UsurperVariants.SPRAY;
             }
         });
         this.goalSelector.addGoal(2,new ScatterShotRangedGoal(this,0,40,32,1,4){
@@ -203,7 +198,7 @@ public class Usurper extends Organoid implements RangedAttackMob , VariantKeeper
             AttributeInstance range = this.getAttribute(Attributes.FOLLOW_RANGE);
             if (range != null){
                 if (getVariant() == UsurperVariants.SPRAY){
-                    range.setBaseValue(16);
+                    range.setBaseValue(8);
                 }else {
                     range.setBaseValue(64);
                 }

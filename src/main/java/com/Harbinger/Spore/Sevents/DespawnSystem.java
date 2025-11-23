@@ -56,6 +56,8 @@ public class DespawnSystem {
                     case StingerProjectile i -> projectileExcess.add(i);
                     case Vomit i -> projectileExcess.add(i);
                     case FleshBomb i -> projectileExcess.add(i);
+                    case VomitUsurperBall i -> projectileExcess.add(i);
+
                     default -> {
                     }
                 }
