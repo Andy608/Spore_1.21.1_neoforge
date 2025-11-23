@@ -53,10 +53,10 @@ public class Ssounds {
             ResourceLocation.fromNamespaceAndPath(Spore.MODID, "corrupted_record"));
 
     public static final ResourceKey<JukeboxSong> FORGOTTEN_PATIENT_SONG_KEY = ResourceKey.create(Registries.JUKEBOX_SONG,
-            ResourceLocation.fromNamespaceAndPath(Spore.MODID, "forgotten_patient"));
+            ResourceLocation.fromNamespaceAndPath(Spore.MODID, "forgotten_record"));
 
     public static final ResourceKey<JukeboxSong> FORSAKEN_FUTURE_SONG_KEY = ResourceKey.create(Registries.JUKEBOX_SONG,
-            ResourceLocation.fromNamespaceAndPath(Spore.MODID, "forsaken_future"));
+            ResourceLocation.fromNamespaceAndPath(Spore.MODID, "forsaken_record"));
     ///Hate this fuck you mojang
     public static final Holder<SoundEvent> NUKE = soundRegistry("nuke");
 
