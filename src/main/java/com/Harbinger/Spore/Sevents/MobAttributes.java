@@ -90,5 +90,6 @@ public class MobAttributes {
         event.put(Sentities.SAUGLING.get(), Saugling.createAttributes().build());
         event.put(Sentities.MEPHETIC.get(), Mephetic.createAttributes().build());
         event.put(Sentities.CHEMIST.get(), Chemist.createAttributes().build());
+        event.put(Sentities.NAIAD.get(), Naiad.createAttributes().build());
     }
 }

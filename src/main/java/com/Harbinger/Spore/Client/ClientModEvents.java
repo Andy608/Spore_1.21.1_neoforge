@@ -187,6 +187,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(SprayUsurperModel.LAYER_LOCATION, SprayUsurperModel::createBodyLayer);
         event.registerLayerDefinition(DelusionerEnchanterModel.LAYER_LOCATION, DelusionerEnchanterModel::createBodyLayer);
         event.registerLayerDefinition(ChemistModel.LAYER_LOCATION, ChemistModel::createBodyLayer);
+        event.registerLayerDefinition(NaiadModel.LAYER_LOCATION, NaiadModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -266,6 +267,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(Sentities.PROTO.get(), ProtoRenderer::new);
         event.registerEntityRenderer(Sentities.RECONSTRUCTOR.get(), BiomassReconfiguratorRenderer::new);
         event.registerEntityRenderer(Sentities.CHEMIST.get(), ChemistRenderer::new);
+        event.registerEntityRenderer(Sentities.NAIAD.get(), NaiadRenderer::new);
     }
     public static void renderBlockEntities(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(SblockEntities.OVERGROWN_SPAWNER.get(), new OvergrownSpawnerRenderer());
