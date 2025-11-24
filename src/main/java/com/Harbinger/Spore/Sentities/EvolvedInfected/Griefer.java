@@ -106,7 +106,7 @@ public class Griefer extends EvolvedInfected implements VariantKeeper {
                     List<Entity> entities = this.level().getEntities(this, boundingBox , EntitySelector.NO_CREATIVE_OR_SPECTATOR);
                     for (Entity entity1 : entities) {
                         if(entity1 instanceof LivingEntity livingEntity && !SConfig.SERVER.blacklist.get().contains(livingEntity.getEncodeId())) {
-                            if (!(livingEntity instanceof Infected || livingEntity instanceof UtilityEntity)){
+                            if (!(livingEntity instanceof UtilityEntity)){
                                 if (ModList.get().isLoaded("alexscaves")){
                                     Holder<MobEffect> effect = Utilities.tryToCreateEffect(ResourceLocation.parse("alexscaves:irradiated"));
                                     if (effect != null)

@@ -342,7 +342,7 @@ public class Delusionare extends Organoid implements VariantKeeper {
                 return;
             }
             LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT,level());
-            AABB aabb = entity.getBoundingBox().inflate(4);
+            AABB aabb = entity.getBoundingBox().inflate(8);
             List<Entity> entities = level().getEntities(entity,aabb,e -> {return e instanceof PowerableMob powerableMob && !powerableMob.isPowered();});
             if (entities.isEmpty()){
                 double randomX = (this.random.nextDouble() - this.random.nextDouble()) * 4;

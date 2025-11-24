@@ -113,6 +113,10 @@ public class Sentities {
             () -> EntityType.Builder.of(Mephetic::new, INFECTED).sized(0.6f, 2.2f)
                     .build(ResourceLocation.fromNamespaceAndPath(Spore.MODID, "mephitic").toString()));
 
+    public static final Supplier<EntityType<Chemist>> CHEMIST = SPORE_ENTITIES.register("chemist",
+            () -> EntityType.Builder.of(Chemist::new, INFECTED).sized(0.6f, 1.8f)
+                    .build(ResourceLocation.fromNamespaceAndPath(Spore.MODID, "chemist").toString()));
+
     public static final Supplier<EntityType<Jagdhund>> JAGD = SPORE_ENTITIES.register("jagd",
             () -> EntityType.Builder.of(Jagdhund::new, INFECTED).sized(1.3f, 1.1f)
                     .build(ResourceLocation.fromNamespaceAndPath(Spore.MODID, "jagd").toString()));

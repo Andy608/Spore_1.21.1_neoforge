@@ -251,6 +251,8 @@ public class Sitems {
 
     public  static final DeferredItem<Item> INEBRIATER_SPAWNEGG = ITEMS.register("inebriater_spawnegg",
             () -> new SporeSpawnEgg(Sentities.INEBRIATER,-412435818,SpawnEggType.EVOLVED));
+    public  static final DeferredItem<Item> CHEMIST_SPAWNEGG = ITEMS.register("chemist_spawnegg",
+            () -> new SporeSpawnEgg(Sentities.CHEMIST,-455964234,SpawnEggType.EVOLVED));
 
     public  static final DeferredItem<Item> THORN_SPAWNEGG = ITEMS.register("thorn_spawnegg",
             () -> new SporeSpawnEgg(Sentities.THORN,-1243545,SpawnEggType.EVOLVED));

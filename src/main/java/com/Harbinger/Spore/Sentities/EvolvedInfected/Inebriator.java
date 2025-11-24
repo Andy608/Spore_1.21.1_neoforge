@@ -61,7 +61,7 @@ public class Inebriator extends EvolvedInfected {
         if (!level.isClientSide()){
             AABB aabb = this.getBoundingBox().inflate(4,1,4);
             List<Entity> entities = level.getEntities(this,aabb, entity -> {return entity instanceof LivingEntity livingEntity
-             && (livingEntity instanceof Infected || livingEntity instanceof UtilityEntity);});
+             && (livingEntity instanceof UtilityEntity);});
             if (entities.isEmpty()){return;}
             Entity entity = entities.get(random.nextInt(entities.size()));
             if (entity instanceof LivingEntity livingEntity && !(livingEntity instanceof Inebriator) && this.hasLineOfSight(livingEntity) && !livingEntity.isInvulnerable())

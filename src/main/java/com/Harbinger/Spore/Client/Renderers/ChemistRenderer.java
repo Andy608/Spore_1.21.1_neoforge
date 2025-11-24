@@ -1,0 +1,27 @@
+package com.Harbinger.Spore.Client.Renderers;
+
+
+import com.Harbinger.Spore.Client.Models.ChemistModel;
+import com.Harbinger.Spore.Sentities.EvolvedInfected.Chemist;
+import com.Harbinger.Spore.Spore;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
+public class ChemistRenderer extends MobRenderer<Chemist, EntityModel<Chemist>> {
+
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Spore.MODID, "textures/entity/chemist.png");
+
+    public ChemistRenderer(EntityRendererProvider.Context context) {
+        super(context, new ChemistModel<>(context.bakeLayer(ChemistModel.LAYER_LOCATION)), 0.5f);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(Chemist hazmat) {
+        return TEXTURE;
+    }
+}
