@@ -85,9 +85,15 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
                 .add(Attributes.FOLLOW_RANGE, 32);
     }
 
-
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if (entity.isInFluidType()){
+            entity.setDeltaMovement(getDeltaMovement().add(0f,-1f,0));
+        }
+        return super.doHurtTarget(entity);
+    }
     protected SoundEvent getAmbientSound() {
-        return Ssounds.INF_GROWL.value();
+        return Ssounds.DROWNED_AMBIENT.value();
     }
 
     protected SoundEvent getDeathSound() {
