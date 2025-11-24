@@ -50,7 +50,7 @@ public class Chemist extends EvolvedInfected{
     }
     @Override
     public List<? extends String> getDropList() {
-        return SConfig.DATAGEN.inf_knight_loot.get();
+        return SConfig.DATAGEN.chemist_loot.get();
     }
     @Override
     public DamageSource getCustomDamage(LivingEntity entity) {
