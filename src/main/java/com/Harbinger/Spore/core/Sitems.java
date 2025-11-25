@@ -264,7 +264,7 @@ public class Sitems {
     public  static final DeferredItem<Item> BLOATER_SPAWNEGG = ITEMS.register("bloater_spawnegg",
             () -> new SporeSpawnEgg(Sentities.BLOATER,-6834952,SpawnEggType.EVOLVED));
     public  static final DeferredItem<Item> NAIAD_SPAWNEGG = ITEMS.register("naiad_spawnegg",
-            () -> new SporeSpawnEgg(Sentities.NAIAD,-874534,SpawnEggType.EVOLVED));
+            () -> new SporeSpawnEgg(Sentities.NAIAD,-336457645,SpawnEggType.EVOLVED));
 
     public  static final DeferredItem<Item> NUCLEA_SPAWNEGG = ITEMS.register("nuclea_spawnegg",
             () -> new SporeSpawnEgg(Sentities.NUCLEA,-265262544,SpawnEggType.EVOLVED));

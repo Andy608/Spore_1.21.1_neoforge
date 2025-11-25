@@ -1,18 +1,18 @@
 package com.Harbinger.Spore.Sentities.EvolvedInfected;
 
 import com.Harbinger.Spore.Sentities.AI.CustomMeleeAttackGoal;
+import com.Harbinger.Spore.Sentities.AI.HurtTargetGoal;
 import com.Harbinger.Spore.Sentities.AI.HybridPathNavigation;
 import com.Harbinger.Spore.Sentities.BaseEntities.EvolvedInfected;
+import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.EvolvingInfected;
 import com.Harbinger.Spore.Sentities.Hyper.Inquisitor;
 import com.Harbinger.Spore.Sentities.MovementControls.WaterXlandMovement;
 import com.Harbinger.Spore.Sentities.WaterInfected;
-import com.Harbinger.Spore.core.SConfig;
-import com.Harbinger.Spore.core.SdamageTypes;
-import com.Harbinger.Spore.core.Sentities;
-import com.Harbinger.Spore.core.Ssounds;
+import com.Harbinger.Spore.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +20,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,8 +31,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
@@ -56,9 +63,27 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new FindWaterTerritoryGoal(this, 16, 8));
+        this.goalSelector.addGoal(6, new FindWaterTerritoryGoal(this));
     }
 
+    @Override
+    protected void addTargettingGoals(){
+        this.goalSelector.addGoal(2, new HurtTargetGoal(this , livingEntity -> {return TARGET_SELECTOR.test(livingEntity);}, Infected.class).setAlertOthers(Infected.class));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>
+                (this, LivingEntity.class,  true,livingEntity -> {return livingEntity instanceof Player || SConfig.SERVER.whitelist.get().contains(livingEntity.getEncodeId());}){
+            @Override
+            protected AABB getTargetSearchArea(double targetDistance) {
+                return this.mob.getBoundingBox().inflate(targetDistance);
+            }
+        });
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>
+                (this, LivingEntity.class,  true, livingEntity -> {return SConfig.SERVER.at_mob.get() && TARGET_SELECTOR.test(livingEntity);}){
+            @Override
+            protected AABB getTargetSearchArea(double targetDistance) {
+                return this.mob.getBoundingBox().inflate(targetDistance);
+            }
+        });
+    }
     @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
@@ -126,6 +151,9 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
     @Override
     public boolean doHurtTarget(Entity entity) {
         if (entity.isInFluidType()){
+            if (entity instanceof LivingEntity living){
+                living.addEffect(new MobEffectInstance(Seffects.MARKER,200,1));
+            }
             entity.setDeltaMovement(getDeltaMovement().add(0f,-1f,0));
         }
         return super.doHurtTarget(entity);
@@ -147,51 +175,89 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
     }
     public static class FindWaterTerritoryGoal extends Goal {
         private final Naiad naiad;
-        private final double searchRadius;
-        private final int waterSizeRequired;
+        private BlockPos targetPos;
+        private int cooldown = 0;
 
-        public FindWaterTerritoryGoal(Naiad naiad, double searchRadius, int waterSizeRequired) {
+        public FindWaterTerritoryGoal(Naiad naiad) {
             this.naiad = naiad;
-            this.searchRadius = searchRadius;
-            this.waterSizeRequired = waterSizeRequired;
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return naiad.getTerritory().equals(BlockPos.ZERO);
+            if (cooldown > 0) {
+                cooldown--;
+                return false;
+            }
+
+            BlockPos territory = naiad.getTerritory();
+            if (territory.equals(BlockPos.ZERO)) {
+                return true;
+            }
+
+            double distanceSqr = territory.distToCenterSqr(naiad.position());
+            if (distanceSqr > 400) {
+                cooldown = 40;
+                return true;
+            }
+
+            return false;
         }
 
         @Override
         public void start() {
             Level level = naiad.level();
-            BlockPos origin = naiad.blockPosition();
+            BlockPos currentTerritory = naiad.getTerritory();
 
-            BlockPos found = findWaterBody(level, origin);
-
-            if (found != null) {
-                naiad.setTerritory(found);
-                return;
+            if (currentTerritory.equals(BlockPos.ZERO)) {
+                // Find new territory
+                targetPos = findNearestWaterBiome(level, naiad.blockPosition());
+                if (targetPos != null) {
+                    naiad.setTerritory(targetPos);
+                }
+            } else {
+                // Use existing territory
+                targetPos = currentTerritory;
             }
 
-            BlockPos biomeTarget = findNearestWaterBiome(level, origin);
-            if (biomeTarget != null && naiad.tickCount % 20 == 0) {
-                naiad.getNavigation().moveTo(biomeTarget.getX(), biomeTarget.getY(), biomeTarget.getZ(), 1.0);
+            if (targetPos != null) {
+                naiad.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.0);
             }
         }
 
-        private BlockPos findWaterBody(Level level, BlockPos center) {
-            int radius = (int)searchRadius;
+        @Override
+        public boolean canContinueToUse() {
+            return targetPos != null &&
+                    !naiad.getNavigation().isDone() &&
+                    targetPos.distToCenterSqr(naiad.position()) > 9;
+        }
 
-            for (int x = -radius; x <= radius; x++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockPos pos = center.offset(x, 0, z);
+        @Override
+        public void stop() {
+            targetPos = null;
+            naiad.getNavigation().stop();
+        }
 
-                    if (level.getFluidState(pos).isSource()) {
-                        int connected = floodFillWater(level, pos, waterSizeRequired);
+        private BlockPos findNearestWaterBiome(Level level, BlockPos origin) {
+            int range = 128;
+            int step = 4;
 
-                        if (connected >= waterSizeRequired) {
-                            return pos;
+            for (int r = 4; r <= range; r += step) {
+                for (int i = 0; i < r * 2; i += step) {
+                    BlockPos pos1 = origin.offset(r, 0, i - r);
+                    BlockPos pos2 = origin.offset(-r, 0, i - r);
+                    BlockPos pos3 = origin.offset(i - r, 0, r);
+                    BlockPos pos4 = origin.offset(i - r, 0, -r);
+
+                    BlockPos[] positions = {pos1, pos2, pos3, pos4};
+
+                    for (BlockPos pos : positions) {
+                        if (level.isLoaded(pos)) {
+                            var biome = level.getBiome(pos);
+                            if (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_DEEP_OCEAN) || biome.is(BiomeTags.IS_RIVER)) {
+                                BlockPos surfacePos = findWaterSurface(level, pos);
+                                return surfacePos != null ? surfacePos : pos;
+                            }
                         }
                     }
                 }
@@ -199,45 +265,138 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
             return null;
         }
 
-        // Simple water flood-fill counter
-        private int floodFillWater(Level level, BlockPos start, int limit) {
-            HashSet<BlockPos> visited = new HashSet<>();
-            ArrayDeque<BlockPos> queue = new ArrayDeque<>();
-            queue.add(start);
-
-            while (!queue.isEmpty() && visited.size() < limit) {
-                BlockPos pos = queue.poll();
-                if (visited.contains(pos)) continue;
-                visited.add(pos);
-
-                for (Direction dir : Direction.values()) {
-                    BlockPos next = pos.relative(dir);
-                    if (!visited.contains(next) && level.getFluidState(next).isSource()) {
-                        queue.add(next);
-                    }
-                }
-            }
-            return visited.size();
-        }
-
-        private BlockPos findNearestWaterBiome(Level level, BlockPos origin) {
-            int check = 128;
-
-            for (int r = 8; r < check; r += 8) {
-                for (int x = -r; x <= r; x += 8) {
-                    for (int z = -r; z <= r; z += 8) {
-                        BlockPos pos = origin.offset(x, 0, z);
-
-                        var biome = level.getBiome(pos);
-
-                        if (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_DEEP_OCEAN) || biome.is(BiomeTags.IS_RIVER)) {
-                            return pos;
-                        }
-                    }
+        private BlockPos findWaterSurface(Level level, BlockPos pos) {
+            // Find the water surface level
+            for (int y = level.getSeaLevel(); y > level.getMinBuildHeight(); y--) {
+                BlockPos checkPos = new BlockPos(pos.getX(), y, pos.getZ());
+                if (!level.getFluidState(checkPos).isEmpty() &&
+                        level.getBlockState(checkPos.above()).isAir()) {
+                    return checkPos;
                 }
             }
             return null;
         }
     }
+    public static class BreakBoatsGoal extends Goal {
+        private final Naiad naiad;
+        private Boat targetBoat;
+        private int breakTime;
+        private final double speedModifier;
 
+        public BreakBoatsGoal(Naiad naiad, double speedModifier) {
+            this.naiad = naiad;
+            this.speedModifier = speedModifier;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (naiad.getTarget() != null) return false;
+
+            // Find nearby boats
+            List<Boat> boats = naiad.level().getEntitiesOfClass(Boat.class,
+                    naiad.getBoundingBox().inflate(16.0),
+                    boat -> boat != null && !boat.isRemoved());
+
+            if (boats.isEmpty()) return false;
+
+            // Find the closest boat
+            Boat closestBoat = null;
+            double closestDistance = Double.MAX_VALUE;
+
+            for (Boat boat : boats) {
+                double distance = naiad.distanceToSqr(boat);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestBoat = boat;
+                }
+            }
+
+            if (closestBoat != null) {
+                this.targetBoat = closestBoat;
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public void start() {
+            this.breakTime = 0;
+            if (targetBoat != null) {
+                naiad.getNavigation().moveTo(targetBoat, speedModifier);
+            }
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return targetBoat != null &&
+                    !targetBoat.isRemoved() &&
+                    naiad.distanceToSqr(targetBoat) <= 256.0 && // 16 blocks max distance
+                    naiad.getTarget() == null; // Don't break boats while attacking something
+        }
+
+        @Override
+        public void tick() {
+            if (targetBoat == null || targetBoat.isRemoved()) {
+                return;
+            }
+
+            naiad.getLookControl().setLookAt(targetBoat, 30.0F, 30.0F);
+
+            double distance = naiad.distanceToSqr(targetBoat);
+            if (distance > 9.0) { // 3 blocks
+                naiad.getNavigation().moveTo(targetBoat, speedModifier);
+            } else {
+                naiad.getNavigation().stop();
+
+                breakTime++;
+                if (breakTime >= 20) {
+                    breakBoat();
+                }
+            }
+        }
+
+        @Override
+        public void stop() {
+            this.targetBoat = null;
+            this.breakTime = 0;
+            naiad.getNavigation().stop();
+        }
+
+        private void breakBoat() {
+            if (targetBoat != null && !targetBoat.isRemoved()) {
+                Level level = naiad.level();
+
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.SPLASH,
+                            targetBoat.getX(), targetBoat.getY() + 0.5, targetBoat.getZ(),
+                            10, 0.5, 0.5, 0.5, 0.1);
+
+                    serverLevel.playSound(null, targetBoat.blockPosition(),
+                            SoundEvents.WOOD_BREAK, SoundSource.HOSTILE, 1.0F, 1.0F);
+                }
+
+                if (!targetBoat.hasCustomName() && naiad.getRandom().nextFloat() < 0.8F) {
+                    targetBoat.spawnAtLocation(new ItemStack(Items.STICK));
+                }
+
+                targetBoat.discard();
+
+                stop();
+            }
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+    }
+    @Override
+    public boolean hasLineOfSight(Entity entity) {
+        if (entity instanceof LivingEntity living && living.isInWater() && living.getHealth() < living.getMaxHealth()){
+            return true;
+        }
+        return super.hasLineOfSight(entity);
+    }
 }

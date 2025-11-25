@@ -9,6 +9,7 @@ import com.Harbinger.Spore.Sentities.Calamities.Gazenbrecher;
 import com.Harbinger.Spore.Sentities.Calamities.Hinderburg;
 import com.Harbinger.Spore.Sentities.Calamities.Hohlfresser;
 import com.Harbinger.Spore.Sentities.Calamities.Sieger;
+import com.Harbinger.Spore.Sentities.EvolvedInfected.Naiad;
 import com.Harbinger.Spore.Sentities.EvolvedInfected.Scamper;
 import com.Harbinger.Spore.Sentities.HitboxesForParts;
 import com.Harbinger.Spore.Sentities.Organoids.*;
@@ -205,6 +206,9 @@ public class Commands {
                                     player.displayClientMessage(Component.literal("RootTimer ? " + geber.getTimeRooted()),false);
                                     player.displayClientMessage(Component.literal("Aggression ? " + geber.getAggression()),false);
                                     player.displayClientMessage(Component.literal("Spread ? " + geber.getSpreadInterval()),false);
+                                }
+                                if (infected instanceof Naiad scamper){
+                                    player.displayClientMessage(Component.literal("get nest location ? " + scamper.getTerritory()),false);
                                 }
                                 player.displayClientMessage(Component.literal("-------------------------"),false);
 

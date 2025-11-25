@@ -25,7 +25,7 @@ public class WaterXlandMovement extends MoveControl {
             float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 90.0F));
             float f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
-
+            mob.getLookControl().setLookAt(wantedX,wantedY,wantedZ, 30.0F, 30.0F);
             if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
                 this.mob.setYya(d1 > 0.0D ? f1 : -f1);
             }

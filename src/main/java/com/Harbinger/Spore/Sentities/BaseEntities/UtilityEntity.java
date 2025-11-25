@@ -1,6 +1,7 @@
 package com.Harbinger.Spore.Sentities.BaseEntities;
 
 import com.Harbinger.Spore.ExtremelySusThings.Utilities;
+import com.Harbinger.Spore.Sentities.WaterInfected;
 import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.Senchantments;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -105,6 +107,9 @@ public class UtilityEntity extends PathfinderMob {
         }
         if (levelAccessor instanceof ServerLevel serverLevel && countInfectedMobsInChunk(serverLevel,pos) > SConfig.SERVER.mob_cap.get()){
             return false;
+        }
+        if (p_219014_ instanceof WaterInfected){
+            return levelAccessor.getFluidState(pos.below()).is(FluidTags.WATER);
         }
         return isDarkEnoughToSpawn(levelAccessor, pos, source) && checkMobSpawnRules(p_219014_, levelAccessor, type, pos, source);
     }
