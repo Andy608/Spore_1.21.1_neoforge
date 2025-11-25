@@ -388,8 +388,8 @@ public class NaiadModel<T extends Naiad> extends EntityModel<T> implements Tenta
 			}else {
 				this.animateTentacleX(RightArm,movement);
 				this.animateTentacleX(LeftArm,-movement);
-				this.animateTentacleY(Tail,v4);
-				this.animateTentacleY(TailMid2,v4);
+				this.animateTentacleZ(Tail,v4);
+				this.animateTentacleZ(TailMid2,v4);
 			}
 		}
 	}

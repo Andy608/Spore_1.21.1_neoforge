@@ -65,6 +65,7 @@ public class HybridPathNavigation extends GroundPathNavigation {
 
     public void UnderWaterLeaps(LivingEntity target){
         Vec3 vec3 = this.mob.getDeltaMovement();
+        mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         Vec3 vec31 = new Vec3(target.getX() - this.mob.getX(), target.getY() - this.mob.getY(), target.getZ() - this.mob.getZ());
         if (vec31.lengthSqr() > 1.0E-7D) {
             vec31 = vec31.normalize().scale(0.5D).add(vec3.scale(0.3D));

@@ -56,7 +56,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
     @Override
     protected void addRegularGoals() {
         super.addRegularGoals();
-        this.goalSelector.addGoal(3, new CustomMeleeAttackGoal(this, 1.5, false) {
+        this.goalSelector.addGoal(3, new CustomMeleeAttackGoal(this, 1, false) {
             @Override
             protected double getAttackReachSqr(LivingEntity entity) {
                 return 4.0 + entity.getBbWidth() * entity.getBbWidth();}});
@@ -64,6 +64,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new FindWaterTerritoryGoal(this));
+        this.goalSelector.addGoal(7, new BreakBoatsGoal(this,1.2));
     }
 
     @Override
@@ -266,7 +267,6 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         }
 
         private BlockPos findWaterSurface(Level level, BlockPos pos) {
-            // Find the water surface level
             for (int y = level.getSeaLevel(); y > level.getMinBuildHeight(); y--) {
                 BlockPos checkPos = new BlockPos(pos.getX(), y, pos.getZ());
                 if (!level.getFluidState(checkPos).isEmpty() &&
