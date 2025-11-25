@@ -201,6 +201,10 @@ public class SConfig {
         public final ModConfigSpec.ConfigValue<Double> knight_damage;
         public final ModConfigSpec.ConfigValue<Double> knight_armor;
 
+        public final ModConfigSpec.ConfigValue<Double> naiad_hp;
+        public final ModConfigSpec.ConfigValue<Double> naiad_damage;
+        public final ModConfigSpec.ConfigValue<Double> naiad_armor;
+
         public final ModConfigSpec.ConfigValue<Double> sau_hp;
         public final ModConfigSpec.ConfigValue<Double> sau_damage;
         public final ModConfigSpec.ConfigValue<Double> sau_armor;
@@ -684,7 +688,7 @@ public class SConfig {
                             "spore:jagd","spore:scavenger") , o -> o instanceof String);
             this.drowned_ev = builder.defineList("Infected Drowned Evolutions",
                     Lists.newArrayList(
-                            "spore:bloater") , o -> o instanceof String);
+                            "spore:bloater","spore:naiad") , o -> o instanceof String);
             this.player_ev = builder.defineList("Infected Adventurer Evolutions",
                     Lists.newArrayList(
                             "spore:nuclea","spore:protector") , o -> o instanceof String);
@@ -1131,6 +1135,12 @@ public class SConfig {
             this.knight_hp = builder.comment("Default 25").defineInRange("Sets Knight Max health", 25, 1, Double.MAX_VALUE);
             this.knight_damage = builder.comment("Default 7").defineInRange("Sets Knight Damage", 7, 1, Double.MAX_VALUE);
             this.knight_armor = builder.comment("Default 7").defineInRange("Sets Knight Armor", 7, 1, Double.MAX_VALUE);
+            builder.pop();
+
+            builder.push("Naiad");
+            this.naiad_hp = builder.comment("Default 35").defineInRange("Sets Knight Max health", 35, 1, Double.MAX_VALUE);
+            this.naiad_damage = builder.comment("Default 6").defineInRange("Sets Knight Damage", 6, 1, Double.MAX_VALUE);
+            this.naiad_armor = builder.comment("Default 3").defineInRange("Sets Knight Armor", 3, 1, Double.MAX_VALUE);
             builder.pop();
 
             builder.push("Saugling");
