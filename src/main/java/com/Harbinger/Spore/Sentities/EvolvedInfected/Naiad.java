@@ -12,34 +12,43 @@ import com.Harbinger.Spore.core.SdamageTypes;
 import com.Harbinger.Spore.core.Sentities;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class Naiad extends EvolvedInfected implements WaterInfected {
+    public static final EntityDataAccessor<BlockPos> TERRITORY = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.BLOCK_POS);
     public Naiad(EntityType<? extends EvolvedInfected> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.moveControl = new WaterXlandMovement(this);
         this.navigation = new HybridPathNavigation(this,this.level());
     }
-    @Override
-    protected void registerGoals() {
 
+    @Override
+    protected void addRegularGoals() {
+        super.addRegularGoals();
         this.goalSelector.addGoal(3, new CustomMeleeAttackGoal(this, 1.5, false) {
             @Override
             protected double getAttackReachSqr(LivingEntity entity) {
@@ -47,9 +56,38 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-
-        super.registerGoals();
+        this.goalSelector.addGoal(6, new FindWaterTerritoryGoal(this, 16, 8));
     }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TERRITORY,BlockPos.ZERO);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("TerritoryX",entityData.get(TERRITORY).getX());
+        tag.putInt("TerritoryY",entityData.get(TERRITORY).getY());
+        tag.putInt("TerritoryZ",entityData.get(TERRITORY).getZ());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        int tX = tag.getInt("TerritoryX");
+        int tY = tag.getInt("TerritoryY");
+        int tZ = tag.getInt("TerritoryZ");
+        entityData.set(TERRITORY,new BlockPos(tX,tY,tZ));
+    }
+    public BlockPos getTerritory(){
+        return entityData.get(TERRITORY);
+    }
+    public void setTerritory(BlockPos pos){
+        entityData.set(TERRITORY,pos);
+    }
+
     @Override
     public boolean canDrownInFluidType(FluidType type) {
         return false;
@@ -106,6 +144,100 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
     protected void playStepSound(BlockPos p_34316_, BlockState p_34317_) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+    public static class FindWaterTerritoryGoal extends Goal {
+        private final Naiad naiad;
+        private final double searchRadius;
+        private final int waterSizeRequired;
+
+        public FindWaterTerritoryGoal(Naiad naiad, double searchRadius, int waterSizeRequired) {
+            this.naiad = naiad;
+            this.searchRadius = searchRadius;
+            this.waterSizeRequired = waterSizeRequired;
+            this.setFlags(EnumSet.of(Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return naiad.getTerritory().equals(BlockPos.ZERO);
+        }
+
+        @Override
+        public void start() {
+            Level level = naiad.level();
+            BlockPos origin = naiad.blockPosition();
+
+            BlockPos found = findWaterBody(level, origin);
+
+            if (found != null) {
+                naiad.setTerritory(found);
+                return;
+            }
+
+            BlockPos biomeTarget = findNearestWaterBiome(level, origin);
+            if (biomeTarget != null && naiad.tickCount % 20 == 0) {
+                naiad.getNavigation().moveTo(biomeTarget.getX(), biomeTarget.getY(), biomeTarget.getZ(), 1.0);
+            }
+        }
+
+        private BlockPos findWaterBody(Level level, BlockPos center) {
+            int radius = (int)searchRadius;
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int z = -radius; z <= radius; z++) {
+                    BlockPos pos = center.offset(x, 0, z);
+
+                    if (level.getFluidState(pos).isSource()) {
+                        int connected = floodFillWater(level, pos, waterSizeRequired);
+
+                        if (connected >= waterSizeRequired) {
+                            return pos;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        // Simple water flood-fill counter
+        private int floodFillWater(Level level, BlockPos start, int limit) {
+            HashSet<BlockPos> visited = new HashSet<>();
+            ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+            queue.add(start);
+
+            while (!queue.isEmpty() && visited.size() < limit) {
+                BlockPos pos = queue.poll();
+                if (visited.contains(pos)) continue;
+                visited.add(pos);
+
+                for (Direction dir : Direction.values()) {
+                    BlockPos next = pos.relative(dir);
+                    if (!visited.contains(next) && level.getFluidState(next).isSource()) {
+                        queue.add(next);
+                    }
+                }
+            }
+            return visited.size();
+        }
+
+        private BlockPos findNearestWaterBiome(Level level, BlockPos origin) {
+            int check = 128;
+
+            for (int r = 8; r < check; r += 8) {
+                for (int x = -r; x <= r; x += 8) {
+                    for (int z = -r; z <= r; z += 8) {
+                        BlockPos pos = origin.offset(x, 0, z);
+
+                        var biome = level.getBiome(pos);
+
+                        if (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_DEEP_OCEAN) || biome.is(BiomeTags.IS_RIVER)) {
+                            return pos;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
 
 }

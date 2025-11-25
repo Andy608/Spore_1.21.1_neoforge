@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -112,11 +114,17 @@ public class Chemist extends EvolvedInfected{
         if (this.level() instanceof ServerLevel serverLevel){
             Level.ExplosionInteraction explosion$blockinteraction = EventHooks.canEntityGrief(level(), this) && SConfig.SERVER.chemist_explosion_on.get() ?
                     Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE;
-            serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), SConfig.SERVER.chemist_explosion.get(), explosion$blockinteraction);
+            serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), (float) (SConfig.SERVER.chemist_explosion.get() * 1f), explosion$blockinteraction);
             Utilities.convertBlocks(serverLevel,this,this.getOnPos(),7, Blocks.FIRE.defaultBlockState());
         }
     }
-
+    @Override
+    public boolean addEffect(MobEffectInstance effectInstance, @Nullable Entity entity) {
+        if (effectInstance.getEffect().value().isBeneficial()){
+            return super.addEffect(effectInstance, entity);
+        }
+        return false;
+    }
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.getEntity() != null && Math.random() < 0.2){

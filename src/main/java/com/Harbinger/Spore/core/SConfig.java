@@ -194,7 +194,7 @@ public class SConfig {
         public final ModConfigSpec.ConfigValue<Double> chemist_armor;
         public final ModConfigSpec.ConfigValue<Double> chemist_hp;
         public final ModConfigSpec.ConfigValue<Double> chemist_damage;
-        public final ModConfigSpec.ConfigValue<Integer> chemist_explosion;
+        public final ModConfigSpec.ConfigValue<Double> chemist_explosion;
         public final ModConfigSpec.ConfigValue<Boolean> chemist_explosion_on;
 
         public final ModConfigSpec.ConfigValue<Double> knight_hp;
@@ -1256,7 +1256,7 @@ public class SConfig {
             this.chemist_armor = builder.comment("Default 3").defineInRange("Sets Griefer Armor", 3, 1, Double.MAX_VALUE);
             this.chemist_hp = builder.comment("Default 30").defineInRange("Sets Griefer Max health", 30, 1, Double.MAX_VALUE);
             this.chemist_damage = builder.comment("Default 7").defineInRange("Sets Griefer Damage", 7, 1, Double.MAX_VALUE);
-            this.chemist_explosion = builder.comment("Default 2").define("Explosion Radius",2);
+            this.chemist_explosion = builder.comment("Default 2.5").define("Explosion Radius",2.5);
             this.chemist_explosion_on = builder.comment("Default true").define("Should explosion break blocks ?",true);
             builder.pop();
             builder.pop();
