@@ -22,12 +22,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
@@ -49,8 +52,9 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
     public static final EntityDataAccessor<BlockPos> TERRITORY = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.BLOCK_POS);
     public Naiad(EntityType<? extends EvolvedInfected> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
-        this.moveControl = new WaterXlandMovement(this);
+        this.moveControl = new NaiadSwimControl(this);
         this.navigation = new HybridPathNavigation(this,this.level());
+        this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     @Override
@@ -62,9 +66,14 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
                 return 4.0 + entity.getBbWidth() * entity.getBbWidth();}});
 
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(4, new BreakBoatsGoal(this,1.2));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new FindWaterTerritoryGoal(this));
-        this.goalSelector.addGoal(7, new BreakBoatsGoal(this,1.2));
+    }
+
+    @Override
+    public boolean isNoGravity() {
+        return isInWater();
     }
 
     @Override
@@ -295,7 +304,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
             // Find nearby boats
             List<Boat> boats = naiad.level().getEntitiesOfClass(Boat.class,
-                    naiad.getBoundingBox().inflate(16.0),
+                    naiad.getBoundingBox().inflate(16,32,16),
                     boat -> boat != null && !boat.isRemoved());
 
             if (boats.isEmpty()) return false;
@@ -323,7 +332,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         @Override
         public void start() {
             this.breakTime = 0;
-            if (targetBoat != null) {
+            if (targetBoat != null && naiad.tickCount % 20 == 0) {
                 naiad.getNavigation().moveTo(targetBoat, speedModifier);
             }
         }
@@ -332,8 +341,8 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         public boolean canContinueToUse() {
             return targetBoat != null &&
                     !targetBoat.isRemoved() &&
-                    naiad.distanceToSqr(targetBoat) <= 256.0 && // 16 blocks max distance
-                    naiad.getTarget() == null; // Don't break boats while attacking something
+                    naiad.distanceToSqr(targetBoat) <= 256.0 &&
+                    naiad.getTarget() == null;
         }
 
         @Override
@@ -341,15 +350,23 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
             if (targetBoat == null || targetBoat.isRemoved()) {
                 return;
             }
+            if (targetBoat.getY()-0.5 > naiad.getY() && naiad.isEyeInFluidType(naiad.getEyeInFluidType())){
+                Vec3 vec3 = this.naiad.getDeltaMovement();
+                Vec3 vec31 = new Vec3(targetBoat.getX() - this.naiad.getX(), targetBoat.getY() - this.naiad.getY(), targetBoat.getZ() - this.naiad.getZ());
+                if (vec31.lengthSqr() > 1.0E-7D) {
+                    vec31 = vec31.normalize().scale(0.5D).add(vec3.scale(0.01D));
+                }
+                this.naiad.setDeltaMovement(vec31.x, vec31.y, vec31.z);
+            }
 
             naiad.getLookControl().setLookAt(targetBoat, 30.0F, 30.0F);
 
             double distance = naiad.distanceToSqr(targetBoat);
-            if (distance > 9.0) { // 3 blocks
+            if (naiad.tickCount % 20 == 0){
                 naiad.getNavigation().moveTo(targetBoat, speedModifier);
-            } else {
-                naiad.getNavigation().stop();
-
+            }
+            if (distance < 9.0) {
+                naiad.getLookControl().setLookAt(targetBoat, 30.0F, 30.0F);
                 breakTime++;
                 if (breakTime >= 20) {
                     breakBoat();
@@ -398,5 +415,33 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
             return true;
         }
         return super.hasLineOfSight(entity);
+    }
+
+    private static class NaiadSwimControl extends SmoothSwimmingMoveControl{
+
+        public NaiadSwimControl(Mob mob) {
+            super(mob, 85, 10, 0.02F, 0.1F, false);
+        }
+
+        @Override
+        public void tick() {
+            if (mob.isInWater()){
+                super.tick();
+            }else {
+                if (this.operation == Operation.MOVE_TO) {
+                    this.operation = Operation.WAIT;
+                    double d0 = this.wantedX - this.mob.getX();
+                    double d1 = this.wantedY - this.mob.getY();
+                    double d2 = this.wantedZ - this.mob.getZ();
+                    double d4 = Math.sqrt(d0 * d0 + d2 * d2);
+                    float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                    this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 90.0F));
+                    float f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                    if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
+                        this.mob.setYya(d1 > 0.0D ? f1 : -f1);
+                    }
+                }
+            }
+        }
     }
 }
