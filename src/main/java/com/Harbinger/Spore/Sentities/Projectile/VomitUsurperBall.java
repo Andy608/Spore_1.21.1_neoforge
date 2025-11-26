@@ -34,10 +34,6 @@ public class VomitUsurperBall extends AbstractArrow {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
     }
-
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
-    }
     @Override
     public void tick() {
         super.tick();

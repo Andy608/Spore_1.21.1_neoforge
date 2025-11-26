@@ -65,8 +65,8 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
             @Override
             protected double getAttackReachSqr(LivingEntity entity) {
                 return 4.0 + entity.getBbWidth() * entity.getBbWidth();}});
-        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(5, new FindWaterTerritoryGoal(this));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8));
     }
 
     @Override
@@ -188,7 +188,6 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
         public FindWaterTerritoryGoal(Naiad naiad) {
             this.naiad = naiad;
-            this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
         @Override
