@@ -212,7 +212,9 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
                 // Use existing territory
                 targetPos = currentTerritory;
             }
-            moveToBlock();
+            if (targetPos != null){
+                moveToBlock();
+            }
         }
         public void moveToBlock(){
             naiad.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.0);
@@ -237,7 +239,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
                 naiad.setDeltaMovement(target);
                 naiad.getLookControl().setLookAt(target.x, target.y, target.z, 30F, 30F);
             }else {
-                if (this.naiad.getTerritory() != BlockPos.ZERO && shouldRecalculatePath()) {
+                if (this.naiad.getTerritory() != BlockPos.ZERO && targetPos != null && shouldRecalculatePath()) {
                     this.moveToBlock();
                 }
             }
