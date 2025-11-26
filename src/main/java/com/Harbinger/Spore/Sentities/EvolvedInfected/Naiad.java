@@ -29,6 +29,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -54,21 +55,18 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         super(p_33002_, p_33003_);
         this.moveControl = new NaiadSwimControl(this);
         this.navigation = new HybridPathNavigation(this,this.level());
-        this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     @Override
     protected void addRegularGoals() {
         super.addRegularGoals();
-        this.goalSelector.addGoal(3, new CustomMeleeAttackGoal(this, 1, false) {
+        this.goalSelector.addGoal(3, new BreakBoatsGoal(this,1.2));
+        this.goalSelector.addGoal(4, new CustomMeleeAttackGoal(this, 1, false) {
             @Override
             protected double getAttackReachSqr(LivingEntity entity) {
                 return 4.0 + entity.getBbWidth() * entity.getBbWidth();}});
-
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
-        this.goalSelector.addGoal(4, new BreakBoatsGoal(this,1.2));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new FindWaterTerritoryGoal(this));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(5, new FindWaterTerritoryGoal(this));
     }
 
     @Override
@@ -140,7 +138,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
     @Override
     public List<? extends String> getDropList() {
-        return SConfig.DATAGEN.inf_knight_loot.get();
+        return SConfig.DATAGEN.naiad_loot.get();
     }
     @Override
     public DamageSource getCustomDamage(LivingEntity entity) {
@@ -186,7 +184,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
     public static class FindWaterTerritoryGoal extends Goal {
         private final Naiad naiad;
         private BlockPos targetPos;
-        private int cooldown = 0;
+        public int tryTicks;
 
         public FindWaterTerritoryGoal(Naiad naiad) {
             this.naiad = naiad;
@@ -195,30 +193,15 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
         @Override
         public boolean canUse() {
-            if (cooldown > 0) {
-                cooldown--;
-                return false;
-            }
-
             BlockPos territory = naiad.getTerritory();
-            if (territory.equals(BlockPos.ZERO)) {
-                return true;
-            }
-
-            double distanceSqr = territory.distToCenterSqr(naiad.position());
-            if (distanceSqr > 400) {
-                cooldown = 40;
-                return true;
-            }
-
-            return false;
+            return territory.equals(BlockPos.ZERO) || territory.distToCenterSqr(naiad.position()) > 400;
         }
 
         @Override
         public void start() {
             Level level = naiad.level();
             BlockPos currentTerritory = naiad.getTerritory();
-
+            this.tryTicks = 0;
             if (currentTerritory.equals(BlockPos.ZERO)) {
                 // Find new territory
                 targetPos = findNearestWaterBiome(level, naiad.blockPosition());
@@ -229,23 +212,50 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
                 // Use existing territory
                 targetPos = currentTerritory;
             }
+            moveToBlock();
+        }
+        public void moveToBlock(){
+            naiad.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.0);
+        }
 
-            if (targetPos != null) {
-                naiad.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.0);
+        @Override
+        public void tick() {
+            super.tick();
+            ++this.tryTicks;
+            if (naiad.isInWater()){
+                Vec3 motion = naiad.getDeltaMovement();
+                BlockPos pos = naiad.getTerritory();
+                Vec3 target = new Vec3(
+                        pos.getX() - naiad.getX(),
+                        pos.getY() - naiad.getY(),
+                        pos.getZ() - naiad.getZ()
+                );
+
+                if (target.lengthSqr() > 1e-7) {
+                    target = target.normalize().scale(0.1).add(motion.scale(0.9));
+                }
+                naiad.setDeltaMovement(target);
+                naiad.getLookControl().setLookAt(target.x, target.y, target.z, 30F, 30F);
+            }else {
+                if (this.naiad.getTerritory() != BlockPos.ZERO && shouldRecalculatePath()) {
+                    this.moveToBlock();
+                }
             }
         }
 
         @Override
         public boolean canContinueToUse() {
             return targetPos != null &&
-                    !naiad.getNavigation().isDone() &&
                     targetPos.distToCenterSqr(naiad.position()) > 9;
         }
+        public boolean shouldRecalculatePath() {
+            return this.tryTicks % 40 == 0;
+        }
+
 
         @Override
-        public void stop() {
-            targetPos = null;
-            naiad.getNavigation().stop();
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
 
         private BlockPos findNearestWaterBiome(Level level, BlockPos origin) {
@@ -417,31 +427,40 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         return super.hasLineOfSight(entity);
     }
 
-    private static class NaiadSwimControl extends SmoothSwimmingMoveControl{
-
+    private static class NaiadSwimControl extends MoveControl {
         public NaiadSwimControl(Mob mob) {
-            super(mob, 85, 10, 0.02F, 0.1F, false);
+            super(mob);
         }
 
         @Override
         public void tick() {
-            if (mob.isInWater()){
+            if (!mob.isInWater()) {
                 super.tick();
-            }else {
-                if (this.operation == Operation.MOVE_TO) {
-                    this.operation = Operation.WAIT;
-                    double d0 = this.wantedX - this.mob.getX();
-                    double d1 = this.wantedY - this.mob.getY();
-                    double d2 = this.wantedZ - this.mob.getZ();
-                    double d4 = Math.sqrt(d0 * d0 + d2 * d2);
-                    float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                    this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 90.0F));
-                    float f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                    if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
-                        this.mob.setYya(d1 > 0.0D ? f1 : -f1);
-                    }
+                return;
+            }
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+
+                this.operation = MoveControl.Operation.WAIT;
+
+                double dx = this.wantedX - mob.getX();
+                double dy = this.wantedY - mob.getY();
+                double dz = this.wantedZ - mob.getZ();
+
+
+                // Look toward target
+                float targetYaw = (float)(Mth.atan2(dz, dx) * 180F / Math.PI) - 90F;
+                mob.setYRot(rotlerp(mob.getYRot(), -targetYaw, 10.0F));
+
+                // Speed modifier
+                double speed = this.speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
+
+                mob.setZza((float) speed);
+
+                if (Math.abs(dy) > 1e-4) {
+                    mob.setYya(dy > 0 ? (float)speed : (float)-speed);
                 }
             }
+
         }
     }
 }

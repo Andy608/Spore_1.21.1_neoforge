@@ -1138,9 +1138,9 @@ public class SConfig {
             builder.pop();
 
             builder.push("Naiad");
-            this.naiad_hp = builder.comment("Default 35").defineInRange("Sets Knight Max health", 35, 1, Double.MAX_VALUE);
-            this.naiad_damage = builder.comment("Default 6").defineInRange("Sets Knight Damage", 6, 1, Double.MAX_VALUE);
-            this.naiad_armor = builder.comment("Default 3").defineInRange("Sets Knight Armor", 3, 1, Double.MAX_VALUE);
+            this.naiad_hp = builder.comment("Default 35").defineInRange("Sets Naiad Max health", 35, 1, Double.MAX_VALUE);
+            this.naiad_damage = builder.comment("Default 6").defineInRange("Sets Naiad Damage", 6, 1, Double.MAX_VALUE);
+            this.naiad_armor = builder.comment("Default 3").defineInRange("Sets Naiad Armor", 3, 1, Double.MAX_VALUE);
             builder.pop();
 
             builder.push("Saugling");
@@ -1263,9 +1263,9 @@ public class SConfig {
             builder.pop();
 
             builder.push("Chemist");
-            this.chemist_armor = builder.comment("Default 3").defineInRange("Sets Griefer Armor", 3, 1, Double.MAX_VALUE);
-            this.chemist_hp = builder.comment("Default 30").defineInRange("Sets Griefer Max health", 30, 1, Double.MAX_VALUE);
-            this.chemist_damage = builder.comment("Default 7").defineInRange("Sets Griefer Damage", 7, 1, Double.MAX_VALUE);
+            this.chemist_armor = builder.comment("Default 3").defineInRange("Sets Chemist Armor", 3, 1, Double.MAX_VALUE);
+            this.chemist_hp = builder.comment("Default 30").defineInRange("Sets Chemist Max health", 30, 1, Double.MAX_VALUE);
+            this.chemist_damage = builder.comment("Default 7").defineInRange("Sets Chemist Damage", 7, 1, Double.MAX_VALUE);
             this.chemist_explosion = builder.comment("Default 2.5").define("Explosion Radius",2.5);
             this.chemist_explosion_on = builder.comment("Default true").define("Should explosion break blocks ?",true);
             builder.pop();
@@ -1561,6 +1561,7 @@ public class SConfig {
         public final ModConfigSpec.ConfigValue<List<? extends String>> inebriater_loot;
         public final ModConfigSpec.ConfigValue<List<? extends String>> chemist_loot;
         public final ModConfigSpec.ConfigValue<List<? extends String>> saugling_loot;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> naiad_loot;
 
         public final ModConfigSpec.ConfigValue<List<? extends String>> name;
         public final ModConfigSpec.ConfigValue<List<? extends String>> player_h;
@@ -1650,6 +1651,8 @@ public class SConfig {
                     Lists.newArrayList("spore:mutated_fiber|70|1|5","spore:armor_fragment|80|2|6","spore:mutated_heart|10|1|1","spore:claw_fragment|80|6|9","spore:innards|50|1|1","spore:tumor|100|2|4") , o -> o instanceof String);
             this.inf_mep_loot = builder.defineList("Mephetic",
                     Lists.newArrayList("spore:mutated_fiber|70|1|5","spore:armor_fragment|80|2|6","spore:mutated_heart|10|1|1","spore:claw_fragment|80|6|9","spore:innards|50|1|1","spore:tumor|100|2|4") , o -> o instanceof String);
+            this.naiad_loot = builder.defineList("Naiad",
+                    Lists.newArrayList("spore:mutated_fiber|70|1|5","minecraft:copper_ingot|15|1|1","spore:armor_fragment|80|1|3","spore:mutated_heart|10|1|1","spore:claw_fragment|80|6|9") , o -> o instanceof String);
 
 
             this.jagd_loot = builder.defineList("Jagdhund",
@@ -1678,7 +1681,7 @@ public class SConfig {
                     Lists.newArrayList("spore:mutated_fiber|80|5|17","spore:mutated_heart|10|1|3","spore:innards|50|1|2","spore:tumor|100|4|8","spore:tendons|60|3|7") , o -> o instanceof String);
             this.inebriater_loot = builder.defineList("Inebriater",
                     Lists.newArrayList("spore:mutated_fiber|800|1|3","spore:mutated_heart|10|1|1","spore:tumor|100|4|8") , o -> o instanceof String);
-            this.chemist_loot = builder.defineList("Inebriater",
+            this.chemist_loot = builder.defineList("Chemist",
                     Lists.newArrayList("spore:mutated_fiber|800|1|3","spore:mutated_heart|10|1|1","spore:tumor|100|4|8") , o -> o instanceof String);
             this.saugling_loot = builder.defineList("Saugling",
                     Lists.newArrayList("spore:mutated_fiber|20|1|3","spore:mutated_heart|10|1|1","spore:tumor|20|1|1") , o -> o instanceof String);
