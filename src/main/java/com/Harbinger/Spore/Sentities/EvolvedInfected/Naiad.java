@@ -312,8 +312,6 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
         @Override
         public boolean canUse() {
-            if (naiad.getTarget() != null) return false;
-
             // Find nearby boats
             List<Boat> boats = naiad.level().getEntitiesOfClass(Boat.class,
                     naiad.getBoundingBox().inflate(16,32,16),
@@ -353,8 +351,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         public boolean canContinueToUse() {
             return targetBoat != null &&
                     !targetBoat.isRemoved() &&
-                    naiad.distanceToSqr(targetBoat) <= 256.0 &&
-                    naiad.getTarget() == null;
+                    naiad.distanceToSqr(targetBoat) <= 256.0;
         }
 
         @Override
