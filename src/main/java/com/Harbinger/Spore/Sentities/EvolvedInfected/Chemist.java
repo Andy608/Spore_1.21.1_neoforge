@@ -89,6 +89,7 @@ public class Chemist extends EvolvedInfected{
         this.attackAnimationTick = 10;
         this.level().broadcastEntityEvent(this, (byte)4);
         entity.setRemainingFireTicks(200);
+        this.playSound(SoundEvents.FLINTANDSTEEL_USE);
         return super.doHurtTarget(entity);
     }
     @Override
