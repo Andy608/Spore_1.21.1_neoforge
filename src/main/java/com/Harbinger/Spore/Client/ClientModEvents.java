@@ -188,6 +188,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(DelusionerEnchanterModel.LAYER_LOCATION, DelusionerEnchanterModel::createBodyLayer);
         event.registerLayerDefinition(ChemistModel.LAYER_LOCATION, ChemistModel::createBodyLayer);
         event.registerLayerDefinition(NaiadModel.LAYER_LOCATION, NaiadModel::createBodyLayer);
+        event.registerLayerDefinition(NaiadTritonModel.LAYER_LOCATION, NaiadTritonModel::createBodyLayer);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {

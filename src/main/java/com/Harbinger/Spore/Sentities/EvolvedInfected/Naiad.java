@@ -8,8 +8,12 @@ import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
 import com.Harbinger.Spore.Sentities.EvolvingInfected;
 import com.Harbinger.Spore.Sentities.Hyper.Inquisitor;
 import com.Harbinger.Spore.Sentities.MovementControls.WaterXlandMovement;
+import com.Harbinger.Spore.Sentities.VariantKeeper;
+import com.Harbinger.Spore.Sentities.Variants.NaiadVariants;
+import com.Harbinger.Spore.Sentities.Variants.SlasherVariants;
 import com.Harbinger.Spore.Sentities.WaterInfected;
 import com.Harbinger.Spore.core.*;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,6 +27,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -41,16 +46,20 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class Naiad extends EvolvedInfected implements WaterInfected {
+public class Naiad extends EvolvedInfected implements WaterInfected , VariantKeeper {
     public static final EntityDataAccessor<BlockPos> TERRITORY = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TRIDENT_CHARGE = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.INT);
     public Naiad(EntityType<? extends EvolvedInfected> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.moveControl = new NaiadSwimControl(this);
@@ -96,6 +105,8 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
         builder.define(TERRITORY,BlockPos.ZERO);
+        builder.define(DATA_ID_TYPE_VARIANT,0);
+        builder.define(TRIDENT_CHARGE,0);
     }
 
     @Override
@@ -104,6 +115,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         tag.putInt("TerritoryX",entityData.get(TERRITORY).getX());
         tag.putInt("TerritoryY",entityData.get(TERRITORY).getY());
         tag.putInt("TerritoryZ",entityData.get(TERRITORY).getZ());
+        tag.putInt("Variant", this.getTypeVariant());
     }
 
     @Override
@@ -113,6 +125,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
         int tY = tag.getInt("TerritoryY");
         int tZ = tag.getInt("TerritoryZ");
         entityData.set(TERRITORY,new BlockPos(tX,tY,tZ));
+        this.entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
     }
     public BlockPos getTerritory(){
         return entityData.get(TERRITORY);
@@ -180,6 +193,41 @@ public class Naiad extends EvolvedInfected implements WaterInfected {
 
     protected void playStepSound(BlockPos p_34316_, BlockState p_34317_) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        NaiadVariants variant = Util.getRandom(NaiadVariants.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+    public NaiadVariants getVariant() {
+        return NaiadVariants.byId(this.getTypeVariant() & 255);
+    }
+
+    public int getTypeVariant() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    }
+    @Override
+    public void setVariant(int i) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT,i > NaiadVariants.values().length || i < 0 ? 0 : i);
+    }
+
+    @Override
+    public int amountOfMutations() {
+        return NaiadVariants.values().length;
+    }
+
+    private void setVariant(NaiadVariants variant) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+    }
+    @Override
+    public String getMutation() {
+        if (getTypeVariant() != 0){
+            return this.getVariant().getName();
+        }
+        return super.getMutation();
     }
     public static class FindWaterTerritoryGoal extends Goal {
         private final Naiad naiad;
