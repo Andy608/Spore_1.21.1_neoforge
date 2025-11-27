@@ -359,6 +359,7 @@ public class NaiadModel<T extends Naiad> extends EntityModel<T> implements Tenta
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.Naiad.getAllParts().forEach(ModelPart::resetPose);
 		float v3 = Mth.sin(ageInTicks/7)/6;
 		float v2 = Mth.cos(ageInTicks/6)/7;
 		float v4 = Mth.cos(ageInTicks/8)/8;
@@ -375,7 +376,7 @@ public class NaiadModel<T extends Naiad> extends EntityModel<T> implements Tenta
 		animateTentacleZ(Tendril1,v2);
 		animateTentacleZ(Tendril2,-v2);
 		animateTentacleZ(Tendril3,v3);
-		animateTentacleX(LowerJaw,v4);
+		animateTentacleX(LowerJaw,v4+0.2f);
 		if (!(limbSwingAmount > -0.15F && limbSwingAmount < 0.15F)){
 			if (entity.isInWater()){
 				float xRotArm = Mth.clampedLerp(-1.0471976F, -0.2617994F, (Mth.sin(-limbSwing) + 1.0F) / 2.0F);
