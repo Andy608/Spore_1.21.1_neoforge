@@ -270,6 +270,8 @@ public class Ssounds {
 
     public static final Holder<SoundEvent> SYRINGE_GUN_INJECT = soundRegistry("syringe_gun_inject");
 
+    public static final Holder<SoundEvent> SCIENTIST_FUSE = soundRegistry("scientist_fuse");
+
     private Ssounds() {
     }
 

@@ -7,6 +7,7 @@ import com.Harbinger.Spore.core.SConfig;
 import com.Harbinger.Spore.core.SdamageTypes;
 import com.Harbinger.Spore.core.Ssounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -97,6 +98,7 @@ public class Chemist extends EvolvedInfected{
         super.tick();
         if (getBlowTime() > 0){
             tickExplosion();
+            this.level().addParticle(ParticleTypes.WHITE_SMOKE,this.getX(),this.getY()+1,this.getZ(),0,0.1,0);
         }
         if (getBlowTime() > 60){
             explodeChemist();
@@ -144,7 +146,7 @@ public class Chemist extends EvolvedInfected{
     private void tickExplosion(){
         this.setBlowTime(this.getBlowTime()+1);
         if (getBlowTime() == 1){
-            this.playSound(SoundEvents.CREEPER_PRIMED);
+            this.playSound(Ssounds.SCIENTIST_FUSE.value());
         }
     }
 

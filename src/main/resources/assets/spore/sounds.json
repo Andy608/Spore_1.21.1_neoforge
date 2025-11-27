@@ -29,7 +29,13 @@
     "spore:slash",
     "spore:slash2"
   ]
-},"calamity_death" :{
+},
+  "scientist_fuse" :{
+    "subtitle": "sounds.spore.damage",
+    "sounds": [
+      "spore:scientist_fuse"
+    ]
+  },"calamity_death" :{
   "subtitle": "sounds.spore.damage",
   "sounds": [
     "spore:calamity_death"
