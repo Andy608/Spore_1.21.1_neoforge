@@ -60,7 +60,6 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 	private final ModelPart TailTumorsLeft;
 	private final ModelPart TailTumorsRight;
 	private final ModelPart TailTumorMid;
-	private final ModelPart spin;
 
 	public NaiadTritonModel(ModelPart root) {
 		this.Naiad = root.getChild("Naiad");
@@ -107,7 +106,6 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 		this.TailTumorsLeft = this.Fin.getChild("TailTumorsLeft");
 		this.TailTumorsRight = this.Fin.getChild("TailTumorsRight");
 		this.TailTumorMid = this.Fin.getChild("TailTumorMid");
-		this.spin = this.Naiad.getChild("spin");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -129,7 +127,7 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 		PartDefinition BackFin1_r1 = UpperChest.addOrReplaceChild("BackFin1_r1", CubeListBuilder.create().texOffs(0, 81).addBox(-1.0F, -4.0F, -2.0F, 0.0F, 6.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0056F, -3.099F, 3.8853F, 0.0699F, -0.0348F, -0.0024F));
 
 		PartDefinition UpperChestBra_r1 = UpperChest.addOrReplaceChild("UpperChestBra_r1", CubeListBuilder.create().texOffs(28, 28).addBox(-4.0F, -2.0F, -1.0F, 9.0F, 7.0F, 5.0F, new CubeDeformation(0.1F))
-		.texOffs(0, 28).addBox(-4.0F, -2.0F, -1.0F, 9.0F, 7.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.4944F, -4.399F, -2.1147F, 0.0873F, 0.0F, 0.0F));
+				.texOffs(0, 28).addBox(-4.0F, -2.0F, -1.0F, 9.0F, 7.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.4944F, -4.399F, -2.1147F, 0.0873F, 0.0F, 0.0F));
 
 		PartDefinition Tendrils1 = UpperChest.addOrReplaceChild("Tendrils1", CubeListBuilder.create(), PartPose.offset(0.0056F, 21.601F, 3.0854F));
 
@@ -141,15 +139,15 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 
 		PartDefinition Tendril1_r1 = Tendrils1.addOrReplaceChild("Tendril1_r1", CubeListBuilder.create().texOffs(82, 20).addBox(-1.0F, -3.0F, -2.0F, 0.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.4F, -24.7F, 0.4F, 0.4134F, -0.0878F, 0.0574F));
 
-		PartDefinition LowerChest = ActualTorso.addOrReplaceChild("LowerChest", CubeListBuilder.create(), PartPose.offset(0.0598F, -6.1195F, 1.7328F));
+		PartDefinition LowerChest = ActualTorso.addOrReplaceChild("LowerChest", CubeListBuilder.create(), PartPose.offset(0.0598F, -6.1194F, 1.7328F));
 
 		PartDefinition GillFoliage6_r1 = LowerChest.addOrReplaceChild("GillFoliage6_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.1402F, 2.5194F, -2.0328F, 1.7207F, -0.4896F, 1.7592F));
 
-		PartDefinition GillFoliage5_r1 = LowerChest.addOrReplaceChild("GillFoliage5_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.3402F, 1.1195F, -2.0328F, 1.241F, -0.5574F, 1.6274F));
+		PartDefinition GillFoliage5_r1 = LowerChest.addOrReplaceChild("GillFoliage5_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.3402F, 1.1194F, -2.0328F, 1.241F, -0.5574F, 1.6274F));
 
-		PartDefinition GillFoliage3_r1 = LowerChest.addOrReplaceChild("GillFoliage3_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.1598F, 2.9195F, -1.4328F, 1.2516F, -0.7941F, 1.5625F));
+		PartDefinition GillFoliage3_r1 = LowerChest.addOrReplaceChild("GillFoliage3_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.1598F, 2.9194F, -1.4328F, 1.2516F, -0.7941F, 1.5625F));
 
-		PartDefinition GillFoliage2_r1 = LowerChest.addOrReplaceChild("GillFoliage2_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.8598F, 1.2195F, -2.0328F, 1.5832F, -0.7941F, 1.5625F));
+		PartDefinition GillFoliage2_r1 = LowerChest.addOrReplaceChild("GillFoliage2_r1", CubeListBuilder.create().texOffs(44, 97).addBox(-1.0F, 0.0F, -2.0F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.8598F, 1.2194F, -2.0328F, 1.5832F, -0.7941F, 1.5625F));
 
 		PartDefinition BackFin2_r1 = LowerChest.addOrReplaceChild("BackFin2_r1", CubeListBuilder.create().texOffs(52, 81).addBox(-1.0F, -3.0F, -2.0F, 0.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9402F, -0.6806F, 4.2672F, 0.0699F, 0.0348F, 0.0024F));
 
@@ -194,8 +192,8 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 		PartDefinition WaistTumor10_r1 = WaistTumorGroup4.addOrReplaceChild("WaistTumor10_r1", CubeListBuilder.create().texOffs(48, 65).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.7F)), PartPose.offsetAndRotation(-5.4768F, 0.8314F, 1.0395F, 2.5914F, 0.0563F, -0.9983F));
 
 		PartDefinition Head = Torso.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -7.9F, -6.3F, 8.0F, 6.0F, 8.0F, new CubeDeformation(0.0F))
-		.texOffs(4, 110).addBox(-4.0F, -7.9F, -6.3F, 8.0F, 6.0F, 8.0F, new CubeDeformation(0.12F))
-		.texOffs(20, 48).addBox(-4.0F, -1.9F, -2.3F, 8.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -12.1F, -1.7F, -0.7418F, 0.0F, 0.0F));
+				.texOffs(4, 110).addBox(-4.0F, -7.9F, -6.3F, 8.0F, 6.0F, 8.0F, new CubeDeformation(0.12F))
+				.texOffs(20, 48).addBox(-4.0F, -1.9F, -2.3F, 8.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -12.1F, -1.7F, -0.7418F, 0.0F, 0.0F));
 
 		PartDefinition Ear2_r1 = Head.addOrReplaceChild("Ear2_r1", CubeListBuilder.create().texOffs(42, 73).addBox(0.0F, -4.5F, -2.0F, 0.0F, 7.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.1F, -7.4F, 0.8F, 0.2377F, 0.3471F, -0.038F));
 
@@ -209,7 +207,7 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 
 		PartDefinition FrontTeeth_r1 = LowerJaw.addOrReplaceChild("FrontTeeth_r1", CubeListBuilder.create().texOffs(92, 12).addBox(-4.0F, -1.0F, 0.0F, 8.0F, 2.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -0.8173F, -4.3375F, 0.2269F, 0.0F, 0.0F));
 
-		PartDefinition LowerJawMain_r1 = LowerJaw.addOrReplaceChild("LowerJawMain_r1", CubeListBuilder.create().texOffs(0, 40).addBox(-4.0F, -0.0212F, -4.2864F, 8.0F, 1.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.0F, -0.271F, -0.0865F, 0.0873F, 0.0F, 0.0F));
+		PartDefinition LowerJawMain_r1 = LowerJaw.addOrReplaceChild("LowerJawMain_r1", CubeListBuilder.create().texOffs(0, 40).addBox(-4.0F, -0.0212F, -4.2864F, 8.0F, 1.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.0F, -0.2711F, -0.0865F, 0.0873F, 0.0F, 0.0F));
 
 		PartDefinition Fins = Head.addOrReplaceChild("Fins", CubeListBuilder.create(), PartPose.offset(0.0F, 28.4F, 2.6F));
 
@@ -250,7 +248,7 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 		PartDefinition RightArmBottom_r1 = RightArmBottom.addOrReplaceChild("RightArmBottom_r1", CubeListBuilder.create().texOffs(76, 73).addBox(-2.0F, -2.0F, -1.0F, 3.0F, 6.0F, 3.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.6F, 1.8F, -0.4F, 0.0F, 0.0F, -0.0436F));
 
 		PartDefinition Shell2 = RightArm.addOrReplaceChild("Shell2", CubeListBuilder.create().texOffs(28, 80).addBox(-3.2F, -3.0F, -5.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(-0.2F))
-		.texOffs(57, 99).addBox(-4.8F, -3.0F, -5.0F, 2.0F, 3.0F, 5.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(-2.1F, -0.1F, 3.0F, 0.412F, -0.5864F, -0.6646F));
+				.texOffs(57, 99).addBox(-4.8F, -3.0F, -5.0F, 2.0F, 3.0F, 5.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(-2.1F, -0.1F, 3.0F, 0.412F, -0.5864F, -0.6646F));
 
 		PartDefinition LeftArm = Arms.addOrReplaceChild("LeftArm", CubeListBuilder.create(), PartPose.offsetAndRotation(4.6F, 0.1F, 0.1F, -1.2654F, 0.0F, -0.1309F));
 
@@ -259,16 +257,16 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 		PartDefinition LeftArmTop_r1 = LeftArmTop.addOrReplaceChild("LeftArmTop_r1", CubeListBuilder.create().texOffs(80, 64).addBox(-2.0F, -2.0F, -1.0F, 3.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.9F, 0.9F, -0.2F, 0.0F, 0.0F, -0.0873F));
 
 		PartDefinition Shell = LeftArmTop.addOrReplaceChild("Shell", CubeListBuilder.create().texOffs(44, 48).addBox(-3.2F, -3.0F, -5.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(-0.2F))
-		.texOffs(52, 73).addBox(-4.8F, -3.0F, -5.0F, 2.0F, 3.0F, 5.0F, new CubeDeformation(-0.2F))
-		.texOffs(77, 9).addBox(-4.8F, -3.0F, -5.0F, 2.0F, 3.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-0.7F, -0.1F, -1.7F, 2.9979F, -0.0445F, -2.5475F));
+				.texOffs(52, 73).addBox(-4.8F, -3.0F, -5.0F, 2.0F, 3.0F, 5.0F, new CubeDeformation(-0.2F))
+				.texOffs(77, 9).addBox(-4.8F, -3.0F, -5.0F, 2.0F, 3.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(-0.7F, -0.1F, -1.7F, 2.9979F, -0.0445F, -2.5475F));
 
 		PartDefinition LeftArmBottom = LeftArm.addOrReplaceChild("LeftArmBottom", CubeListBuilder.create(), PartPose.offset(1.8F, 4.9F, 0.2F));
 
 		PartDefinition Trident = LeftArmBottom.addOrReplaceChild("Trident", CubeListBuilder.create().texOffs(1, 104).addBox(-1.0229F, -10.3772F, -0.5F, 1.0F, 12.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(7, 109).addBox(-2.0229F, -6.3772F, -0.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(7, 109).addBox(-0.0229F, -6.3772F, -0.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(7, 103).addBox(0.9771F, -9.3772F, -0.5F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(7, 103).addBox(-3.0229F, -9.3772F, -0.5F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.6F, 1.1F, 0.1F, 3.1416F, 0.0F, -0.0873F));
+				.texOffs(7, 109).addBox(-2.0229F, -6.3772F, -0.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(7, 109).addBox(-0.0229F, -6.3772F, -0.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(7, 103).addBox(0.9771F, -9.3772F, -0.5F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(7, 103).addBox(-3.0229F, -9.3772F, -0.5F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.6F, 1.1F, 0.1F, 3.1416F, 0.0F, -0.0873F));
 
 		PartDefinition Tendons = LeftArmBottom.addOrReplaceChild("Tendons", CubeListBuilder.create(), PartPose.offset(-6.4F, 22.0F, 6.2F));
 
@@ -386,9 +384,7 @@ public class NaiadTritonModel<T extends Naiad> extends EntityModel<T> implements
 
 		PartDefinition TailTumorMid_r1 = TailTumorMid.addOrReplaceChild("TailTumorMid_r1", CubeListBuilder.create().texOffs(64, 48).addBox(-1.0F, -4.0F, -3.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.8F)), PartPose.offsetAndRotation(0.1F, 0.3F, -0.3F, 0.9309F, -0.4728F, 0.8277F));
 
-		PartDefinition spin = Naiad.addOrReplaceChild("spin", CubeListBuilder.create().texOffs(0, 208).addBox(-8.0F, -15.5F, -8.0F, 16.0F, 31.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -0.5F, 1.5F, 0.3927F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 128, 256);
+		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
 	@Override
