@@ -1,6 +1,7 @@
 package com.Harbinger.Spore.Sentities.Utility;
 
 
+import com.Harbinger.Spore.ExtremelySusThings.SporeSavedData;
 import com.Harbinger.Spore.Sentities.AI.CustomMeleeAttackGoal;
 import com.Harbinger.Spore.Sentities.AI.HybridPathNavigation;
 import com.Harbinger.Spore.Sentities.ArmorPersentageBypass;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -81,10 +83,10 @@ public class Specter extends UtilityEntity implements Enemy, ArmorPersentageBypa
     }
     @Override
     public boolean removeWhenFarAway(double value) {
-       // if (this.level() instanceof ServerLevel serverLevel){
-         //   SporeSavedData data = SporeSavedData.getDataLocation(serverLevel);
-           // return data != null && data.getAmountOfHiveminds() >= SConfig.SERVER.proto_spawn_world_mod.get() && value > 256;
-        //}
+        if (this.level() instanceof ServerLevel serverLevel){
+            SporeSavedData data = SporeSavedData.getDataLocation(serverLevel);
+            return data != null && data.getAmountOfHiveminds() >= SConfig.SERVER.proto_spawn_world_mod.get() && value > 256;
+        }
         return false;
     }
     @Override
@@ -134,6 +136,7 @@ public class Specter extends UtilityEntity implements Enemy, ArmorPersentageBypa
 
     public void setInvisible(boolean value){
         entityData.set(INVISIBLE,value);
+        playSound(value ? Ssounds.SPECTER_CLOAK.value() : Ssounds.SPECTER_UNCLOAK.value());
     }
     public boolean isInvisible(){
         return entityData.get(INVISIBLE);

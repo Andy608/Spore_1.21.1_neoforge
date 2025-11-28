@@ -66,6 +66,30 @@
       "spore:hexen_blow_3"
     ]
   },
+  "slasher_pull" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:slasher_pull"
+    ]
+  },
+  "slasher_stab" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:slasher_stab"
+    ]
+  },
+  "specter_clock" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:specter_clock"
+    ]
+  },
+  "specter_unclock" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:specter_unclock"
+    ]
+  },
   "calamity_death" :{
   "subtitle": "sounds.spore.damage",
   "sounds": [
