@@ -166,7 +166,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
                 .add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.ATTACK_DAMAGE, SConfig.SERVER.naiad_damage.get() * SConfig.SERVER.global_damage.get())
                 .add(Attributes.ARMOR, SConfig.SERVER.naiad_armor.get() * SConfig.SERVER.global_armor.get())
-                .add(Attributes.FOLLOW_RANGE, 32);
+                .add(Attributes.FOLLOW_RANGE, 48);
     }
 
     @Override
@@ -240,6 +240,9 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
 
         @Override
         public boolean canUse() {
+            if (naiad.getTarget() != null){
+                return false;
+            }
             BlockPos territory = naiad.getTerritory();
             return territory.equals(BlockPos.ZERO) || territory.distToCenterSqr(naiad.position()) > 400;
         }
