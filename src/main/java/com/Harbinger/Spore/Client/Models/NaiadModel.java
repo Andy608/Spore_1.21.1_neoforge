@@ -364,7 +364,6 @@ public class NaiadModel<T extends Naiad> extends EntityModel<T> implements Tenta
 		float v2 = Mth.cos(ageInTicks/6)/7;
 		float v4 = Mth.cos(ageInTicks/8)/8;
 		float movement = Mth.cos(limbSwing * 0.8F) * 0.8F * limbSwingAmount;
-		animateTentacleX(Head,headPitch * ((float) Math.PI / 180F));
 		animateTentacleY(Head,netHeadYaw / (180F / (float) Math.PI));
 		animateTumor(WaistTumorGroup1,-v3);
 		animateTumor(WaistTumorGroup2,v2);

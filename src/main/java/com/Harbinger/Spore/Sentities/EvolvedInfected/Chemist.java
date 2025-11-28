@@ -27,6 +27,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,6 +75,23 @@ public class Chemist extends EvolvedInfected{
     public void handleEntityEvent(byte value) {
         if (value == 4) {
             this.attackAnimationTick = 10;
+            if (level().isClientSide) {
+                Vec3 forward = this.getLookAngle().normalize().scale(1);
+                double px = this.getX() + forward.x;
+                double py = this.getEyeY()-0.25;
+                double pz = this.getZ() + forward.z;
+                for (int i = 0; i < 8; i++) {
+                    level().addParticle(
+                            ParticleTypes.FLAME,
+                            px+random.nextDouble() - random.nextDouble(),
+                            py,
+                            pz+random.nextDouble() - random.nextDouble(),
+                            0,
+                            0.05d,
+                            0
+                    );
+                }
+            }
         } else {
             super.handleEntityEvent(value);
         }
