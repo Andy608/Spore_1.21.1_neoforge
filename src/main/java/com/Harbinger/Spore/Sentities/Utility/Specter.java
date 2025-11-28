@@ -136,7 +136,6 @@ public class Specter extends UtilityEntity implements Enemy, ArmorPersentageBypa
 
     public void setInvisible(boolean value){
         entityData.set(INVISIBLE,value);
-        playSound(value ? Ssounds.SPECTER_CLOAK.value() : Ssounds.SPECTER_UNCLOAK.value());
     }
     public boolean isInvisible(){
         return entityData.get(INVISIBLE);
@@ -289,7 +288,13 @@ public class Specter extends UtilityEntity implements Enemy, ArmorPersentageBypa
         return SoundEvents.ZOMBIE_STEP;
     }
 
-
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
+        if (INVISIBLE.equals(dataAccessor)) {
+            playSound(isInvisible() ? Ssounds.SPECTER_CLOAK.value() : Ssounds.SPECTER_UNCLOAK.value());
+        }
+        super.onSyncedDataUpdated(dataAccessor);
+    }
     @Override
     public boolean hasLineOfSight(Entity entity) {
         if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(Seffects.MARKER)){

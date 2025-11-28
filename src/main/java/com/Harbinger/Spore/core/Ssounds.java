@@ -284,9 +284,9 @@ public class Ssounds {
 
     public static final Holder<SoundEvent> SLASHER_STAB = soundRegistry("slasher_stab");
 
-    public static final Holder<SoundEvent> SPECTER_CLOAK = soundRegistry("specter_clock");
+    public static final Holder<SoundEvent> SPECTER_CLOAK = soundRegistry("specter_cloak");
 
-    public static final Holder<SoundEvent> SPECTER_UNCLOAK = soundRegistry("specter_unclock");
+    public static final Holder<SoundEvent> SPECTER_UNCLOAK = soundRegistry("specter_uncloak");
 
     private Ssounds() {
     }

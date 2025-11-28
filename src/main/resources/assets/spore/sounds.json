@@ -78,16 +78,16 @@
       "spore:slasher_stab"
     ]
   },
-  "specter_clock" :{
+  "specter_cloak" :{
     "subtitle": "sounds.spore.growl",
     "sounds": [
-      "spore:specter_clock"
+      "spore:specter_cloak"
     ]
   },
-  "specter_unclock" :{
+  "specter_uncloak" :{
     "subtitle": "sounds.spore.growl",
     "sounds": [
-      "spore:specter_unclock"
+      "spore:specter_uncloak"
     ]
   },
   "calamity_death" :{
