@@ -142,6 +142,12 @@ public class InfectedEvoker extends EvolvedInfected implements  EvolvingInfected
             public boolean canUse() {
                 return switchy();
             }
+
+            @Override
+            public void start() {
+                super.start();
+                mob.playSound(Ssounds.EVOKER_SUCK.value());
+            }
         });
 
 
@@ -153,7 +159,7 @@ public class InfectedEvoker extends EvolvedInfected implements  EvolvingInfected
     private boolean switchy() {
         if (this.getTarget() != null){
             double ze = this.distanceToSqr(this.getTarget());
-            return (ze > 200.0D) && (ze < 600.0D) && entityData.get(HAS_ARM);
+            return (ze > 200.0D) && (ze < 600.0D) && entityData.get(HAS_ARM) && tickCount % 5 == 0;
         }
         return false;
     }
