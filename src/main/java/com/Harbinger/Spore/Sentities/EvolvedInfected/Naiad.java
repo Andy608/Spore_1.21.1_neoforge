@@ -469,6 +469,13 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
         if (entity instanceof LivingEntity living && living.isInWater() && living.getHealth() < living.getMaxHealth()){
             return true;
         }
+        AttributeInstance instance = this.getAttribute(Attributes.FOLLOW_RANGE);
+        if (instance != null){
+            double value = instance.getValue()/2;
+            if (entity.distanceTo(this) > value){
+                return false;
+            }
+        }
         return super.hasLineOfSight(entity);
     }
 
@@ -512,8 +519,8 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
     @Override
     public void tick() {
         super.tick();
-
-        Vec3 vec3 = this.getDeltaMovement();
+        LivingEntity target = this.getTarget();
+        Vec3 vec3 = target == null ? this.getDeltaMovement() : target.position();
 
         if (vec3.horizontalDistanceSqr() > 2.5E-7F) {
             double dx = vec3.x;

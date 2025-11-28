@@ -272,6 +272,14 @@ public class Ssounds {
 
     public static final Holder<SoundEvent> SCIENTIST_FUSE = soundRegistry("scientist_fuse");
 
+    public static final Holder<SoundEvent> CHEMIST_FUSE = soundRegistry("chemist_fuse");
+
+    public static final Holder<SoundEvent> EVOKER_SUCK = soundRegistry("evoker_suck");
+
+    public static final Holder<SoundEvent> HEXEN_SUCK = soundRegistry("hexen_suck");
+
+    public static final Holder<SoundEvent> HEXEN_BLOW = soundRegistry("hexen_blow");
+
     private Ssounds() {
     }
 

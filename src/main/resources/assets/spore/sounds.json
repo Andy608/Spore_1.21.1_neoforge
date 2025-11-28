@@ -31,11 +31,42 @@
   ]
 },
   "scientist_fuse" :{
-    "subtitle": "sounds.spore.damage",
+    "subtitle": "sounds.spore.growl",
     "sounds": [
       "spore:scientist_fuse"
     ]
-  },"calamity_death" :{
+  },
+  "chemist_fuse" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:chemist_fuse"
+    ]
+  },
+  "evoker_suck" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:evoker_suck",
+      "spore:evoker_suck_2",
+      "spore:evoker_suck_3"
+    ]
+  },
+  "hexen_suck" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:hexen_suck",
+      "spore:hexen_suck_2",
+      "spore:hexen_suck_3"
+    ]
+  },
+  "hexen_blow" :{
+    "subtitle": "sounds.spore.growl",
+    "sounds": [
+      "spore:hexen_blow",
+      "spore:hexen_blow_2",
+      "spore:hexen_blow_3"
+    ]
+  },
+  "calamity_death" :{
   "subtitle": "sounds.spore.damage",
   "sounds": [
     "spore:calamity_death"

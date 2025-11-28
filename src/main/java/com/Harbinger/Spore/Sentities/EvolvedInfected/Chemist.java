@@ -97,12 +97,11 @@ public class Chemist extends EvolvedInfected{
     public void tick() {
         super.tick();
         if (getBlowTime() > 0){
-            tickExplosion();
             this.level().addParticle(ParticleTypes.WHITE_SMOKE,this.getX(),this.getY()+1,this.getZ(),0,0.1,0);
+            tickExplosion();
         }
         if (getBlowTime() > 60){
             explodeChemist();
-            this.discard();
         }
     }
     @Override
@@ -119,6 +118,7 @@ public class Chemist extends EvolvedInfected{
                     Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE;
             serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), (float) (SConfig.SERVER.chemist_explosion.get() * 1f), explosion$blockinteraction);
             Utilities.convertBlocks(serverLevel,this,this.getOnPos(),7, Blocks.FIRE.defaultBlockState());
+            this.discard();
         }
     }
     @Override
@@ -144,9 +144,12 @@ public class Chemist extends EvolvedInfected{
     }
 
     private void tickExplosion(){
+        if (level().isClientSide){
+            return;
+        }
         this.setBlowTime(this.getBlowTime()+1);
         if (getBlowTime() == 1){
-            this.playSound(Ssounds.SCIENTIST_FUSE.value());
+            this.playSound(Ssounds.CHEMIST_FUSE.value());
         }
     }
 
