@@ -77,12 +77,6 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
             protected double getAttackReachSqr(LivingEntity entity) {
                 return 5.0 + entity.getBbWidth() * entity.getBbWidth();
             }
-
-            @Override
-            public void start() {
-                super.start();
-                aggroTicks = 300;
-            }
         });
         this.goalSelector.addGoal(5, new FindWaterTerritoryGoal(this));
         this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8){
@@ -256,7 +250,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
 
         @Override
         public boolean canUse() {
-            if (naiad.aggroTicks > 0){
+            if (naiad.aggroTicks > 0 || naiad.getTarget() != null){
                 return false;
             }
             BlockPos territory = naiad.getTerritory();
@@ -538,29 +532,31 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide){
-            if (aggroTicks > 0){
-                aggroTicks--;
-            }
+        if (this.getTarget() != null) {
+            aggroTicks = 300;
+        } else if (aggroTicks > 0) {
+            aggroTicks--;
         }
-        LivingEntity target = this.getTarget();
-        Vec3 vec3 = target == null ? this.getDeltaMovement() : target.position();
+        if (isInWater()){
+            LivingEntity target = this.getTarget();
+            Vec3 vec3 = target == null ? this.getDeltaMovement() : target.position();
 
-        if (vec3.horizontalDistanceSqr() > 2.5E-7F) {
-            double dx = vec3.x;
-            double dy = vec3.y;
-            double dz = vec3.z;
+            if (vec3.horizontalDistanceSqr() > 2.5E-7F) {
+                double dx = vec3.x;
+                double dy = vec3.y;
+                double dz = vec3.z;
 
-            double horizontal = Math.sqrt(dx * dx + dz * dz);
+                double horizontal = Math.sqrt(dx * dx + dz * dz);
 
-            float yaw = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+                float yaw = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
 
-            float pitch = (float)(Mth.atan2(dy, horizontal) * (180F / Math.PI));
+                float pitch = (float)(Mth.atan2(dy, horizontal) * (180F / Math.PI));
 
-            this.setYRot(yaw);
-            this.setXRot(pitch);
+                this.setYRot(yaw);
+                this.setXRot(pitch);
 
-            this.yBodyRot = lerpRotation(this.yRotO, this.getYRot());
+                this.yBodyRot = lerpRotation(this.yRotO, this.getYRot());
+            }
         }
     }
 
