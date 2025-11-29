@@ -306,9 +306,12 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
 
         @Override
         public boolean canContinueToUse() {
-            return targetPos != null &&
-                    targetPos.distToCenterSqr(naiad.position()) > 9;
+            return targetPos != null
+                    && naiad.aggroTicks <= 0
+                    && naiad.getTarget() == null
+                    && targetPos.distToCenterSqr(naiad.position()) > 9;
         }
+
         public boolean shouldRecalculatePath() {
             return this.tryTicks % 40 == 0;
         }

@@ -7,10 +7,7 @@ import com.Harbinger.Spore.Sentities.AI.HybridPathNavigation;
 import com.Harbinger.Spore.Sentities.ArmorPersentageBypass;
 import com.Harbinger.Spore.Sentities.BaseEntities.UtilityEntity;
 import com.Harbinger.Spore.Sentities.MovementControls.InfectedWallMovementControl;
-import com.Harbinger.Spore.core.SConfig;
-import com.Harbinger.Spore.core.Seffects;
-import com.Harbinger.Spore.core.Sentities;
-import com.Harbinger.Spore.core.Ssounds;
+import com.Harbinger.Spore.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -48,6 +45,8 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static com.Harbinger.Spore.ExtremelySusThings.Utilities.biomass;
 
 public class Specter extends UtilityEntity implements Enemy, ArmorPersentageBypass {
     public static final EntityDataAccessor<Boolean> INVISIBLE = SynchedEntityData.defineId(Specter.class, EntityDataSerializers.BOOLEAN);
@@ -413,9 +412,9 @@ public class Specter extends UtilityEntity implements Enemy, ArmorPersentageBypa
 
     public boolean interactBlock(BlockPos blockPos, Level level) {
         BlockState state = level.getBlockState(blockPos);
-        //if (biomass().contains(state)){
-          //  return level.setBlock(blockPos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3);
-        //}
+        if (biomass().contains(state)){
+            return level.setBlock(blockPos, Sblocks.MEMBRANE_BLOCK.get().defaultBlockState(), 3);
+        }
         return level.destroyBlock(blockPos, false, this);
     }
 }

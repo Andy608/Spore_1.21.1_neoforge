@@ -172,6 +172,7 @@ public class Vigil extends Organoid implements TraceableEntity, VariantKeeper {
     public void ReEmerge(){
         entityData.set(TIMER,0);
         this.randomTeleport(this.getX()+random.nextInt(-30,30),this.getY(),this.getZ()+random.nextInt(-30,30),false);
+        this.entityData.set(EMERGE,-1);
         tickEmerging();
     }
 
@@ -481,7 +482,8 @@ public class Vigil extends Organoid implements TraceableEntity, VariantKeeper {
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        return isStalker() ? super.getDimensions(pose).scale(1.2f) : super.getDefaultDimensions(pose);
+        EntityDimensions baseDimensions = super.getDefaultDimensions(pose);
+        return isStalker() ? baseDimensions.scale(1.2f) : baseDimensions;
     }
 
     @Override
