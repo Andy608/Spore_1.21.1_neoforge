@@ -6,17 +6,12 @@ import com.Harbinger.Spore.Sentities.AI.HurtTargetGoal;
 import com.Harbinger.Spore.Sentities.AI.HybridPathNavigation;
 import com.Harbinger.Spore.Sentities.BaseEntities.EvolvedInfected;
 import com.Harbinger.Spore.Sentities.BaseEntities.Infected;
-import com.Harbinger.Spore.Sentities.EvolvingInfected;
-import com.Harbinger.Spore.Sentities.Hyper.Inquisitor;
-import com.Harbinger.Spore.Sentities.MovementControls.WaterXlandMovement;
 import com.Harbinger.Spore.Sentities.VariantKeeper;
 import com.Harbinger.Spore.Sentities.Variants.NaiadVariants;
-import com.Harbinger.Spore.Sentities.Variants.SlasherVariants;
 import com.Harbinger.Spore.Sentities.WaterInfected;
 import com.Harbinger.Spore.core.*;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -36,10 +31,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
@@ -62,6 +54,8 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TRIDENT_CHARGE = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.INT);
     public int aggroTicks;
+    public int chargeTicks;
+    private Vec3 chargeTarget;
     public Naiad(EntityType<? extends EvolvedInfected> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.moveControl = new NaiadSwimControl(this);
@@ -71,6 +65,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
     @Override
     protected void addRegularGoals() {
         super.addRegularGoals();
+        this.goalSelector.addGoal(2, new NaiadChargeGoal(this));
         this.goalSelector.addGoal(3, new BreakBoatsGoal(this,1.2));
         this.goalSelector.addGoal(4, new CustomMeleeAttackGoal(this, 1, false) {
             @Override
@@ -156,6 +151,15 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
         } else {
             super.travel(p_32858_);
         }
+    }
+    public int getTridentCharge(){
+        return entityData.get(TRIDENT_CHARGE);
+    }
+    public void setTridentCharge(int value){
+        entityData.set(TRIDENT_CHARGE,value);
+    }
+    public void tickCharge(){
+        entityData.set(TRIDENT_CHARGE,entityData.get(TRIDENT_CHARGE)+1);
     }
 
     @Override
@@ -540,6 +544,9 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
         } else if (aggroTicks > 0) {
             aggroTicks--;
         }
+        if (getTridentCharge() < 200 && getVariant() == NaiadVariants.TRITON){
+            tickCharge();
+        }
         if (isInWater()){
             LivingEntity target = this.getTarget();
             Vec3 vec3 = target == null ? this.getDeltaMovement() : target.position();
@@ -574,5 +581,79 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
         }
 
         return Mth.lerp(0.2F, currentRotation, targetRotation);
+    }
+
+    private static class NaiadChargeGoal extends Goal{
+        private final Naiad naiad;
+        private int ticks;
+        private NaiadChargeGoal(Naiad naiad) {
+            this.naiad = naiad;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return naiad.getVariant() == NaiadVariants.TRITON
+                    && naiad.getTridentCharge() >= 200
+                    && naiad.getTarget() != null
+                    && naiad.isInWater();
+        }
+
+
+        @Override
+        public boolean canContinueToUse() {
+            return ticks > 0;
+        }
+
+        @Override
+        public void start() {
+            LivingEntity target = naiad.getTarget();
+            if (target == null) return;
+
+            ticks = 40;
+            naiad.chargeTicks = ticks;
+
+            naiad.chargeTarget = target.position();
+
+            naiad.getNavigation().stop();
+            naiad.playSound(SoundEvents.TRIDENT_RIPTIDE_3.value());
+        }
+
+
+        @Override
+        public void tick() {
+            if (naiad.chargeTarget == null) return;
+            ticks--;
+            naiad.chargeTicks = ticks;
+
+
+            Vec3 dir = naiad.chargeTarget.subtract(naiad.position());
+            if (dir.lengthSqr() < 1e-4) return;
+
+            dir = dir.normalize().scale(1.5);
+            naiad.setDeltaMovement(dir);
+
+            if (naiad.level() instanceof ServerLevel sl) {
+                sl.sendParticles(ParticleTypes.BUBBLE, naiad.getX(), naiad.getY(), naiad.getZ(),
+                        4, 0.2, 0.2, 0.2, 0.05);
+            }
+
+            LivingEntity target = naiad.getTarget();
+            if (target != null && target.distanceTo(naiad) < 2.2) {
+                target.hurt(naiad.level().damageSources().trident(naiad,naiad),
+                        (float) naiad.getAttributeValue(Attributes.ATTACK_DAMAGE) + 4);
+                target.setDeltaMovement(dir.normalize().scale(1.2));
+
+                ticks = 0;
+            }
+        }
+
+
+        @Override
+        public void stop() {
+            naiad.setTridentCharge(0); // cooldown reset
+            naiad.chargeTicks = 0;
+            naiad.chargeTarget = null;
+        }
     }
 }
