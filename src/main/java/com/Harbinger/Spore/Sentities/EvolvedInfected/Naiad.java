@@ -1,5 +1,6 @@
 package com.Harbinger.Spore.Sentities.EvolvedInfected;
 
+import com.Harbinger.Spore.ExtremelySusThings.Utilities;
 import com.Harbinger.Spore.Sentities.AI.CustomMeleeAttackGoal;
 import com.Harbinger.Spore.Sentities.AI.HurtTargetGoal;
 import com.Harbinger.Spore.Sentities.AI.HybridPathNavigation;
@@ -60,6 +61,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
     public static final EntityDataAccessor<BlockPos> TERRITORY = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TRIDENT_CHARGE = SynchedEntityData.defineId(Naiad.class, EntityDataSerializers.INT);
+    public int aggroTicks;
     public Naiad(EntityType<? extends EvolvedInfected> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.moveControl = new NaiadSwimControl(this);
@@ -73,9 +75,22 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
         this.goalSelector.addGoal(4, new CustomMeleeAttackGoal(this, 1, false) {
             @Override
             protected double getAttackReachSqr(LivingEntity entity) {
-                return 4.0 + entity.getBbWidth() * entity.getBbWidth();}});
+                return 5.0 + entity.getBbWidth() * entity.getBbWidth();
+            }
+
+            @Override
+            public void start() {
+                super.start();
+                aggroTicks = 300;
+            }
+        });
         this.goalSelector.addGoal(5, new FindWaterTerritoryGoal(this));
-        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8){
+            @Override
+            protected @Nullable Vec3 getPosition() {
+                return Utilities.generatePositionAway(mob.position(),16);
+            }
+        });
     }
 
     @Override
@@ -166,7 +181,8 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
                 .add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.ATTACK_DAMAGE, SConfig.SERVER.naiad_damage.get() * SConfig.SERVER.global_damage.get())
                 .add(Attributes.ARMOR, SConfig.SERVER.naiad_armor.get() * SConfig.SERVER.global_armor.get())
-                .add(Attributes.FOLLOW_RANGE, 48);
+                .add(Attributes.FOLLOW_RANGE, 48)
+                .add(Attributes.STEP_HEIGHT, 1);
     }
 
     @Override
@@ -240,7 +256,7 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
 
         @Override
         public boolean canUse() {
-            if (naiad.getTarget() != null){
+            if (naiad.aggroTicks > 0){
                 return false;
             }
             BlockPos territory = naiad.getTerritory();
@@ -522,6 +538,11 @@ public class Naiad extends EvolvedInfected implements WaterInfected , VariantKee
     @Override
     public void tick() {
         super.tick();
+        if (!level().isClientSide){
+            if (aggroTicks > 0){
+                aggroTicks--;
+            }
+        }
         LivingEntity target = this.getTarget();
         Vec3 vec3 = target == null ? this.getDeltaMovement() : target.position();
 
