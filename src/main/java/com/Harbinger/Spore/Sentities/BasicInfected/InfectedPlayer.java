@@ -48,6 +48,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -236,7 +237,8 @@ public class InfectedPlayer extends Infected implements RangedAttackMob , ArmedI
                     waveentity.setPos(livingEntity.getX(), livingEntity.getY() + 0.5D, livingEntity.getZ());
                     waveentity.setCustomName(livingEntity.getCustomName());
                     if (waveentity instanceof LivingEntity entity){
-                        Collection<MobEffectInstance> collection = livingEntity.getActiveEffects();
+                        // Create a copy to avoid ConcurrentModificationException
+                        Collection<MobEffectInstance> collection = new ArrayList<>(livingEntity.getActiveEffects());
                         for(MobEffectInstance mobeffectinstance : collection) {
                             entity.addEffect(new MobEffectInstance(mobeffectinstance));
                         }
@@ -266,7 +268,7 @@ public class InfectedPlayer extends Infected implements RangedAttackMob , ArmedI
                 scamper.setEvoPoints(livingEntity.getEvoPoints());
                 scamper.setLinked(livingEntity.getLinked());
                 scamper.setSearchPos(livingEntity.getSearchPos());
-                Collection<MobEffectInstance> collection = livingEntity.getActiveEffects();
+                Collection<MobEffectInstance> collection = new ArrayList<>(livingEntity.getActiveEffects());
                 for(MobEffectInstance mobeffectinstance : collection) {
                     scamper.addEffect(new MobEffectInstance(mobeffectinstance));
                 }

@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -190,7 +191,7 @@ public class Braionmil extends EvolvedInfected implements EvolvingInfected {
     @Override
     public void HyperEvolve(LivingEntity living) {
         Brot brot = new Brot(Sentities.BROTKATZE.get(),this.level());
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = new ArrayList<>(this.getActiveEffects());
         for(MobEffectInstance mobeffectinstance : collection) {
             brot.addEffect(new MobEffectInstance(mobeffectinstance));
         }

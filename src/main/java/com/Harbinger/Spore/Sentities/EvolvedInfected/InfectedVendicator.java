@@ -33,6 +33,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -128,7 +129,7 @@ public class InfectedVendicator extends EvolvedInfected implements ArmedInfected
     @Override
     public void HyperEvolve(LivingEntity living) {
         Hvindicator hindicator = new Hvindicator(Sentities.HVINDICATOR.get(),this.level());
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = new ArrayList<>(this.getActiveEffects());
         for(MobEffectInstance mobeffectinstance : collection) {
             hindicator.addEffect(new MobEffectInstance(mobeffectinstance));
         }

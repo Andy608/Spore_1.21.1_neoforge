@@ -31,7 +31,7 @@ public class LivingTickEvent {
         if (!(event.getEntity() instanceof LivingEntity living)) {
             return;
         }
-        List<MobEffectInstance> instances = living.getActiveEffects().stream()
+		List<MobEffectInstance> instances = living.getActiveEffects().stream()
                 .filter(instance -> instance.getEffect().value() instanceof SporeEffectsHandler)
                 .toList();
         for (MobEffectInstance instance : instances){

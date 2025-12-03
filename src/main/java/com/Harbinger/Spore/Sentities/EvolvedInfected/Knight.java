@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class Knight extends EvolvedInfected implements EvolvingInfected {
     @Override
     public void HyperEvolve(LivingEntity living) {
         Inquisitor inquisitor = new Inquisitor(Sentities.INQUISITOR.get(),this.level());
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = new ArrayList<>(this.getActiveEffects());
         for(MobEffectInstance mobeffectinstance : collection) {
             inquisitor.addEffect(new MobEffectInstance(mobeffectinstance));
         }
