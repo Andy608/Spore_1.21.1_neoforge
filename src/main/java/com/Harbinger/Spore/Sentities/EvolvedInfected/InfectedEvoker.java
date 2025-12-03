@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -186,7 +187,7 @@ public class InfectedEvoker extends EvolvedInfected implements  EvolvingInfected
     @Override
     public void HyperEvolve(LivingEntity living) {
         Hevoker brot = new Hevoker(Sentities.HEVOKER.get(),this.level());
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = new ArrayList<>(this.getActiveEffects());
         for(MobEffectInstance mobeffectinstance : collection) {
             brot.addEffect(new MobEffectInstance(mobeffectinstance));
         }

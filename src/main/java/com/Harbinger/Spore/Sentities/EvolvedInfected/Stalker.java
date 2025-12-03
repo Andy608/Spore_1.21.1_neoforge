@@ -34,6 +34,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -142,7 +143,7 @@ public class Stalker extends EvolvedInfected implements EvolvingInfected {
     @Override
     public void HyperEvolve(LivingEntity living) {
         Wendigo wendigo = new Wendigo(Sentities.WENDIGO.get(),this.level());
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = new ArrayList<>(this.getActiveEffects());
         for(MobEffectInstance mobeffectinstance : collection) {
             wendigo.addEffect(new MobEffectInstance(mobeffectinstance));
         }

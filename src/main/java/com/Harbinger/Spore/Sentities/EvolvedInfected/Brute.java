@@ -38,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -229,7 +230,7 @@ public class Brute extends EvolvedInfected implements Carrier, RangedAttackMob, 
     @Override
     public void HyperEvolve(LivingEntity living) {
         Ogre ogre = new Ogre(com.Harbinger.Spore.core.Sentities.OGRE.get(),this.level());
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = new ArrayList<>(this.getActiveEffects());
         for(MobEffectInstance mobeffectinstance : collection) {
             ogre.addEffect(new MobEffectInstance(mobeffectinstance));
         }

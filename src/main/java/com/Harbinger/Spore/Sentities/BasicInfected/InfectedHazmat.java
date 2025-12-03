@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -157,7 +158,7 @@ public class InfectedHazmat extends Infected implements VariantKeeper , Evolving
     public void Evolve(Infected livingEntity, List<? extends String> value, ScamperVariants variants) {
         if (level() instanceof ServerLevel world){
             Infected infected = getMobPerVariant(world);
-            Collection<MobEffectInstance> collection = livingEntity.getActiveEffects();
+            Collection<MobEffectInstance> collection = new ArrayList<>(livingEntity.getActiveEffects());
             for(MobEffectInstance mobeffectinstance : collection) {
                 infected.addEffect(new MobEffectInstance(mobeffectinstance));
             }
